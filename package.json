@@ -1,0 +1,28 @@
+{
+  "name": "transactionmanagement_mco2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elayemgee/TransactionManagement_MCO2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/elayemgee/TransactionManagement_MCO2/issues"
+  },
+  "homepage": "https://github.com/elayemgee/TransactionManagement_MCO2#readme",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "hbs": "^4.2.0",
+    "sql": "^0.78.0",
+    "supervisor": "^0.12.0"
+  }
+}
