@@ -1,0 +1,74 @@
+<html>
+    <head>
+		<title>
+			IMDb Transaction Management
+		</title>
+		<link href='../public/css/style.css' rel='stylesheet' type='text/css' />
+        <style>@import url('https://fonts.googleapis.com/css2?family=Work+Sans&display=swap'); </style>
+		<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css' />
+		<link rel='stylesheet' type='text/css' href='https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css' />
+
+		<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+		<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js'></script>
+		<script type='text/javascript' charset='utf8' src='https://cdn.datatables.net/1.11.4/js/jquery.dataTables.js'></script>
+
+		<script src='../js/home.js'></script>
+	</head>
+
+    <body>
+		<div class = "header"> 
+        	<h1>Application</h1>
+			<div class = "tabs">
+				<div class = "function">Insert</div>
+				<div class = "function">Update</div>
+			</div>
+		</div>
+
+		<div class = "inputtable">
+			<form method="GET" id="my_form">
+			<table>
+				<tr>
+					<td>
+						<!-- <label for='title'>  Title </label> -->
+						<p class="inputTitle">Title</p>
+						<input type="text" name="movie" form="my_form" placeholder="Movie Title"/>
+					</td>
+
+					<td>
+						<p class="inputTitle">Director</p>
+						<input type="text" name="director" form="my_form" placeholder="Director"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p class="inputTitle">Year</p>
+						<input type="text" name="year" form="my_form" placeholder="Year"/>
+					</td>
+
+					<td>
+						<p class="inputTitle">Actor 1</p>
+						<input type="text" name="actor1" form="my_form" placeholder="Actor 1"/>
+					</td>
+
+				</tr>
+				<tr>
+					<td>
+						<p class="inputTitle">Genre</p>
+						<input type="text" name="director" form="my_form" placeholder="Genre"/>
+					</td>
+
+					<td>
+						<p class="inputTitle">Actor 2</p>
+						<input type="text" name="actor2" form="my_form" placeholder="Actor 2"/>
+					</td>
+				</tr>
+			</table>
+			<div class="actions">
+				<input type='button' value='Clear'/>
+				<input type='submit' id='add-entry-btn' class='btn btn-info' value='Update' />
+			</div>
+		</form>
+		</div>
+
+    </body>
+</html>

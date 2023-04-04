@@ -1,0 +1,66 @@
+.tabs {
+    border-width:2px;
+    border-style:solid;
+    border-color:black;
+    display:flex;
+    padding-left: 50px;
+
+}
+
+.function {
+    border-width:0px;
+    border-style:solid;
+    padding-right: 100px;   
+}
+
+.inputtable{
+    width: 1000px;
+    height: 500px;
+    border-style:solid;
+    border-color:gray;
+    margin:auto;
+    margin-top: 30px;
+}
+
+.inputTitle{
+    margin-bottom: 10px;
+}
+
+tr {
+    display:flex;
+    margin-top: 30px;
+    margin-left: 30px;
+}
+
+td {
+    margin-right: 100px;
+}
+
+input[type="text"] {
+    height: 35px;
+    width: 400px;
+    background-color: F1F3F4;
+    border-color: transparent;
+    border-radius: 5px;
+    padding-left: 15px;
+    font-size: 14px;
+}
+
+.actions{
+    display: flex;
+    float: right;
+    margin-right: 70px;
+}
+
+input[type="submit"] {
+    margin-top: 100px;
+    
+   
+    width: 100px;
+}
+input[type="button"] {
+    margin-top: 100px;
+    margin-right: 70px;
+    width: 100px;
+}
+
