@@ -11,7 +11,7 @@
 		<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js'></script>
 		<script type='text/javascript' charset='utf8' src='https://cdn.datatables.net/1.11.4/js/jquery.dataTables.js'></script>
 
-		<script src='../js/home.js'></script>
+		<script src='../public/js/home.js'></script>
 	</head>
 
     <body style="background-color:#F1F3F4;">
@@ -31,40 +31,40 @@
 					<td>
 						<!-- <label for='title'>  Title </label> -->
 						<p class="inputTitle">Title</p>
-						<input type="text" name="movie" form="my_form" placeholder="Movie Title"/>
+						<input type="text" id="movietitle" name="movie" form="my_form" placeholder="Movie Title"/>
 					</td>
 
 					<td>
 						<p class="inputTitle">Director</p>
-						<input type="text" name="director" form="my_form" placeholder="Director"/>
+						<input type="text" id="director" name="director" form="my_form" placeholder="Director"/>
 					</td>
 				</tr>
 				<tr>
 					<td>
 						<p class="inputTitle">Year</p>
-						<input type="text" name="year" form="my_form" placeholder="Year"/>
+						<input type="number" id="year" name="year" form="my_form" placeholder="Year"/>
 					</td>
 
 					<td>
 						<p class="inputTitle">Actor 1</p>
-						<input type="text" name="actor1" form="my_form" placeholder="Actor 1"/>
+						<input type="text" id="actor1" name="actor1" form="my_form" placeholder="Actor 1"/>
 					</td>
 
 				</tr>
 				<tr>
 					<td>
 						<p class="inputTitle">Genre</p>
-						<input type="text" name="director" form="my_form" placeholder="Genre"/>
+						<input type="text" id="genre" name="genre" form="my_form" placeholder="Genre"/>
 					</td>
 
 					<td>
 						<p class="inputTitle">Actor 2</p>
-						<input type="text" name="actor2" form="my_form" placeholder="Actor 2"/>
+						<input type="text" id="actor2" name="actor2" form="my_form" placeholder="Actor 2"/>
 					</td>
 				</tr>
 			</table>
 			<div class="actions">
-				<input type='button' value='Clear'/>
+				<input type='button' id='clear' onclick = "clearInsertInputs()" value='Clear'/>
 				<input type='submit' id='add-entry-btn' class='btn btn-primary' value='Insert' />
 			</div>
 		</form>

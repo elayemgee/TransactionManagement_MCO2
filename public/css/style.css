@@ -59,7 +59,7 @@ td {
     margin-right: 100px;
 }
 
-input[type="text"] {
+input[type="text"], input[type="number"] {
     height: 35px;
     width: 400px;
     background-color: F1F3F4;
