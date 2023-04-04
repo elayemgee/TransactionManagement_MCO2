@@ -18,47 +18,36 @@
 		<div class = "header"> 
         	<h1 style="margin-left: 50px;">Application</h1>
 			<div class = "tabs">
-				<a href ="insert.html"  class = "function">Insert</a>
-				<a href="update.html" id = "currentPage"class = "function">Update</a>
-				<a href="search.html" class = "function">Search</a>
+				<a href ="insert.html" id = "currentPage" class = "function">Insert</a>
+				<a href="update.html" class = "function">Update</a>
+                <a href="search.html" class = "function">Search</a>
 			</div>
 		</div>
+
 		<div class = "inputTable">
 			<form method="GET" id="my_form">
 			<table>
 				<tr>
 					<td>
-						<p class="inputTitle">Movie ID</p>
-						<input type="text" name="id" form="my_form" placeholder="Movie ID" required />
+						<!-- <label for='title'>  Title </label> -->
+						<p class="inputTitle">Title</p>
+						<input type="text" name="movie" form="my_form" placeholder="Movie Title"/>
 					</td>
 
 					<td>
 						<p class="inputTitle">Director</p>
-						<input type="text" name="director" form="my_form" placeholder="Director" required />
-					</td>
-
-				</tr>
-				<tr>
-					<td>
-						<!-- <label for='title'>  Title </label> -->
-						<p class="inputTitle">Title</p>
-						<input type="text" name="movie" form="my_form" placeholder="Movie Title" required />
-					</td>
-
-					<td>
-						<p class="inputTitle">Actor 1</p>
-						<input type="text" name="actor1" form="my_form" placeholder="Actor 1"/>
+						<input type="text" name="director" form="my_form" placeholder="Director"/>
 					</td>
 				</tr>
 				<tr>
 					<td>
 						<p class="inputTitle">Year</p>
-						<input type="text" name="year" form="my_form" placeholder="Year" required />
+						<input type="text" name="year" form="my_form" placeholder="Year"/>
 					</td>
 
 					<td>
-						<p class="inputTitle">Actor 2</p>
-						<input type="text" name="actor2" form="my_form" placeholder="Actor 2"/>
+						<p class="inputTitle">Actor 1</p>
+						<input type="text" name="actor1" form="my_form" placeholder="Actor 1"/>
 					</td>
 
 				</tr>
@@ -67,11 +56,16 @@
 						<p class="inputTitle">Genre</p>
 						<input type="text" name="director" form="my_form" placeholder="Genre"/>
 					</td>
+
+					<td>
+						<p class="inputTitle">Actor 2</p>
+						<input type="text" name="actor2" form="my_form" placeholder="Actor 2"/>
+					</td>
 				</tr>
 			</table>
-			<div class="actions" style="margin-top: -14px;">
+			<div class="actions">
 				<input type='button' value='Clear'/>
-				<input type='submit' id='update-entry-btn' class='btn btn-primary' value='Update' />
+				<input type='submit' id='add-entry-btn' class='btn btn-primary' value='Insert' />
 			</div>
 		</form>
 		</div>
