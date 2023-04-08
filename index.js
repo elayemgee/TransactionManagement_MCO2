@@ -33,7 +33,7 @@ const express = require('express');
 const exphbs = require('express-handlebars');
 
 const app = express();
-const port = 80;
+const port = 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })) // might change later
@@ -48,9 +48,10 @@ app.use(express.static('public'));
 
 const mysql = require('mysql2');
 var con = mysql.createConnection({
-    host: '172.16.3.142/24',
+    host: '172.16.3.142',
     port: '3306',
-    user: 'root',
+    user: 'group16',
+	password: '12341234',
 });
 
 con.connect(function (err) {
@@ -69,8 +70,7 @@ app.get('/', function (req, res) {
         if (error) throw error;
         console.log(results);
         // connected!
-
-        res.render('index', { tuple: results });
+        res.render('report', { tuple: results });
     });
 });
 

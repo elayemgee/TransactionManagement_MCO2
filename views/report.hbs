@@ -12,16 +12,16 @@
 <table>
     <tr>
         <th>id</th>
-        <th>name</th>
+        <th>title</th>
         <th>year</th>
-        <th>rank</th>
+        <th>genre</th>
     </tr>
         {{#each tuple}}
             <tr>
                 <td> {{ this.id }} </td>
-                <td> {{ this.name }} </td>
+                <td> {{ this.title }} </td>
                 <td> {{ this.year }} </td>
-                <td> {{this.rank}} </td>
+                <td> {{this.genre}} </td>
             </tr>
         {{/each}}
     
