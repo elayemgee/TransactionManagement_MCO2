@@ -1,0 +1,81 @@
+<html>
+    <head>
+		<title>
+			IMDb Transaction Management
+		</title>
+		<link href='../public/css/style.css' rel='stylesheet' type='text/css' />
+		<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css' />
+		<link rel='stylesheet' type='text/css' href='https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css' />
+
+		<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+		<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js'></script>
+		<script type='text/javascript' charset='utf8' src='https://cdn.datatables.net/1.11.4/js/jquery.dataTables.js'></script>
+
+		<script src='../public/js/home.js'></script>
+	</head>
+
+    <body style="background-color:#F1F3F4;">
+		<div class = "header"> 
+        	<h1 style="margin-left: 50px;">Application</h1>
+			<div class = "tabs">
+				<a href ="insert.html" class = "function">Insert</a>
+				<a href="update.html" class = "function">Update</a>
+                <a href="search.html" id = "currentPage" class = "function">Search</a>
+			</div>
+		</div>
+
+		<div class = "inputTable">
+            <div class="search-container">
+                <!-- search page -->
+                <form action="/action_page.php">
+                  <input type="text" placeholder="Search by movie.." name="search">
+                  <button type="submit"><i class="search"></i> Search </button>
+                </form>
+              </div>
+
+              <div class="table-container">
+                <table class="table-search">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Movie</th>
+                            <th>Director</th>
+                            <th>Year</th>
+                            <th>Genre</th>
+                            <th>Actor 1</th>
+                            <th>Actor 2</th>
+                        </tr>
+                    </thead>
+                    <!-- Dummy Input -->
+                    <tbody>
+                        <tr>
+                            <td>10</td>
+                            <td>Up</td>
+                            <td>D</td>
+                            <td>2010</td>
+                            <td>Animation</td>
+                            <td>Russel</td>
+                            <td>Dog</td>
+                            <td>
+                                <button type="submit"><i class="update"></i> Update </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>11</td>
+                            <td>Down</td>
+                            <td>A</td>
+                            <td>2010</td>
+                            <td>Animation</td>
+                            <td>Dog</td>
+                            <td>Russel</td>
+                            <td>
+                                <button type="submit"><i class="update"></i> Update </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+              </div>
+    	</div>
+
+    </body>
+</html>

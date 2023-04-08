@@ -41,7 +41,7 @@ a:visited, a:link{
     height: 450px;
     margin:auto;
     margin-top: 30px;
-    border-radius: 20px;
+    border-radius: 10px;
     background-color: white;
 }
 
@@ -88,3 +88,52 @@ input[type="button"] {
 .btn btn-info {
     color: green;
 }
+
+  .search-container input[type=text] {
+    padding: 5px;
+    padding-left: 10px;
+    background-color: white;
+    border-style: solid;
+    width: 80%;
+    height: auto;
+    border-radius: 10px 0px 0px 0px;
+  }
+  
+  .search-container button {
+    padding: 5px;
+    margin: none;
+    margin-left: 40px;
+    border: transparent;
+    cursor: pointer;
+    width: 100px;
+    background-color: #D9D9D9;
+    border-radius: 3px;
+  }
+  
+  .search-container button:hover {
+    background: #ccc;
+  }
+
+  .table-search {
+    border-collapse: collapse;
+    width: 100%;
+    text-align: left;
+  }
+
+  .table-search th {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  .table-search tr:nth-child(even) {background-color: #F2F3F8;}
+
+  .table-search button{
+    background-color: #93C47D;
+    width: 100%;
+    padding: 5px;
+    margin: none;
+    border: none;
+    margin-left: 40px;
+    color: white;
+    cursor: pointer;
+  }
