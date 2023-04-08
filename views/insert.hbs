@@ -16,7 +16,7 @@
 
     <body style="background-color:#F1F3F4;">
 		<div class = "header"> 
-        	<h1 style="margin-left: 50px;">Application</h1>
+        	<h1 style="margin-left: 50px;">IMDb Transaction Management</h1>
 			<div class = "tabs">
 				<a href ="insert.html" id = "currentPage" class = "function">Insert</a>
 				<a href="update.html" class = "function">Update</a>
@@ -65,9 +65,21 @@
 			</table>
 			<div class="actions">
 				<input type='button' id='clear' onclick = "clearInsertInputs()" value='Clear'/>
-				<input type='submit' id='add-entry-btn' class='btn btn-primary' value='Insert' />
+				<input type='submit' id='insert-entry-btn' class='btn btn-primary' value='Insert' />
 			</div>
 		</form>
+
+		{{#each records}}
+		<div class = "newInsert">
+			<p> {{ this.id }} </p>
+			<p> {{ this.title }} </p>
+			<p> {{ this.year }} </p>
+			<p> {{ this.genre }} </p>
+			<p> {{ this.director }} </p>
+			<p> {{ this.actor1 }} </p>
+			<p> {{ this.actor2 }} </p>
+		</div>
+		{{/each}}
 		</div>
 
     </body>

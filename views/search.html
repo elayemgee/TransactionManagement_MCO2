@@ -16,13 +16,15 @@
 
     <body style="background-color:#F1F3F4;">
 		<div class = "header"> 
-        	<h1 style="margin-left: 50px;">Application</h1>
+        	<h1 style="margin-left: 50px;">IMDb Transaction Management</h1>
 			<div class = "tabs">
-				<a href ="insert.html" class = "function">Insert</a>
+				<!-- <a href ="/addEntry" class = "function">Insert</a> -->
 				<a href="update.html" class = "function">Update</a>
                 <a href="search.html" id = "currentPage" class = "function">Search</a>
 			</div>
 		</div>
+
+
 
 		<div class = "inputTable">
             <div class="search-container">
@@ -35,47 +37,62 @@
 
               <div class="table-container">
                 <table class="table-search">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Movie</th>
-                            <th>Director</th>
-                            <th>Year</th>
-                            <th>Genre</th>
-                            <th>Actor 1</th>
-                            <th>Actor 2</th>
-                        </tr>
-                    </thead>
-                    <!-- Dummy Input -->
-                    <tbody>
-                        <tr>
-                            <td>10</td>
-                            <td>Up</td>
-                            <td>D</td>
-                            <td>2010</td>
-                            <td>Animation</td>
-                            <td>Russel</td>
-                            <td>Dog</td>
-                            <td>
-                                <button type="submit"><i class="update"></i> Update </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>11</td>
-                            <td>Down</td>
-                            <td>A</td>
-                            <td>2010</td>
-                            <td>Animation</td>
-                            <td>Dog</td>
-                            <td>Russel</td>
-                            <td>
-                                <button type="submit"><i class="update"></i> Update </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <div class='results-div'>
+                        <table id='results-table' class='results-table'>
+                            <thead>
+                                <tr>
+                                    <th>
+                                        ID
+                                    </th>
+                                    <th>
+                                        Title
+                                    </th>
+                                    <th>
+                                        Year
+                                    </th>
+                                    <th>
+                                        Genre
+                                    </th>
+                                    <th>
+                                        Director
+                                    </th>
+                                    <th>
+                                        Actor 1
+                                    </th>
+                                    <th>
+                                        Actor 2
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each resultObj.allData}}
+                                    <tr>
+                                        <td>
+                                            {{this.id}}
+                                        </td>
+                                        <td>
+                                            {{this.name}}
+                                        </td>
+                                        <td>
+                                            {{this.year}}
+                                        </td>
+                                        <td>
+                                            {{this.genre}}
+                                        </td>
+                                        <td>
+                                            {{this.director}}
+                                        </td>
+                                        <td>
+                                            {{this.actor1}}
+                                        </td>
+                                        <td>
+                                            {{this.actor2}}
+                                        </td>
+                                    </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
               </div>
     	</div>
-
     </body>
 </html>
