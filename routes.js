@@ -12,7 +12,7 @@ const app = express();
 app.get('/insertPage', insertController.insertPage);
 app.get('/insertRecord', insertController.insertRecord);
 
-//app.get('/udpatePage', insertController.updatePage);
-//app.get('/updateRecord', insertController.updateRecord);
+app.get('/updatePage', updateController.updatePage);
+app.get('/updateRecord', updateController.updateRecord);
 
 module.exports = app;

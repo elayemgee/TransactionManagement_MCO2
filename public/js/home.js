@@ -35,20 +35,6 @@ $(document).ready(function () {
 })
 */
 
-function submitInsert(form){
-    var movie = form.movie.value;
-    console.log(movie);
-    /*
-    $.ajax({
-        url: '/insertRecord',
-        type: 'POST',
-        data: $('#my_form').serialize(),
-        success: function (data) {
-            if (data[0].toUpperCase() != data[0].toLowerCase()) alert(data);
-        }
-    });*/
-}
-
 function clearUpdateInputs() {
     document.getElementById("movieId").value = '';
     document.getElementById("director").value = '';
