@@ -62,7 +62,7 @@ td {
 input[type="text"], input[type="number"] {
     height: 35px;
     width: 400px;
-    background-color: F1F3F4;
+    background-color: #F1F3F4;
     border-color: transparent;
     border-radius: 5px;
     padding-left: 15px;
@@ -77,7 +77,6 @@ input[type="text"], input[type="number"] {
 }
 
 input[type="submit"] {
-   
     width: 100px;
 }
 input[type="button"] {
@@ -137,3 +136,11 @@ input[type="button"] {
     color: white;
     cursor: pointer;
   }
+
+#rec {
+    padding: 2px;
+}
+/*table, th, td, tr */
+.recordMessage{
+    border: 1px solid black;
+}

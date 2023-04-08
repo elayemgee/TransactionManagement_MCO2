@@ -4,37 +4,19 @@ const e = require('express');
 dotenv.config();
 
 const DATABASE = 'movies';
+const mysql = require('mysql2');
+var con = mysql.createConnection({
+    host: 'localhost',
+    port: '3306',
+    user: 'root',
+    password: 'net11142',
+    database: DATABASE
+});
+
 
 const insertController = {
-    insertRecord: function (req, res) {
-        //const textReport = "SELECT * FROM central LIMIT 10;";
-        /*
-        const title = req.body.title;
-		const year = req.body.year;
-		const genre = req.body.genre;
-		const director = req.body.director;
-		const actor1 = req.body.actor1;
-		const actor2 = req.body.actor2;
-        */
 
-        const title = "Oceans 8";
-		const year = "2018";
-		const genre = "Action";
-		const director = "Rihanna";
-		const actor1 = "Anne Hathaway";
-		const actor2 = "Awkwafina";
-
-        //var query = "SELECT * FROM central LIMIT 10;"
-        const sqlEntry = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`;
-
-        const mysql = require('mysql2');
-        var con = mysql.createConnection({
-            host: 'localhost',
-            port: '3306',
-            user: 'root',
-            password: 'net11142',
-            database: DATABASE
-        });
+    insertPage: function (req, res) {   
         con.connect(function (err) {
             if (err) {
                 console.error('error connecting: ' + err.stack);
@@ -42,18 +24,36 @@ const insertController = {
             }
             console.log('connected as id ' + con.threadId);
             console.log('in insert controller');
-
+            res.render('insert');
         });
         
+    },
+    insertRecord: function (req, res) { 
+        console.log('gonna execute insert');
+        const title = req.query.movie;
+		const year = req.query.year;
+		const genre = req.query.genre;
+		const director = req.query.director;
+		const actor1 = req.query.actor1;
+		const actor2 = req.query.actor2;
+
+        const sqlEntry = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`;
+
         con.query(sqlEntry, function (error, results, fields) {
-        if (error) throw error;
-        console.log(results);
-        // connected!
-        //res.render('report', { tuple: results });
-        //res.render('insert', {title: "insert", layout: 'insert.hbs', script: '/controllers/insertController.js'});
-        //res.render('insert');
-        res.render('insert', { records: results });
-    });
+            if (error) throw error;
+            console.log(results);
+            //res.render('insert', { records: results });
+        });
+
+        //Displays most recent file added to records
+        const select = `SELECT * FROM central ORDER BY id DESC LIMIT 1`;
+
+        con.query(select, function (error, results, fields) {
+            if (error) throw error;
+            console.log(results);
+            res.render('insert', { records: results });
+        });
     }
+
 }
 module.exports = insertController;

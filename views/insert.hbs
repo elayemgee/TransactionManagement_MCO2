@@ -3,7 +3,7 @@
 		<title>
 			IMDb Transaction Management
 		</title>
-		<link href='../public/css/style.css' rel='stylesheet' type='text/css' />
+		<link href='css/style.css' rel='stylesheet' type='text/css' />
 		<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css' />
 		<link rel='stylesheet' type='text/css' href='https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css' />
 
@@ -11,21 +11,21 @@
 		<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js'></script>
 		<script type='text/javascript' charset='utf8' src='https://cdn.datatables.net/1.11.4/js/jquery.dataTables.js'></script>
 
-		<script src='../public/js/home.js'></script>
+		<script src='/js/home.js'></script>
 	</head>
 
     <body style="background-color:#F1F3F4;">
 		<div class = "header"> 
         	<h1 style="margin-left: 50px;">IMDb Transaction Management</h1>
 			<div class = "tabs">
-				<a href ="insert.html" id = "currentPage" class = "function">Insert</a>
+				<a href ="/insertPage" id = "currentPage" class = "function">Insert</a>
 				<a href="update.html" class = "function">Update</a>
                 <a href="search.html" class = "function">Search</a>
 			</div>
 		</div>
 
 		<div class = "inputTable">
-			<form method="GET" id="my_form">
+			<form method="GET" id="my_form" action = "/insertRecord">
 			<table>
 				<tr>
 					<td>
@@ -69,6 +69,7 @@
 			</div>
 		</form>
 
+		<!-- 
 		{{#each records}}
 		<div class = "newInsert">
 			<p> {{ this.id }} </p>
@@ -81,6 +82,30 @@
 		</div>
 		{{/each}}
 		</div>
+		-->
+
+		<table class = "recordMessage">
+			<tr class = "recordMessage">
+				<th class = "recordMessage" id = "rec">id</th>
+				<th class = "recordMessage" id = "rec">title</th>
+				<th class = "recordMessage" id = "rec">year</th>
+				<th class = "recordMessage" id = "rec">genre</th>
+				<th class = "recordMessage" id = "rec">director</th>
+				<th class = "recordMessage" id = "rec">actor1</th>
+				<th class = "recordMessage" id = "rec">actor2</th>
+			</tr>
+			{{#each records}}
+				<tr class = "recordMessage">
+					<td class = "recordMessage" id = "rec"> {{this.id}} </td>
+					<td class = "recordMessage" id = "rec"> {{this.title}} </td>
+					<td class = "recordMessage" id = "rec"> {{this.year}} </td>
+					<td class = "recordMessage" id = "rec"> {{this.genre}} </td>
+					<td class = "recordMessage" id = "rec"> {{this.director}} </td>
+					<td class = "recordMessage" id = "rec"> {{this.actor1}} </td>
+					<td class = "recordMessage" id = "rec"> {{this.actor2}} </td>
+				</tr>
+			{{/each}}
+		</table>
 
     </body>
 </html>
