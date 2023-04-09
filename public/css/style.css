@@ -144,3 +144,36 @@ input[type="button"] {
 .recordMessage{
     border: 1px solid black;
 }
+
+.results-div {
+    padding-top: 0px;
+}
+
+.results-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    min-width: 100px;
+}
+
+.results-table thead tr {
+    background-color: #D9D9D9;
+    text-align: left;
+    font-weight: bold;
+    width: 900px;
+}
+
+.content-table th, .content-table td {
+    padding: 12px 15px;
+}
+
+.content-table tbody tr {
+    border-bottom: 1px solid black;
+}
+
+.content-table tbody tr:nth-of-type(even){
+    background-color: #f3f3f3;
+}
+
+.content-table tbody tr:last-of-type {
+    border-bottom: 2px solid #93C47D;
+}
