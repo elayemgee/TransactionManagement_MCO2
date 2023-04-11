@@ -88,7 +88,7 @@ input[type="button"] {
     color: green;
 }
 
-  .search-container input[type=text] {
+.search-container input[type=text] {
     padding: 5px;
     padding-left: 10px;
     background-color: white;
@@ -96,9 +96,9 @@ input[type="button"] {
     width: 80%;
     height: auto;
     border-radius: 10px 0px 0px 0px;
-  }
-  
-  .search-container button {
+}
+
+.search-container button {
     padding: 5px;
     margin: none;
     margin-left: 40px;
@@ -107,35 +107,30 @@ input[type="button"] {
     width: 100px;
     background-color: #D9D9D9;
     border-radius: 3px;
-  }
-  
-  .search-container button:hover {
-    background: #ccc;
-  }
+}
 
-  .table-search {
+.search-container button:hover {
+    background: #ccc;
+}
+
+.results-table {
     border-collapse: collapse;
+    table-layout: fixed;
     width: 100%;
     text-align: left;
-  }
+    word-break: break-all;
+}
 
-  .table-search th {
+.results-table th {
     border-collapse: collapse;
     width: 100%;
-  }
+}
 
-  .table-search tr:nth-child(even) {background-color: #F2F3F8;}
+.results-table tbody td {
+    table-layout: fixed;
+}
 
-  .table-search button{
-    background-color: #93C47D;
-    width: 100%;
-    padding: 5px;
-    margin: none;
-    border: none;
-    margin-left: 40px;
-    color: white;
-    cursor: pointer;
-  }
+.results-table tr:nth-child(even) {background-color: #F2F3F8;}
 
 #rec {
     padding: 2px;
@@ -143,37 +138,4 @@ input[type="button"] {
 /*table, th, td, tr */
 .recordMessage{
     border: 1px solid black;
-}
-
-.results-div {
-    padding-top: 0px;
-}
-
-.results-table {
-    border-collapse: collapse;
-    margin: 25px 0;
-    min-width: 100px;
-}
-
-.results-table thead tr {
-    background-color: #D9D9D9;
-    text-align: left;
-    font-weight: bold;
-    width: 900px;
-}
-
-.content-table th, .content-table td {
-    padding: 12px 15px;
-}
-
-.content-table tbody tr {
-    border-bottom: 1px solid black;
-}
-
-.content-table tbody tr:nth-of-type(even){
-    background-color: #f3f3f3;
-}
-
-.content-table tbody tr:last-of-type {
-    border-bottom: 2px solid #93C47D;
 }

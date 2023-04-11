@@ -18,9 +18,9 @@
 		<div class = "header"> 
         	<h1 style="margin-left: 50px;">IMDb Transaction Management</h1>
 			<div class = "tabs">
-				<!-- <a href ="/addEntry" class = "function">Insert</a> -->
-				<a href="update.html" class = "function">Update</a>
-                <a href="search.html" id = "currentPage" class = "function">Search</a>
+				<a href ="/insertPage"  class = "function">Insert</a>
+				<a href="/updatePage" class = "function">Update</a>
+				<a href="/searchPage" id = "currentPage" class = "function">Search</a>
 			</div>
 		</div>        
     
@@ -29,7 +29,7 @@
             <!-- search page -->
             <form action="/action_page.php">
                 <input type="text" placeholder="Search by ID, Movie, Director, Actor.." name="search">
-                <button type="submit"><i class="search"></i> Search </button>
+                <input type='submit' id='search-btn' class='btn btn-primary' value='Search' />
             </form>
         </div>
 
@@ -64,7 +64,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<!-- {{#each result}} -->
+					{{#each result}}
 						<tr>
 							<td>
 								{{this.id}}
@@ -91,71 +91,11 @@
 								{{this.actor2}}
 							</td>
 						</tr>
-					<!-- {{/each}} -->
-				</tbody>
-                <tbody>
-					<!-- {{#each result}} -->
-						<tr>
-							<td>
-								{{this.id}}
-							</td>
-							<td>
-								{{this.name}}
-							</td>
-							<td>
-								{{this.year}}
-							</td>
-							<td>
-								{{this.genre}}
-							</td>
-							<td>
-								{{this.rank}}
-							</td>
-							<td>
-								{{this.director}}
-							</td>
-							<td>
-								{{this.actor1}}
-							</td>
-							<td>
-								{{this.actor2}}
-							</td>
-						</tr>
-					<!-- {{/each}} -->
-				</tbody>
-                <tbody>
-					<!-- {{#each result}} -->
-						<tr>
-							<td>
-								{{this.id}}
-							</td>
-							<td>
-								{{this.name}}
-							</td>
-							<td>
-								{{this.year}}
-							</td>
-							<td>
-								{{this.genre}}
-							</td>
-							<td>
-								{{this.rank}}
-							</td>
-							<td>
-								{{this.director}}
-							</td>
-							<td>
-								{{this.actor1}}
-							</td>
-							<td>
-								{{this.actor2}}
-							</td>
-						</tr>
-					<!-- {{/each}} -->
+					{{/each}}
 				</tbody>
 			</table>
-		</div>
-    </div>
+	</div>
+    
         
         
     </body>
