@@ -42,7 +42,7 @@ const updateController = {
                 console.log("autocommit=0")
 				await node1Connection.query("START TRANSACTION;")
                 console.log("start transaction")
-				await node1Connection.query("LOCK TABLES node1 write;")
+				await node1Connection.query("LOCK TABLES central write;")
                 console.log("lock")
 		
 				// insert in logs
@@ -50,7 +50,7 @@ const updateController = {
 				console.log("Start log inserted to node 1 table 1")*/
 		
 				// update movie
-				await node1Connection.query("UPDATE node1 SET `title` = '" + title + "'," + "`year` = " + year + "," + "`genre` = " + genre  + "',"+ "`director` = " + director + "',"+ "`actor1 = `" + actor1 + "',"+ "`actor2 = `" + actor2 + " WHERE id = " + id + ";")
+				await node1Connection.query("UPDATE central SET `title` = '" + title + "'," + "`year` = " + year + "," + "`genre` = " + genre  + "',"+ "`director` = " + director + "',"+ "`actor1 = `" + actor1 + "',"+ "`actor2 = `" + actor2 + " WHERE id = " + id + ";")
                 console.log("updated works")
 				// update logs 
 				//await nodeLogsConnection.query("UPDATE `node1_logs` SET `status` = 'write' WHERE `name` = ? AND `dest` = 'node1';", [movieName])
