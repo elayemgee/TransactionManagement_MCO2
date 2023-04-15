@@ -66,13 +66,13 @@ const inController = {
                 })*/
 
                 let datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
-                console.log(datalist)
+                //console.log(datalist)
 
                 datalist.then(function(result) {
-                    console.log(result) // "Some User token"
+                    console.log(result)
+                    console.log(result.insertID) // "Some User token"
                     insertedId = result.id
                  })
-
                 console.log(insertedId)
                 console.log('performed insert')
                 await node1Connection.query("COMMIT;")
