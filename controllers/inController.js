@@ -366,7 +366,7 @@ const inController = {
 			res.send(false)
 		} else {
             console.log('insert was completed')
-			//res.send(true)
+			res.send(true)
 		}
 }
 }

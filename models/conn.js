@@ -1,4 +1,3 @@
-/*
 const node1conn = {
     host: '172.16.3.142',
     port: '3306',
@@ -6,8 +5,8 @@ const node1conn = {
     password: '12341234',
     database: 'movies'
 }
-*/
 
+/*
 const node1conn = {
     host: 'localhost',
     port: '3306',
@@ -15,7 +14,7 @@ const node1conn = {
     password: 'net11142',
     database: 'movies'
 }
-
+*/
 
 /*
 const node2conn = {
