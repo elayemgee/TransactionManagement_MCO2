@@ -14,6 +14,7 @@ const updateController = {
             res.render('update');        
     },
 
+
     updateRecord: function (req, res) { 
         console.log('gonna execute update');
         const id = req.query.id;
@@ -42,7 +43,7 @@ const updateController = {
         else if(actor1 == null && actor2 != null)
             sqlEntry = sqlEntry.replaceAll(" actor1 = '${actor1}',", '')
 
-        con.query(sqlEntry, function (error, results, fields) {
+        node1Connection.query(sqlEntry, function (error, results, fields) {
             if (error) throw error;
             console.log(results);
             //res.render('insert', { records: results });
@@ -51,7 +52,7 @@ const updateController = {
         //Displays most recent file added to records
         const select = `SELECT * FROM central WHERE id = '${id}'`;
 
-        con.query(select, function (error, results, fields) {
+        node1Connection.query(select, function (error, results, fields) {
             if (error) throw error;
             console.log(results);
             res.render('update', { records: results });
