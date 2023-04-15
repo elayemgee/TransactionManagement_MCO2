@@ -59,6 +59,7 @@ const inController = {
                 //end connection
                 node1Connection.end()
                 flag = true
+                console.log(flag)
 
             } catch (err) {
                 if (node1Connection != null) {
@@ -171,7 +172,8 @@ const inController = {
                 }
         
         }
-    }else if (year >= 1980) { 
+    }
+    else if (year >= 1980) { 
         try {
             console.log("Entered >= 1980 condition")
             // throw Error // simulate
