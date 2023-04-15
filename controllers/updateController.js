@@ -42,8 +42,7 @@ const updateController = {
         if(actor1 == '')
             console.log("I'm empty")
 
-        var sqlEntry = `UPDATE central SET title = '${title}', year = ${year}, genre = '${genre}', director = '${director}', actor1 = '${actor1}', actor2 = '${actor2}'
-                          WHERE id = '${id}'`;
+        var sqlEntry = `UPDATE central SET title = '${title}', year = ${year}, genre = '${genre}', director = '${director}', actor1 = '${actor1}', actor2 = '${actor2}'WHERE id = '${id}'`;
 
         if(title == undefined)
             sqlEntry = sqlEntry.replaceAll(" title = '${title}',", '')
@@ -53,7 +52,7 @@ const updateController = {
             sqlEntry = sqlEntry.replaceAll(" genre = '${genre}',", '')
         if(director == null)
             sqlEntry = sqlEntry.replaceAll(" director = '${director}',", '')
-        if(!(actor1 == undefined && actor2 == undefined))
+        if(actor1 == '' && actor2 == '')
             {   console.log("got in")
                 sqlEntry = sqlEntry.replaceAll(", actor1 = '${actor1}', actor2 = '${actor2}'", "")}
         if(actor2 == null && actor1 != null)
