@@ -43,8 +43,8 @@ const inController = {
                 await console.log('autocommit = 0')
                 await node1Connection.query("START TRANSACTION;")
                 await console.log('started transaction')
-                //await node1Connection.query("LOCK TABLES node1a write;")
-                //await console.log('Locked tables node1a');
+                await node1Connection.query("LOCK TABLES node1a write;")
+                await console.log('Locked tables node1a');
 
                 //insert new movie
                 node1Connection.query(`INSERT INTO node1a (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`);

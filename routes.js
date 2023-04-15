@@ -19,7 +19,6 @@ app.get('/updateRecord', updateController.updateRecord);
 app.get('/searchPage', searchController.searchPage);
 app.get('/searchRecord', searchController.searchRecord);
 
-
 app.get('/inPage', inController.inPage);
 app.get('/inRecord', inController.inRecord);
 
