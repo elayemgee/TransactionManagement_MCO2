@@ -37,10 +37,13 @@ const updateController = {
 				// connections
 				node1Connection = await mysql.createConnection(config.node1conn)
 				//nodeLogsConnection = await mysql.createConnection(config.nodeLogsConn)
-		
+                
 				await node1Connection.query("set autocommit = 0;")
+                console.log("autocommit=0")
 				await node1Connection.query("START TRANSACTION;")
+                console.log("start transaction")
 				await node1Connection.query("LOCK TABLES node1 write;")
+                console.log("lock")
 		
 				// insert in logs
 				/*await nodeLogsConnection.query("INSERT INTO `node1_logs` (`operation`, `name`, `year`, `rank`, `status`, `dest`) VALUES ('update', '" + movieName + "'," + movieYear + "," + movieRank + ", 'start', 'node1');")
@@ -48,13 +51,15 @@ const updateController = {
 		
 				// update movie
 				await node1Connection.query("UPDATE node1 SET `title` = '" + title + "'," + "`year` = " + year + "," + "`genre` = " + genre  + "',"+ "`director` = " + director + "',"+ "`actor1 = `" + actor1 + "',"+ "`actor2 = `" + actor2 + " WHERE id = " + id + ";")
-
+                console.log("updated works")
 				// update logs 
 				//await nodeLogsConnection.query("UPDATE `node1_logs` SET `status` = 'write' WHERE `name` = ? AND `dest` = 'node1';", [movieName])
 				// await nodeLogsConnection.query("UPDATE `node1_logs` SET `status` = 'write' WHERE `name` = '" + movieName + "' AND `dest` = 'node1';")
 				//console.log("Log updated to write in node 1 table 1")
 				await node1Connection.query("COMMIT;")
+                console.log("commit")
 				await node1Connection.query("UNLOCK TABLES;")
+                console.log("unlock")
 		
 				// update logs
 				//await nodeLogsConnection.query('UPDATE `node1_logs` SET `status` = ? WHERE `name` = ? AND `dest` = ?;', ['committing', movieName, 'node1'])
@@ -155,24 +160,33 @@ const updateController = {
 			if (flag) {
 				try {
 					// throw Error // simulate
+                    console.log("---------------")
+                    console.log("node 2")
 					node2Connection = await mysql.createConnection(config.node2conn)
-					nodeLogsConnection = await mysql.createConnection(config.nodeLogsConn)
+					//nodeLogsConnection = await mysql.createConnection(config.nodeLogsConn)
 		
 					await node2Connection.query("set autocommit = 0;")
+                    console.log("node2: autocommit=0")
 					await node2Connection.query("START TRANSACTION;")
+                    console.log("node 2: start transaction")
 					await node2Connection.query("LOCK TABLES node2 write;")
+                    console.log("node 2: lock")
+
 		
 					// insert in logs
 					//await nodeLogsConnection.query("INSERT INTO `node2_logs` (`operation`, `name`, `year`, `rank`, `status`, `dest`) VALUES ('update', '" + movieName + "'," + movieYear + "," + movieRank + ", 'start', 'node2');")
 					//console.log("Start log inserted to node 2")
 		
 					// update movie
-                    await node2Connection.query("UPDATE node1 SET `title` = '" + title + "'," + "`year` = " + year + "," + "`genre` = " + genre  + "',"+ "`director` = " + director + "',"+ "`actor1 = `" + actor1 + "',"+ "`actor2 = `" + actor2 + " WHERE id = " + id + ";")					
+                    await node2Connection.query("UPDATE node1 SET `title` = '" + title + "'," + "`year` = " + year + "," + "`genre` = " + genre  + "',"+ "`director` = " + director + "',"+ "`actor1 = `" + actor1 + "',"+ "`actor2 = `" + actor2 + " WHERE id = " + id + ";")		
+                    console.log("node 2: update worked")			
 					// update logs 
 					//await nodeLogsConnection.query("UPDATE `node2_logs` SET `status` = 'write' WHERE `name` = ? AND `dest` = 'node2';", [movieName])
 					//console.log("Log updated to write in node 2")
 					await node2Connection.query("COMMIT;")
+                    console.log("node2: commit")
 					await node2Connection.query("UNLOCK TABLES;")
+                    console.log("node2: update tables")
 		
 					// update logs
 					//await nodeLogsConnection.query("UPDATE `node2_logs` SET `status` = ? WHERE `name` = ? AND `dest` = 'node2'", ['committing', movieName])
@@ -183,7 +197,7 @@ const updateController = {
 		
 					// end connections
 					node2Connection.end()
-					nodeLogsConnection.end()
+					//nodeLogsConnection.end()
 				} catch (err) {
 					// log to node 1 na di gumana ung node 2, may unCOMMITted sa node 2, node 1 = on RECOVERY
 					if (node2Connection != null) {
@@ -215,10 +229,17 @@ const updateController = {
 				// throw Error // simulate
 				node1Connection = await mysql.createConnection(config.node1conn)
 				//nodeLogsConnection = await mysql.createConnection(config.nodeLogsConn)
+                console.log("node 1: connected to node 1")
 		
 				await node1Connection.query("set autocommit = 0;")
+                console.log("node 1: autocommit = 0")
+
 				await node1Connection.query("START TRANSACTION;")
-				await node1Connection.query("LOCK TABLES node1_2 write;")
+                console.log("node 1: started transaction")
+
+				await node1Connection.query("LOCK TABLES central write;")
+                console.log("node 1: locked central")
+
 		
 				// insert in logs
 				//await nodeLogsConnection.query("INSERT INTO `node1_2_logs` (`operation`, `name`, `year`, `rank`, `status`, `dest`) VALUES ('update', '" + movieName + "'," + movieYear + "," + movieRank + ", 'start', 'node1_2');")
@@ -226,11 +247,17 @@ const updateController = {
 		
 				// update movie
                 await node1Connection.query("UPDATE node1 SET `title` = '" + title + "'," + "`year` = " + year + "," + "`genre` = " + genre  + "',"+ "`director` = " + director + "',"+ "`actor1 = `" + actor1 + "',"+ "`actor2 = `" + actor2 + " WHERE id = " + id + ";")				
-				// update logs 
+                console.log("node 1: performed update")
+
+                // update logs 
 				//await nodeLogsConnection.query("UPDATE `node1_2_logs` SET `status` = 'write' WHERE `name` = ? AND `dest` = 'node1_2';", [movieName])
 				//console.log("Log updated to write in node 1 table 2")
 				await node1Connection.query("COMMIT;")
+                console.log("node 1: performed commit")
+
 				await node1Connection.query("UNLOCK TABLES;")
+                console.log("node 1: unlocked tables")
+
 		
 				// update logs
 				//await nodeLogsConnection.query("UPDATE `node1_2_logs` SET `status` = ? WHERE `name` = ? AND `dest` = 'node1_2';", ['committing', movieName])
@@ -241,7 +268,9 @@ const updateController = {
 		
 				// end connections
 				node1Connection.end()
-				nodeLogsConnection.end()
+                console.log("node 1: ended connection")
+
+				//nodeLogsConnection.end()
 		
 				flag = true
 			} catch (err) {
@@ -256,11 +285,17 @@ const updateController = {
 				try {
 					// throw Error // simulate
 					node3Connection = await mysql.createConnection(config.node3conn)
+                    console.log('node 3: established connection')
 					//nodeLogsConnection = await mysql.createConnection(config.nodeLogsConn)
 		
 					await node3Connection.query("set autocommit = 0;")
+                    console.log('node 3: set autocommit')
+
 					await node3Connection.query("START TRANSACTION;")
+                    console.log('node 3: started transaction')
+
 					await node3Connection.query("LOCK TABLES node3 write;")
+                    console.log('node 3: locked tables')
 		
 					// insert in logs
 					//await nodeLogsConnection.query("INSERT INTO `node3_logs` (`operation`, `name`, `year`, `rank`, `status`, `dest`) VALUES ('update', '" + movieName + "'," + movieYear + "," + movieRank + ", 'start', 'node3');")
@@ -268,11 +303,16 @@ const updateController = {
 		
 					// update movie
                     await node3Connection.query("UPDATE node1 SET `title` = '" + title + "'," + "`year` = " + year + "," + "`genre` = " + genre  + "',"+ "`director` = " + director + "',"+ "`actor1 = `" + actor1 + "',"+ "`actor2 = `" + actor2 + " WHERE id = " + id + ";")					
-					// update logs 
+                    console.log('node 3: locked tables')
+
+                    // update logs 
 					//await nodeLogsConnection.query("UPDATE `node3_logs` SET `status` = 'write' WHERE `name` = ? AND `dest` = 'node3';", [movieName])
 					//console.log("Log updated to write in node3")
 					await node3Connection.query("COMMIT;")
+                    console.log('node 3: committed')
+
 					await node3Connection.query("UNLOCK TABLES;")
+                    console.log('node 3: unlocked tables')
 		
 					// update logs
 					//await nodeLogsConnection.query("UPDATE `node3_logs` SET `status` = ? WHERE `name` = ? AND `dest` = 'node3';", ['committing', movieName])
@@ -329,12 +369,19 @@ const updateController = {
 				try {
 					// throw Error // simulate
 					node3Connection = await mysql.createConnection(config.node3conn)
+                    console.log('node 3: established connection')
+
 					//nodeLogsConnection = await mysql.createConnection(config.nodeLogsConn)
 		
 					await node3Connection.query("set autocommit = 0;")
+                    console.log('node 3: autocommit')
+
 					await node3Connection.query("START TRANSACTION;")
+                    console.log('node 3: started transaction')
+
 					await node3Connection.query("LOCK TABLES node3 write;")
-		
+                    console.log('node 3: locked tables')
+
 					// insert in logs
                     /*
 					await nodeLogsConnection.query("INSERT INTO `node3_logs` (`operation`, `name`, `year`, `rank`, `status`, `dest`) VALUES ('update', '" + movieName + "'," + movieYear + "," + movieRank + ", 'start', 'node3');")
@@ -343,14 +390,19 @@ const updateController = {
 		
 					// update movie
                     await node3Connection.query("UPDATE node1 SET `title` = '" + title + "'," + "`year` = " + year + "," + "`genre` = " + genre  + "',"+ "`director` = " + director + "',"+ "`actor1 = `" + actor1 + "',"+ "`actor2 = `" + actor2 + " WHERE id = " + id + ";")					
-					// update logs 
-                    /*
-					await nodeLogsConnection.query("UPDATE `node3_logs` SET `status` = 'write' WHERE `name` = ? AND `dest` = 'node3';", [movieName])
-					console.log("Log updated to write in node3")
+                    console.log('node 3:did update')
+
+                    // update logs 
+                    
+					//await nodeLogsConnection.query("UPDATE `node3_logs` SET `status` = 'write' WHERE `name` = ? AND `dest` = 'node3';", [movieName])
+					//console.log("Log updated to write in node3")
+
 					await node3Connection.query("COMMIT;")
+                    console.log('node 3: committed')
+
 					await node3Connection.query("UNLOCK TABLES;")
-                    */
-		
+                    console.log('node 3: unlocked tables')
+
 					// update logs
                     /*
 					await nodeLogsConnection.query("UPDATE `node3_logs` SET `status` = ? WHERE `name` = ? AND `dest` = 'node3';", ['committing', movieName])
@@ -362,7 +414,9 @@ const updateController = {
 		
 					// end connections
 					node3Connection.end()
-					nodeLogsConnection.end()
+                    console.log('node 3: ended connection')
+
+					//nodeLogsConnection.end()
 				} catch (err) {
 					if (node3Connection != null) {
 						node3Connection.end()
@@ -387,9 +441,6 @@ const updateController = {
 						}
 					}
                     */
-					
-		
-		
 				}
 			}
 		}
