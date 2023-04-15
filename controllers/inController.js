@@ -70,12 +70,12 @@ const inController = {
 
                 datalist.then(function(result) {
                     console.log(result)
-                    console.log(result[0]) // "Some User token"
+                    console.log(result[0].insertId) // "Some User token"
                     insertedId = result.insertId
-                 })                
+                 })               
+        
                 console.log('performed insert')
                 await node1Connection.query("COMMIT;")
-                console.log(insertedId);
                 console.log('committed')
                 await node1Connection.query("UNLOCK TABLES;")
                 console.log('tables are unlocked')
