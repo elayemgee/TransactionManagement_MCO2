@@ -52,19 +52,6 @@ const inController = {
                 //await node1Connection.query(`INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`);
                 //console.log("a");
                 const sqlEntryFill = 'INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
-
-                //const sqlEntry = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`;
-                //console.log("b");
-                /*
-                node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2], function (err, results) {
-                    console.log("present")
-                    if (err) {throw err};
-                    console.log(results);
-                    insertedId = results.id;
-                    console.log(insertedId);
-                    //res.render('insert', { records: results });
-                })*/
-
                 let datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
                 //console.log(datalist)
 
@@ -374,7 +361,7 @@ const inController = {
                     console.log(results);
                     res.render('insert', { records: results });
                 });*/
-
+                
                 await node3Connection.query(`INSERT INTO node3 (id, title, year, genre, director, actor1, actor2) VALUES ('${insertedId}','${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`);
                 console.log('node3: performed insert')
 
