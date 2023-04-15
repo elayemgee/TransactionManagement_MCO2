@@ -25,8 +25,13 @@ const updateController = {
 		const actor1 = req.query.actor1;
 		const actor2 = req.query.actor2;
 
-        console.log(actor1)
-        console.log(actor2)
+        console.log('id: ' + id)
+        console.log('title: ' +title)
+        console.log('year: ' + year)
+        console.log('genre: ' +genre)
+        console.log('director: ' + director)
+        console.log('actor1: ' + actor1)
+        console.log('actor2: ' +actor2)
 
         var sqlEntry = `UPDATE central SET title = '${title}', year = ${year}, genre = '${genre}', director = '${director}', actor1 = '${actor1}', actor2 = '${actor2}'
                           WHERE id = '${id}'`;
