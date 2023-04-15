@@ -28,6 +28,7 @@ const updateController = {
 
         var flag = false;
         var flag2 = false;
+        var originalYear
 
         if (year < 1980) {
 			// insert to node 1
@@ -52,9 +53,9 @@ const updateController = {
 				// update movie
 				//await node1Connection.query("UPDATE central SET `title` = '" + title + "'," + "`year` = " + year + "," + "`genre` = " + genre  + "',"+ "`director` = " + director + "',"+ "`actor1 = `" + actor1 + "',"+ "`actor2 = `" + actor2 + " WHERE id = " + id + ";")
                 //console.log("updated works")
-                const sqlEntryFill = 'UPDATE central SET title = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
-                let datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
-                //console.log(datalist)
+                const sqlEntryFill = 'UPDATE central SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
+                let datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
+                console.log(datalist)
 
                 datalist.then(function(result) {
                     console.log(result)
@@ -97,7 +98,7 @@ const updateController = {
 				try {
 					// throw Error // simulate
 					node2Connection = await mysql.createConnection(config.node2conn)
-					nodeLogsConnection = await mysql.createConnection(config.nodeLogsConn)
+					//nodeLogsConnection = await mysql.createConnection(config.nodeLogsConn)
 		
 					await node2Connection.query("set autocommit = 0;")
 					await node2Connection.query("START TRANSACTION;")
@@ -108,7 +109,15 @@ const updateController = {
 					//console.log("Start log inserted to node 2")
 		
 					// update movie
-                    await node2Connection.query("UPDATE node2 SET `title` = '" + title + "'," + "`year` = " + year + "," + "`genre` = " + genre  + "',"+ "`director` = " + director + "',"+ "`actor1 = `" + actor1 + "',"+ "`actor2 = `" + actor2 + " WHERE id = " + id + ";")					
+                    const sqlEntryFill = 'UPDATE node2 SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
+                    let datalist = node2Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
+                    console.log(datalist)
+
+                    datalist.then(function(result) {
+                        console.log(result)
+                    })   
+                    console.log('performed update')
+
 					// update logs 
 					//await nodeLogsConnection.query("UPDATE `node2_logs` SET `status` = 'write' WHERE `name` = ? AND `dest` = 'node2';", [movieName])
 					//console.log("Log updated to write in node 2")
@@ -187,8 +196,15 @@ const updateController = {
 					//console.log("Start log inserted to node 2")
 		
 					// update movie
-                    await node2Connection.query("UPDATE node2 SET `title` = '" + title + "'," + "`year` = " + year + "," + "`genre` = " + genre  + "',"+ "`director` = " + director + "',"+ "`actor1 = `" + actor1 + "',"+ "`actor2 = `" + actor2 + " WHERE id = " + id + ";")		
-                    console.log("node 2: update worked")			
+                    const sqlEntryFill = 'UPDATE node2 SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
+                    let datalist = node2Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
+                    console.log(datalist)
+
+                    datalist.then(function(result) {
+                        console.log(result)
+                    })   
+                    console.log('performed update')
+
 					// update logs 
 					//await nodeLogsConnection.query("UPDATE `node2_logs` SET `status` = 'write' WHERE `name` = ? AND `dest` = 'node2';", [movieName])
 					//console.log("Log updated to write in node 2")
@@ -257,8 +273,8 @@ const updateController = {
 				// update movie
                 //await node1Connection.query("UPDATE central SET `title` = '" + title + "'," + "`year` = " + year + "," + "`genre` = " + genre  + "',"+ "`director` = " + director + "',"+ "`actor1 = `" + actor1 + "',"+ "`actor2 = `" + actor2 + " WHERE id = " + id + ";")				
                 //console.log("node 1: performed update")
-                const sqlEntryFill = 'UPDATE central SET title = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
-                let datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
+                const sqlEntryFill = 'UPDATE central SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
+                let datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
                 //console.log(datalist)
 
                 datalist.then(function(result) {
@@ -319,8 +335,14 @@ const updateController = {
 					//console.log("Start log inserted to node3")
 		
 					// update movie
-                    await node3Connection.query("UPDATE node3 SET `title` = '" + title + "'," + "`year` = " + year + "," + "`genre` = " + genre  + "',"+ "`director` = " + director + "',"+ "`actor1 = `" + actor1 + "',"+ "`actor2 = `" + actor2 + " WHERE id = " + id + ";")					
-                    console.log('node 3: locked tables')
+                    const sqlEntryFill = 'UPDATE node3 SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
+                    let datalist = node3Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
+                    console.log(datalist)
+
+                    datalist.then(function(result) {
+                        console.log(result)
+                    })   
+                    console.log('performed update')
 
                     // update logs 
 					//await nodeLogsConnection.query("UPDATE `node3_logs` SET `status` = 'write' WHERE `name` = ? AND `dest` = 'node3';", [movieName])
@@ -406,8 +428,14 @@ const updateController = {
                     */
 		
 					// update movie
-                    await node3Connection.query("UPDATE node3 SET `title` = '" + title + "'," + "`year` = " + year + "," + "`genre` = " + genre  + "',"+ "`director` = " + director + "',"+ "`actor1 = `" + actor1 + "',"+ "`actor2 = `" + actor2 + " WHERE id = " + id + ";")					
-                    console.log('node 3:did update')
+                    const sqlEntryFill = 'UPDATE node3 SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
+                    let datalist = node3Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
+                    console.log(datalist)
+
+                    datalist.then(function(result) {
+                        console.log(result)
+                    })   
+                    console.log('performed update')
 
                     // update logs 
                     
