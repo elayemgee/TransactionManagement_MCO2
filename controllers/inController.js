@@ -48,9 +48,11 @@ const inController = {
 
                 //insert new movie
                 node1Connection.query(`INSERT INTO node1a (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`);
+                console.log('performed insert')
                 node1Connection.query("COMMIT;")
+                console.log('committed')
                 node1Connection.query("UNLOCK TABLES;")
-                console.log('Insert to node 1 has been committed and table is unlocked')
+                console.log('tables are unlocked')
 
                 //update logs
 
