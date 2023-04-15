@@ -9,7 +9,7 @@ const inController = require('./controllers/inController.js');
 
 const app = express();
 
-app.get('/', textReportController.getReport);
+app.get('/getReport', textReportController.getReport);
 app.get('/insertPage', insertController.insertPage);
 app.get('/insertRecord', insertController.insertRecord);
 

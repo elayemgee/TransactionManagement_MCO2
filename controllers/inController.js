@@ -165,6 +165,7 @@ const inController = {
         }
     }else if (year >= 1980) { 
         try {
+            console.log("Entered >= 1980 condition")
             // throw Error // simulate
             node1Connection = await mysql.createConnection(config.node1conn)
             //nodeLogsConnection = await mysql.createConnection(config.nodeLogsConn)
