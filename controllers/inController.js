@@ -131,7 +131,7 @@ const inController = {
                         //console.log("Start log inserted to node 2")
 
                     // insert new movie
-                    await node1Connection.query(`INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`);
+                    await node2Connection.query(`INSERT INTO node2 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`);
                     console.log('node2: performed insert')
                     await node2Connection.query("COMMIT;")
                     await console.log('node2: commit')
