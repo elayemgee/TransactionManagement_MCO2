@@ -79,7 +79,7 @@ const updateController = {
 		
 				// end connections
 				node1Connection.end()
-				nodeLogsConnection.end()
+				//nodeLogsConnection.end()
 		
 				flag = true
 		
