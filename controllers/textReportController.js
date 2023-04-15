@@ -15,8 +15,10 @@ const textReportController = {
             //host: 'localhost',
             host: '172.16.3.142',
             port: '3306',
-            user: 'root',
-            password: 'net11142',
+            //user: 'root',
+            //password: 'net11142',
+            user: 'group16',
+            password: '12341234',
             database: DATABASE
         });
         con.connect(function (err) {
