@@ -3,6 +3,7 @@ const e = require('express');
 dotenv.config();
 
 const mysql = require('mysql2/promise');
+const mysql2 = require('mysql2');
 const config = require('../models/conn');
 var node1Connection
 var node2Connection
@@ -29,20 +30,20 @@ const inController = {
             //select from node 1
             try {
                 console.log('central node');
-                node1Connection = await mysql.createConnection(config.node1conn)
+                node1Connection = await mysql2.createConnection(config.node1conn)
                 console.log('connected to central node');
 
-                await node1Connection.query("set autocommit = 0;")
+                node1Connection.query("set autocommit = 0;")
                 console.log('autocommit = 0')
-                await node1Connection.query("START TRANSACTION;")
+                node1Connection.query("START TRANSACTION;")
                 console.log('started transaction')
-                await node1Connection.query("LOCK TABLES node1a write;")
+                node1Connection.query("LOCK TABLES node1a write;")
                 console.log('Locked tables node1a');
 
                 //insert new movie
-                await node1Connection.query(`INSERT INTO node1a (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`);
-                await node1Connection.query("COMMIT;")
-                await node1Connection.query("UNLOCK TABLES;")
+                node1Connection.query(`INSERT INTO node1a (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`);
+                node1Connection.query("COMMIT;")
+                node1Connection.query("UNLOCK TABLES;")
                 console.log('Insert to node 1 has been committed and table is unlocked')
 
                 //update logs
