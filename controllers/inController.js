@@ -55,12 +55,12 @@ const inController = {
 
                 //const sqlEntry = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`;
                 //console.log("b");
-                await node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2], function (error, result, fields) {
-                    if (error) {
-                        console.log("error")
-                        throw error};
+                await node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2], function (error, result) {
+                    console.log("present")
+                    if (error) {throw error};
                     console.log(result);
-                    insertedId = result.insertId;
+                    insertedId = result.id;
+                    console.log(insertedId);
                     //res.render('insert', { records: results });
                 });
                 console.log(insertedId);
