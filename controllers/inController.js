@@ -33,9 +33,10 @@ const inController = {
                 console.log('connected to central node');
 
                 await node1Connection.query("set autocommit = 0;")
+                console.log('autocommit = 0')
                 await node1Connection.query("START TRANSACTION;")
+                console.log('started transaction')
                 await node1Connection.query("LOCK TABLES node1a write;")
-
                 console.log('Locked tables node1a');
 
                 //insert new movie
