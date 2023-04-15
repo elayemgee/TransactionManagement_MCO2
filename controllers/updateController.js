@@ -25,10 +25,13 @@ const updateController = {
 		const actor1 = req.query.actor1;
 		const actor2 = req.query.actor2;
 
+        console.log(actor1)
+        console.log(actor2)
+
         var sqlEntry = `UPDATE central SET title = '${title}', year = ${year}, genre = '${genre}', director = '${director}', actor1 = '${actor1}', actor2 = '${actor2}'
                           WHERE id = '${id}'`;
 
-        if(title == null)
+        if(title == undefined)
             sqlEntry = sqlEntry.replaceAll(" title = '${title}',", '')
         if(year == null)
             sqlEntry = sqlEntry.replaceAll(" year = ${year},", '')
@@ -36,7 +39,7 @@ const updateController = {
             sqlEntry = sqlEntry.replaceAll(" genre = '${genre}',", '')
         if(director == null)
             sqlEntry = sqlEntry.replaceAll(" director = '${director}',", '')
-        if(actor1 == null && actor2 == null)
+        if(actor1 == 'null' && actor2 == null)
             {   console.log("got in")
                 sqlEntry = sqlEntry.replaceAll(", actor1 = '${actor1}', actor2 = '${actor2}'", "")}
         if(actor2 == null && actor1 != null)
