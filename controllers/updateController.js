@@ -178,7 +178,7 @@ const updateController = {
 					//console.log("Start log inserted to node 2")
 		
 					// update movie
-                    await node2Connection.query("UPDATE node1 SET `title` = '" + title + "'," + "`year` = " + year + "," + "`genre` = " + genre  + "',"+ "`director` = " + director + "',"+ "`actor1 = `" + actor1 + "',"+ "`actor2 = `" + actor2 + " WHERE id = " + id + ";")		
+                    await node2Connection.query("UPDATE node2 SET `title` = '" + title + "'," + "`year` = " + year + "," + "`genre` = " + genre  + "',"+ "`director` = " + director + "',"+ "`actor1 = `" + actor1 + "',"+ "`actor2 = `" + actor2 + " WHERE id = " + id + ";")		
                     console.log("node 2: update worked")			
 					// update logs 
 					//await nodeLogsConnection.query("UPDATE `node2_logs` SET `status` = 'write' WHERE `name` = ? AND `dest` = 'node2';", [movieName])
@@ -246,7 +246,7 @@ const updateController = {
 				//console.log("Start log inserted to node 1 table 2")
 		
 				// update movie
-                await node1Connection.query("UPDATE node1 SET `title` = '" + title + "'," + "`year` = " + year + "," + "`genre` = " + genre  + "',"+ "`director` = " + director + "',"+ "`actor1 = `" + actor1 + "',"+ "`actor2 = `" + actor2 + " WHERE id = " + id + ";")				
+                await node1Connection.query("UPDATE central SET `title` = '" + title + "'," + "`year` = " + year + "," + "`genre` = " + genre  + "',"+ "`director` = " + director + "',"+ "`actor1 = `" + actor1 + "',"+ "`actor2 = `" + actor2 + " WHERE id = " + id + ";")				
                 console.log("node 1: performed update")
 
                 // update logs 
@@ -302,7 +302,7 @@ const updateController = {
 					//console.log("Start log inserted to node3")
 		
 					// update movie
-                    await node3Connection.query("UPDATE node1 SET `title` = '" + title + "'," + "`year` = " + year + "," + "`genre` = " + genre  + "',"+ "`director` = " + director + "',"+ "`actor1 = `" + actor1 + "',"+ "`actor2 = `" + actor2 + " WHERE id = " + id + ";")					
+                    await node3Connection.query("UPDATE node3 SET `title` = '" + title + "'," + "`year` = " + year + "," + "`genre` = " + genre  + "',"+ "`director` = " + director + "',"+ "`actor1 = `" + actor1 + "',"+ "`actor2 = `" + actor2 + " WHERE id = " + id + ";")					
                     console.log('node 3: locked tables')
 
                     // update logs 
@@ -389,7 +389,7 @@ const updateController = {
                     */
 		
 					// update movie
-                    await node3Connection.query("UPDATE node1 SET `title` = '" + title + "'," + "`year` = " + year + "," + "`genre` = " + genre  + "',"+ "`director` = " + director + "',"+ "`actor1 = `" + actor1 + "',"+ "`actor2 = `" + actor2 + " WHERE id = " + id + ";")					
+                    await node3Connection.query("UPDATE node3 SET `title` = '" + title + "'," + "`year` = " + year + "," + "`genre` = " + genre  + "',"+ "`director` = " + director + "',"+ "`actor1 = `" + actor1 + "',"+ "`actor2 = `" + actor2 + " WHERE id = " + id + ";")					
                     console.log('node 3:did update')
 
                     // update logs 
