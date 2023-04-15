@@ -17,7 +17,7 @@ const updateController = {
 
     updateRecord: async function (req, res) { 
         console.log('gonna execute update');
-        const sqlEntry = `UPDATE movies SET name ='${title}',year='${year}', genre='${genre}',director='${director}',actor1='${actor1}',actor2='${actor2}' WHERE id=${id}`;
+//        const sqlEntry = `UPDATE movies SET name ='${title}',year='${year}', genre='${genre}',director='${director}',actor1='${actor1}',actor2='${actor2}' WHERE id=${id}`;
         const sqlEntryFill = 'UPDATE movies SET name = ?, genre = ?, `rank` = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
         const id = req.query.id;
         const title = req.query.movie;
