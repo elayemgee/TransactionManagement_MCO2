@@ -3,7 +3,7 @@ const e = require('express');
 dotenv.config();
 
 const mysql = require('mysql2/promise');
-const mysql2 = require('mysql2');
+//const mysql2 = require('mysql2');
 const config = require('../models/conn');
 var node1Connection
 var node2Connection
@@ -36,7 +36,7 @@ const inController = {
             //select from node 1
             try {
                 console.log('central node');
-                node1Connection = await mysql2.createConnection(config.node1conn)
+                node1Connection = await mysql.createConnection(config.node1conn)
                 console.log('connected to central node');
 
                 await node1Connection.query("set autocommit = 0;")
