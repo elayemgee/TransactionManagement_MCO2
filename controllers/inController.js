@@ -163,12 +163,7 @@ const inController = {
                     await console.log('node2: commit')
                     await node2Connection.query("UNLOCK TABLES;")
                     await console.log('node2: unlock tables')
-                    /*
-                    await node2Connection.query(`INSERT INTO node2 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`, function( error, results, fields){
-                        if (error) throw error;
-                        console.log(results);
-                        res.render('insert', { records: results });
-                    });*/
+
                     // update logs 
                     /*
                     await nodeLogsConnection.query("UPDATE `node2_logs` SET `status` = 'write' WHERE `name` = ? AND `dest` = 'node2';", [movieName])
@@ -224,12 +219,16 @@ const inController = {
             */
 
             // insert new movie
-            await node1Connection.query(`INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`);
-            /*await node1Connection.query(`INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`, function( error, results, fields){
-                if (error) throw error;
-                console.log(results);
-                res.render('insert', { records: results });
-            });*/
+            const sqlEntryFill = 'INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
+            let datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
+                //console.log(datalist)
+
+                datalist.then(function(result) {
+                    console.log(result)
+                    console.log(result[0].insertId) // "Some User token"
+                    insertedId = result[0].insertId
+                 })   
+            console.log('performed insert')
 
             // update logs 
             /*
@@ -350,12 +349,18 @@ const inController = {
             // insert to node 3 if node 1 is successful
             try {
                 // throw Error // simulate
+                console.log("--------------------")
+                console.log("Enter node 3")
                 node3Connection = await mysql.createConnection(config.node3conn)
                 //nodeLogsConnection = await mysql.createConnection(config.nodeLogsConn)
+                console.log('node3: established connection')
 
                 await node3Connection.query("set autocommit = 0;")
+                console.log('node3: autocommitted')
                 await node3Connection.query("START TRANSACTION;")
+                console.log('node3: started transaction')
                 await node3Connection.query("LOCK TABLES node3 write;")
+                console.log('node3: locked tables')
 
                 // insert in logs
                 //await nodeLogsConnection.query("INSERT INTO `node3_logs` (`operation`, `name`, `year`, `rank`, `status`, `dest`) VALUES ('insert', '" + movieName + "'," + movieYear + "," + movieRank + ", 'start', 'node3');")
@@ -363,11 +368,15 @@ const inController = {
 
                 // insert new movie
                 //await node3Connection.query("INSERT INTO `node3` (`name`, `year`, `rank`) values ('" + movieName + "'," + movieYear + "," + movieRank + ");")
-                await node3Connection.query(`INSERT INTO node2 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`, function( error, results, fields){
+                /*
+                await node3Connection.query(`INSERT INTO node3 (id, title, year, genre, director, actor1, actor2) VALUES ('${insertedId}','${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`, function( error, results, fields){
                     if (error) throw error;
                     console.log(results);
                     res.render('insert', { records: results });
-                });
+                });*/
+
+                await node3Connection.query(`INSERT INTO node3 (id, title, year, genre, director, actor1, actor2) VALUES ('${insertedId}','${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`);
+                console.log('node3: performed insert')
 
                 // update logs 
                 /*
@@ -375,7 +384,10 @@ const inController = {
                 console.log("Log updated to write in node3")
                 */
                 await node3Connection.query("COMMIT;")
+                console.log('node 3: committed')
                 await node3Connection.query("UNLOCK TABLES;")
+                console.log('node 3: unlocked tables')
+
 
                 // update logs
                 /*
@@ -387,6 +399,7 @@ const inController = {
                 */
 
                 // end connections
+                console.log('finished insert in node 3')
                 node3Connection.end()
                 //nodeLogsConnection.end()
             } catch (err) {
