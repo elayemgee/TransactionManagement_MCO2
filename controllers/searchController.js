@@ -8,15 +8,15 @@ var node1Connection
 var node2Connection
 var node3Connection
 
-const updateController = {
+const searchController = {
 
-    updatePage: function (req, res) {   
+    searchPage: function (req, res) {   
             res.render('update');        
     },
 
 
-    updateRecord: async function (req, res) { 
-        console.log('gonna execute update');
+    searchRecord: async function (req, res) { 
+        console.log('gonna execute search');
 //        const sqlEntry = `UPDATE movies SET name ='${title}',year='${year}', genre='${genre}',director='${director}',actor1='${actor1}',actor2='${actor2}' WHERE id=${id}`;
         const searchCriteria = req.query.search;
         console.log(searchCriteria);
@@ -496,4 +496,4 @@ const updateController = {
     }
 }
     
-module.exports = updateController;
+module.exports = searchController;
