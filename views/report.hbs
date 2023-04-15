@@ -1,4 +1,110 @@
-<h1>mysql express test</h1>
+<html>
+    <head>
+		<title>
+			IMDb Transaction Management
+		</title>
+		<link href='css/style.css' rel='stylesheet' type='text/css' />
+		<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css' />
+		<link rel='stylesheet' type='text/css' href='https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css' />
+
+		<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+		<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js'></script>
+		<script type='text/javascript' charset='utf8' src='https://cdn.datatables.net/1.11.4/js/jquery.dataTables.js'></script>
+
+		<script src='/js/home.js'></script>
+	</head>
+
+    <body style="background-color:#F1F3F4;">
+		<div class = "header"> 
+        	<h1 style="margin-left: 50px;">IMDb Transaction Management</h1>
+			<div class = "tabs">
+				<a href ="/insertPage" class = "function">Insert</a>
+				<a href="/updatePage" class = "function">Update</a>
+                <a href="/searchPage" class = "function">Search</a>
+                <a href="/getReport" id = "currentPage" class = "function">Movies</a>
+
+			</div>
+		</div>
+
+<style>
+
+    /*
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+  padding: 2px;
+  border: solid;
+  border-color: black;
+}*/
+
+td, th {
+        padding: 1px;
+    }
+    table, th, td, tr {
+        border: 1px solid black;
+    }
+
+</style>
+
+<!-- Main Wrapper -->
+<div class="p-1 my-container">
+    <!-- Top Nav -->
+    <!--<nav class="navbar top-navbar navbar-light bg-white px-5 sticky-top">
+        <a class="btn border-0" id="menu-btn"><i class="bx bx-menu"></i></a>
+    </nav>-->
+    <h1 class="h1 text-center mb-2">All Movies</h1>
+        <h2 class="h2 text-center mb-2">Movies released before 1980</h2>
+        <div class="container-lg mb-2 my-5">
+            <table>
+            <!-- 
+            <table class="table table-fluid table-striped" id="movies-table">
+            <thead class="table table-fluid"> 
+                <tr>
+                    <th>Movie Id</th>
+                    <th style="margin-left: 50px;">Movie Name</th>
+                    <th style="margin-left: 50px;">Movie Year</th>
+                    <th style="margin-left: 50px;">Genre</th>
+                    <th style="margin-left: 100px;">Director</th>
+                    <th style="margin-left: 100px;">Actor 1</th>
+                    <th style="margin-left: 100px;">Actor 2</th>
+                </tr>
+            </thead>
+            -->
+            <tbody>
+                {{#each tuple}}
+                <tr id="{{this.id}}">
+                    <td>{{this.id}}</td>
+                    <td>{{this.title}}</td>
+                    <td>{{this.year}}</td>
+                    <td>{{this.genre}}</td>
+                    <td>{{this.director}}</td>
+                    <td>{{this.actor1}}</td>
+                    <td>{{this.actor2}}</td>
+                </tr>
+                 {{/each}}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="toast-container position-fixed top-0 end-0 p-3" id="toast-container"
+        style="z-index: 1090; visibility: hidden;">
+        <!-- Then put toasts within -->
+        <div class="toast align-items-center" id="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body" id="toast-body">
+                </div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!---<h1>mysql express test</h1>
 
 <style>
     td, th {
@@ -9,7 +115,7 @@
     }
 </style>
 
-<a href ="/insertPage" class = "function">Insert</a>
+<a href ="/addEntry" class = "function">Insert</a>
 
 <table>
     <tr>
@@ -26,4 +132,4 @@
                 <td> {{this.genre}} </td>
             </tr>
         {{/each}}
-</table>
+</table>-->
