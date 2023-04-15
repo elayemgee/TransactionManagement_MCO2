@@ -43,6 +43,8 @@ const updateController = {
         else if(actor1 == null && actor2 != null)
             sqlEntry = sqlEntry.replaceAll(" actor1 = '${actor1}',", '')
 
+        console.log(sqlEntry)
+
         node1Connection.query(sqlEntry, function (error, results, fields) {
             if (error) throw error;
             console.log(results);
