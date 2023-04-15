@@ -11,7 +11,7 @@ var node3Connection
 const searchController = {
 
     searchPage: function (req, res) {   
-            res.render('update');        
+            res.render('search');        
     },
 
 
