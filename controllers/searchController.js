@@ -6,7 +6,8 @@ dotenv.config();
 const DATABASE = 'movies';
 const mysql = require('mysql2');
 var con = mysql.createConnection({
-    host: 'localhost',
+    //host: 'localhost',
+    host: '172.16.3.142',
     port: '3306',
     user: 'root',
     password: 'net11142',
