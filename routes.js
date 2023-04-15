@@ -9,7 +9,7 @@ const inController = require('./controllers/inController.js');
 
 const app = express();
 
-app.get('/getReport', textReportController.getReport);
+app.get('/', textReportController.getReport);
 app.get('/insertPage', insertController.insertPage);
 app.get('/insertRecord', insertController.insertRecord);
 
@@ -21,5 +21,6 @@ app.get('/searchRecord', searchController.searchRecord);
 
 app.get('/inPage', inController.inPage);
 app.get('/inRecord', inController.inRecord);
+
 
 module.exports = app;
