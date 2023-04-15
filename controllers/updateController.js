@@ -37,7 +37,8 @@ const updateController = {
         if(director == null)
             sqlEntry = sqlEntry.replaceAll(" director = '${director}',", '')
         if(actor1 == null && actor2 == null)
-            sqlEntry = sqlEntry.replaceAll(", actor1 = '${actor1}', actor2 = '${actor2}'", '')
+            {   console.log("got in")
+                sqlEntry = sqlEntry.replaceAll(", actor1 = '${actor1}', actor2 = '${actor2}'", "")}
         if(actor2 == null && actor1 != null)
             sqlEntry = sqlEntry.replaceAll(", actor2 = '${actor2}'", '')
         if(actor1 == null && actor2 != null)
