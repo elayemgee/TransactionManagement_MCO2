@@ -1,4 +1,3 @@
-//const mySQL = require('mysql');
 const dotenv = require('dotenv');
 const e = require('express');
 dotenv.config();
@@ -7,7 +6,7 @@ const mysql = require('mysql2/promise');
 const config = require('../models/conn');
 var node1Connection
 var node2Connection
-
+var node3Connection
 
 const inController = {
     inPage: function (req, res) {   
@@ -31,15 +30,19 @@ const inController = {
             try {
                 console.log('central node');
                 node1Connection = await mysql.createConnection(config.node1conn)
+                console.log('connected to central node');
 
                 await node1Connection.query("set autocommit = 0;")
                 await node1Connection.query("START TRANSACTION;")
                 await node1Connection.query("LOCK TABLES node1a write;")
 
+                console.log('Locked tables node1a');
+
                 //insert new movie
                 await node1Connection.query(`INSERT INTO node1a (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`);
                 await node1Connection.query("COMMIT;")
                 await node1Connection.query("UNLOCK TABLES;")
+                console.log('Insert to node 1 has been committed and table is unlocked')
 
                 //update logs
 
