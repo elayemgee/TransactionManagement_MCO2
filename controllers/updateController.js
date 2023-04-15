@@ -18,7 +18,6 @@ const updateController = {
     updateRecord: async function (req, res) { 
         console.log('gonna execute update');
 //        const sqlEntry = `UPDATE movies SET name ='${title}',year='${year}', genre='${genre}',director='${director}',actor1='${actor1}',actor2='${actor2}' WHERE id=${id}`;
-        const sqlEntryFill = 'UPDATE movies SET title = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
         const id = req.query.id;
         const title = req.query.movie;
 		const year = req.query.year;
@@ -53,6 +52,7 @@ const updateController = {
 				// update movie
 				//await node1Connection.query("UPDATE central SET `title` = '" + title + "'," + "`year` = " + year + "," + "`genre` = " + genre  + "',"+ "`director` = " + director + "',"+ "`actor1 = `" + actor1 + "',"+ "`actor2 = `" + actor2 + " WHERE id = " + id + ";")
                 //console.log("updated works")
+                const sqlEntryFill = 'UPDATE central SET title = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
                 let datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
                 //console.log(datalist)
 
@@ -257,6 +257,7 @@ const updateController = {
 				// update movie
                 //await node1Connection.query("UPDATE central SET `title` = '" + title + "'," + "`year` = " + year + "," + "`genre` = " + genre  + "',"+ "`director` = " + director + "',"+ "`actor1 = `" + actor1 + "',"+ "`actor2 = `" + actor2 + " WHERE id = " + id + ";")				
                 //console.log("node 1: performed update")
+                const sqlEntryFill = 'UPDATE central SET title = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
                 let datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
                 //console.log(datalist)
 
