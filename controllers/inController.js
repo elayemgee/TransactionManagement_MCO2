@@ -112,10 +112,15 @@ const inController = {
             }
             if (flag) { //if insert in node 1 was successful, insert in node 2
                 try {
+                    console.log("---------------")
+                    console.log("enters node 2")
                     node2Connection = await mysql.createConnection(config.node2conn)
                     await node2Connection.query("set autocommit = 0;")
+                    await console.log('node2: autocommit = 0')
                     await node2Connection.query("START TRANSACTION;")
+                    await console.log('node2: start transaction')
                     await node2Connection.query("LOCK TABLES node2 write;")
+                    await console.log('node2: lock tables')
 
                     // insert in logs
                         //await nodeLogsConnection.query("INSERT INTO `node2_logs` (`operation`, `name`, `year`, `rank`, `status`, `dest`) VALUES ('insert', '" + movieName + "'," + movieYear + "," + movieRank + ", 'start', 'node2');")
@@ -134,7 +139,9 @@ const inController = {
                     console.log("Log updated to write in node 2")
                     */
                     await node2Connection.query("COMMIT;")
+                    await console.log('node2: commit')
                     await node2Connection.query("UNLOCK TABLES;")
+                    await console.log('node2: unlock tables')
 
                     node2Connection.end()
 
@@ -168,11 +175,14 @@ const inController = {
             console.log("Entered >= 1980 condition")
             // throw Error // simulate
             node1Connection = await mysql.createConnection(config.node1conn)
-            //nodeLogsConnection = await mysql.createConnection(config.nodeLogsConn)
+            console.log("Entered >= 1980 condition")
 
             await node1Connection.query("set autocommit = 0;")
+            console.log("autocommit = 0")
             await node1Connection.query("START TRANSACTION;")
-            await node1Connection.query("LOCK TABLES node1b write;")
+            console.log("transaction started")
+            await node1Connection.query("LOCK TABLES central write;")
+            console.log("tables are locked")
 
             // insert in logs
             /*
@@ -182,7 +192,7 @@ const inController = {
 
             // insert new movie
             //await node1Connection.query("INSERT INTO `node1b` (`name`, `year`, `rank`) values ('" + movieName + "'," + movieYear + "," + movieRank + ");")
-            await node1Connection.query(`INSERT INTO node1b (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`, function( error, results, fields){
+            await node1Connection.query(`INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`, function( error, results, fields){
                 if (error) throw error;
                 console.log(results);
                 res.render('insert', { records: results });
@@ -194,7 +204,9 @@ const inController = {
             console.log("Log updated to write in node 1 table 2")
             */
             await node1Connection.query("COMMIT;")
+            console.log("committed")
             await node1Connection.query("UNLOCK TABLES;")
+            console.log("tables unlocked")
 
             // update logs
             /*
@@ -203,7 +215,7 @@ const inController = {
             await nodeLogsConnection.query("UPDATE `node1_2_logs` SET `status` = ? WHERE `name` = ? AND `dest` = 'node1_2';", ['committed', movieName])
             console.log("Log updated to committed in node 1 table 2")
             */
-            console.log("Inserted to node 1 table b")
+            console.log("Inserted to node 1 central table")
 
             // end connections
             node1Connection.end()
@@ -214,7 +226,6 @@ const inController = {
             if (node1Connection != null) {
                 node1Connection.end()
             }
-
             /*
             if (nodeLogsConnection != null) {
                 nodeLogsConnection.end()
