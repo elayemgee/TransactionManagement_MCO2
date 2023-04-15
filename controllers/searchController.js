@@ -29,26 +29,33 @@ const searchController = {
     },
     searchRecord: function (req, res) { 
         console.log('gonna execute search');
-        const title = req.query.movie;
-		const year = req.query.year;
-		const genre = req.query.genre;
-		const director = req.query.director;
-		const actor1 = req.query.actor1;
-		const actor2 = req.query.actor2;
+        /*
+        const id = req.query.search;
+        const title = req.query.search;
+		const director = req.query.search;
+		const actor1 = req.query.search;
+		const actor2 = req.query.search;
+        */
+        const searchCriteria = req.query.search;
+        console.log(searchCriteria);
 
-        const [rows, fields] = connection.execute("SELECT * FROM central WHERE id = ? OR title = ? OR director = ? OR actor1 = ? OR actor2 = ? ;", [id, title, director, actor1, actor2]);
+        const sqlQuery = `SELECT * FROM central WHERE id = ? OR title LIKE ? OR director LIKE ? OR actor1 LIKE ? OR actor2 LIKE ? LIMIT 1000;`;
+        const substr = `%${searchCriteria}%`;
 
-        con.query(sqlEntry, function (error, results, fields) {
+        //const [rows, fields] = con.execute("SELECT * FROM central WHERE id = ? OR title = ? OR director = ? OR actor1 = ? OR actor2 = ? ;", [id, title, director, actor1, actor2]);
+
+/*        
+        con.query(sqlQuery, [searchCriteria, substr, substr, substr, substr, substr], function (error, results, fields) {
             if (error) throw error;
             console.log(results);
             //res.render('search', { records: results });
-            data.dataDB = rows[0]
-        });
+            //data.dataDB = rows[0]
+        });*/
 
-        con.query(select, function (error, results, fields) {
+        con.query(sqlQuery, [searchCriteria, substr, substr, substr, substr, substr], function (error, results, fields) {
             if (error) throw error;
             console.log(results);
-            res.render('search', { records: results });
+            res.render('search', { result: results });
         });
     }
 }

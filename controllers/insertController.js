@@ -17,6 +17,8 @@ var con = mysql.createConnection({
 const insertController = {
 
     insertPage: function (req, res) {   
+        res.render('insert');
+        /*
         con.connect(function (err) {
             if (err) {
                 console.error('error connecting: ' + err.stack);
@@ -24,8 +26,9 @@ const insertController = {
             }
             console.log('connected as id ' + con.threadId);
             console.log('in insert controller');
-            res.render('insert');
+            
         });
+        */
         
     },
     insertRecord: function (req, res) { 

@@ -3,7 +3,7 @@
 		<title>
 			IMDb Transaction Management
 		</title>
-		<link href='../public/css/style.css' rel='stylesheet' type='text/css' />
+		<link href='/css/style.css' rel='stylesheet' type='text/css' />
 		<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css' />
 		<link rel='stylesheet' type='text/css' href='https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css' />
 
@@ -11,7 +11,7 @@
 		<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js'></script>
 		<script type='text/javascript' charset='utf8' src='https://cdn.datatables.net/1.11.4/js/jquery.dataTables.js'></script>
 
-		<script src='../public/js/home.js'></script>
+		<script src='/js/home.js'></script>
 	</head>
 
     <body style="background-color:#F1F3F4;">
@@ -26,8 +26,8 @@
     
     <div class = "inputTable">
         <div class="search-container">
-            <!-- search page -->
-            <form action="/action_page.php">
+            <!-- search page  /action_page.php-->
+            <form method="GET" action="/searchRecord">
                 <input type="text" placeholder="Search by ID, Movie, Director, Actor.." name="search">
                 <input type='submit' id='search-btn' class='btn btn-primary' value='Search' />
             </form>
@@ -37,28 +37,25 @@
 			<table class='results-table'>
 				<thead>
 					<tr>
-						<th>
+						<th class = "recordMessage" id = "rec">
 							ID
 						</th>
-						<th>
+						<th class = "recordMessage" id = "rec">
 							Title
 						</th>
-						<th>
+						<th class = "recordMessage" id = "rec">
 							Year
 						</th>
-						<th>
+						<th class = "recordMessage" id = "rec">
 							Genre
 						</th>
-						<th>
-							Rank
-						</th>
-						<th>
+						<th class = "recordMessage" id = "rec">
 							Director
 						</th>
-						<th>
+						<th class = "recordMessage" id = "rec">
 							Actor 1
 						</th>
-						<th>
+						<th class = "recordMessage" id = "rec">
 							Actor 2
 						</th>
 					</tr>
@@ -66,28 +63,25 @@
 				<tbody>
 					{{#each result}}
 						<tr>
-							<td>
+							<td class = "recordMessage" id = "rec">
 								{{this.id}}
 							</td>
-							<td>
+							<td class = "recordMessage" id = "rec">
 								{{this.name}}
 							</td>
-							<td>
+							<td class = "recordMessage" id = "rec">
 								{{this.year}}
 							</td>
-							<td>
+							<td class = "recordMessage" id = "rec">
 								{{this.genre}}
 							</td>
-							<td>
-								{{this.rank}}
-							</td>
-							<td>
+							<td class = "recordMessage" id = "rec">
 								{{this.director}}
 							</td>
-							<td>
+							<td class = "recordMessage" id = "rec">
 								{{this.actor1}}
 							</td>
-							<td>
+							<td class = "recordMessage" id = "rec">
 								{{this.actor2}}
 							</td>
 						</tr>

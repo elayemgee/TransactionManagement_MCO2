@@ -25,7 +25,7 @@
 		</div>
 
 		<div class = "inputTable">
-			<form method="GET" id="my_form" action = "/insertRecord">
+			<form method="GET" id="my_form" action = "/inRecord">
 			<table>
 				<tr>
 					<td>
@@ -68,7 +68,22 @@
 				<input type='submit' id='insert-entry-btn' class='btn btn-primary' value='Insert' />
 			</div>
 		</form>
-		
+
+		<!-- 
+		{{#each records}}
+		<div class = "newInsert">
+			<p> {{ this.id }} </p>
+			<p> {{ this.title }} </p>
+			<p> {{ this.year }} </p>
+			<p> {{ this.genre }} </p>
+			<p> {{ this.director }} </p>
+			<p> {{ this.actor1 }} </p>
+			<p> {{ this.actor2 }} </p>
+		</div>
+		{{/each}}
+		</div>
+		-->
+
 		<table class = "recordMessage">
 			<tr class = "recordMessage">
 				<th class = "recordMessage" id = "rec">id</th>
