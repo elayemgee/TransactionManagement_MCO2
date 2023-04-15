@@ -13,6 +13,12 @@ const inController = {
     inPage: function (req, res) {   
         res.render('in');
     },
+
+    /**
+	 * This POST method inserts a movie into the DB
+	 * @param {*} req 
+	 * @param {*} res 
+	 */
     inRecord: async function (req, res) { 
 
         console.log('gonna execute insert');
@@ -33,12 +39,12 @@ const inController = {
                 node1Connection = await mysql2.createConnection(config.node1conn)
                 console.log('connected to central node');
 
-                node1Connection.query("set autocommit = 0;")
-                console.log('autocommit = 0')
-                node1Connection.query("START TRANSACTION;")
-                console.log('started transaction')
-                node1Connection.query("LOCK TABLES node1a write;")
-                console.log('Locked tables node1a');
+                await node1Connection.query("set autocommit = 0;")
+                await console.log('autocommit = 0')
+                await node1Connection.query("START TRANSACTION;")
+                await console.log('started transaction')
+                await node1Connection.query("LOCK TABLES node1a write;")
+                await console.log('Locked tables node1a');
 
                 //insert new movie
                 node1Connection.query(`INSERT INTO node1a (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`);
