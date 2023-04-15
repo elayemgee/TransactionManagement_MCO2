@@ -131,21 +131,23 @@ const inController = {
                         //console.log("Start log inserted to node 2")
 
                     // insert new movie
-                    //await node2Connection.query("INSERT INTO `node2` (`name`, `year`, `rank`) values ('" + movieName + "'," + movieYear + "," + movieRank + ");")
+                    await node1Connection.query(`INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`);
+                    console.log('node2: performed insert')
+                    await node2Connection.query("COMMIT;")
+                    await console.log('node2: commit')
+                    await node2Connection.query("UNLOCK TABLES;")
+                    await console.log('node2: unlock tables')
+                    /*
                     await node2Connection.query(`INSERT INTO node2 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`, function( error, results, fields){
                         if (error) throw error;
                         console.log(results);
                         res.render('insert', { records: results });
-                    });
+                    });*/
                     // update logs 
                     /*
                     await nodeLogsConnection.query("UPDATE `node2_logs` SET `status` = 'write' WHERE `name` = ? AND `dest` = 'node2';", [movieName])
                     console.log("Log updated to write in node 2")
                     */
-                    await node2Connection.query("COMMIT;")
-                    await console.log('node2: commit')
-                    await node2Connection.query("UNLOCK TABLES;")
-                    await console.log('node2: unlock tables')
 
                     node2Connection.end()
 
