@@ -35,6 +35,7 @@ const inController = {
         if(year < 1980){
             //select from node 1
             try {
+                console.log("flag rn: " + flag)
                 console.log('central node');
                 node1Connection = await mysql.createConnection(config.node1conn)
                 console.log('connected to central node');
@@ -112,6 +113,7 @@ const inController = {
                 */
                 }
             }
+            console.log("Finished inserting in node 1")
             if (flag) { //if insert in node 1 was successful, insert in node 2
                 try {
                     console.log("---------------")
