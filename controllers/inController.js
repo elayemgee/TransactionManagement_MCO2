@@ -144,8 +144,18 @@ const inController = {
                         //console.log("Start log inserted to node 2")
 
                     // insert new movie
-                    await node2Connection.query(`INSERT INTO node2 (id, title, year, genre, director, actor1, actor2) VALUES ('${insertedId}','${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`);
-                    console.log('node2: performed insert')
+                    const sqlEntryFill = 'INSERT INTO node2 (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
+                    let datalist = node2Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
+                    //console.log(datalist)
+
+                    datalist.then(function(result) {
+                        console.log(result)
+                        console.log(result[0].insertId) // "Some User token"
+                        insertedId = result[0].insertId
+                    })               
+            
+                    console.log('performed insert')
+
                     await node2Connection.query("COMMIT;")
                     await console.log('node2: commit')
                     await node2Connection.query("UNLOCK TABLES;")
@@ -267,11 +277,17 @@ const inController = {
 
                 // insert new movie
                 //await node3Connection.query("INSERT INTO `node3` (`name`, `year`, `rank`) values ('" + movieName + "'," + movieYear + "," + movieRank + ");")
-                await node3Connection.query(`INSERT INTO node3 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`, function( error, results, fields){
-                    if (error) throw error;
-                    console.log(results);
-                    res.render('insert', { records: results });
-                });
+                const sqlEntryFill = 'INSERT INTO node3 (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
+                let datalist = node3Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
+                //console.log(datalist)
+
+                datalist.then(function(result) {
+                    console.log(result)
+                    console.log(result[0].insertId) // "Some User token"
+                    insertedId = result[0].insertId
+                })               
+        
+                console.log('performed insert')
 
                 // update logs 
                 /*
@@ -362,8 +378,17 @@ const inController = {
                     res.render('insert', { records: results });
                 });*/
                 
-                await node3Connection.query(`INSERT INTO node3 (id, title, year, genre, director, actor1, actor2) VALUES ('${insertedId}','${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`);
-                console.log('node3: performed insert')
+                const sqlEntryFill = 'INSERT INTO node3 (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
+                let datalist = node3Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
+                //console.log(datalist)
+
+                datalist.then(function(result) {
+                    console.log(result)
+                    console.log(result[0].insertId) // "Some User token"
+                    insertedId = result[0].insertId
+                })               
+        
+                console.log('performed insert')
 
                 // update logs 
                 /*
