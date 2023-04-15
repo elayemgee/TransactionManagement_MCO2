@@ -109,6 +109,7 @@ const inController = {
                     }
                 }
                 */
+                }
             }
             if (flag) { //if insert in node 1 was successful, insert in node 2
                 try {
@@ -168,7 +169,7 @@ const inController = {
                     }
                     */
                 }
-        } 
+        
         }
     }else if (year >= 1980) { 
         try {
@@ -191,12 +192,12 @@ const inController = {
             */
 
             // insert new movie
-            //await node1Connection.query("INSERT INTO `node1b` (`name`, `year`, `rank`) values ('" + movieName + "'," + movieYear + "," + movieRank + ");")
-            await node1Connection.query(`INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`, function( error, results, fields){
+            await node1Connection.query(`INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`);
+            /*await node1Connection.query(`INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`, function( error, results, fields){
                 if (error) throw error;
                 console.log(results);
                 res.render('insert', { records: results });
-            });
+            });*/
 
             // update logs 
             /*
