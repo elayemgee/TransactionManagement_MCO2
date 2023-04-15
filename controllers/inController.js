@@ -28,6 +28,7 @@ const inController = {
 		const director = req.query.director;
 		const actor1 = req.query.actor1;
 		const actor2 = req.query.actor2;
+        var insertedId;
 
         var flag = false;
         var flag2 = false;
@@ -48,7 +49,15 @@ const inController = {
                 await console.log('Locked tables central');
 
                 //insert new movie
-                await node1Connection.query(`INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`);
+                //await node1Connection.query(`INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`);
+                var sqlEntry = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`;
+                await node1Connection.query(sqlEntry, function (error, result, fields) {
+                    if (error) throw error;
+                    console.log(result);
+                    insertedId = result.insertId;
+                    //res.render('insert', { records: results });
+                });
+                
                 console.log('performed insert')
                 await node1Connection.query("COMMIT;")
                 console.log('committed')
@@ -131,7 +140,7 @@ const inController = {
                         //console.log("Start log inserted to node 2")
 
                     // insert new movie
-                    await node2Connection.query(`INSERT INTO node2 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`);
+                    await node2Connection.query(`INSERT INTO node2 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`);
                     console.log('node2: performed insert')
                     await node2Connection.query("COMMIT;")
                     await console.log('node2: commit')
