@@ -49,9 +49,13 @@ const inController = {
                 await console.log('Locked tables central');
 
                 //insert new movie
-                await node1Connection.query(`INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`);
-                const sqlEntry = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`;
-                await node1Connection.query(sqlEntry, function (error, result, fields) {
+                //await node1Connection.query(`INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`);
+                //console.log("a");
+                const sqlEntryFill = 'INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
+
+                //const sqlEntry = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`;
+                //console.log("b");
+                await node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2], function (error, result, fields) {
                     if (error) throw error;
                     console.log(result);
                     insertedId = result.insertId;
