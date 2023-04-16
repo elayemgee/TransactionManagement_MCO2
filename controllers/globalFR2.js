@@ -78,9 +78,8 @@ const globalFR2Controller = {
                     console.log(logId)
                 }) 
 
-                sqlEntryLog = 'UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['write', logId]
-                await node1Connection.query(logId)
-
+                //var sqlEntryLog = 'UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['write', logId];
+                await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['write', logId])
 
                 //perform insert
                 sqlEntryFill = 'INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
