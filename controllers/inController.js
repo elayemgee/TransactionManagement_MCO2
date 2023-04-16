@@ -292,7 +292,65 @@ const inController = {
     }
     else if (year >= 1980) { 
         try {
-            console.log("Entered >= 1980 condition")
+            console.log(">=1980")
+            console.log('central node');
+            node1Connection = await mysql.createConnection(config.node1conn)
+            console.log('connected to central node');
+
+            await node1Connection.query(setIsolationLevel)
+            console.log("Isolation level is set to: " + isolationLevelDefault)
+
+            await node1Connection.query("set autocommit = 0;")
+            await console.log('autocommit = 0')
+            await node1Connection.query("START TRANSACTION;")
+            await console.log('started transaction')
+            await node1Connection.query("LOCK TABLES central write, logs WRITE;")
+            await console.log('Locked tables central');
+
+            //logs
+            console.log("Start log inserted to central logs")
+            var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+
+            //update logs
+            var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+            let datalist = node1Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
+            console.log("after start")
+            datalist.then(function(result) {
+                console.log(result)
+                logId = result[0].insertId
+                console.log("logid:")
+                console.log(logId)
+            }) 
+            console.log("insert movie")
+            //insert new movie
+            sqlEntryFill = 'INSERT INTO central (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?,?)';
+            datalist = node1Connection.query(sqlEntryFill, [recentId, title, year, genre, director, actor1,actor2])
+            //console.log(datalist)
+            console.log("after insert")
+            datalist.then(function(result) {
+                console.log(result)
+                console.log(result[0].insertId) // "Some User token"
+                insertedId = result[0].insertId
+                results = result[0]
+            })               
+            console.log("going to committ")
+
+            await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
+            await node1Connection.query("COMMIT;")
+            console.log('committed')
+            await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committed', logId]);
+            await node1Connection.query("UNLOCK TABLES;")
+            console.log('tables are unlocked')
+
+            //update logs
+            results = [insertedId, title, year, genre, director, actor1, actor2];
+
+            //end connection
+            node1Connection.end()
+            console.log('ended connection')
+            flag = true
+            console.log(flag)
+            /*console.log("Entered >= 1980 condition")
             // throw Error // simulate
             node1Connection = await mysql.createConnection(config.node1conn)
             //await node1Connection.query(setIsolationLevel)
@@ -346,7 +404,7 @@ const inController = {
             // end connections
             node1Connection.end()
             //nodeLogsConnection.end()
-            flag = true //insert in node 1 was successful
+            flag = true //insert in node 1 was successful*/
 
         } catch (err) {
             if (node1Connection != null) {
