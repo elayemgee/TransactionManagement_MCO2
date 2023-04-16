@@ -8,6 +8,10 @@ var node1Connection
 var node2Connection
 var node3Connection
 
+const isolationLevelDefault = `READ UNCOMMITTED`;
+const isolationLevelSql = `SET SESSION TRANSACTION ISOLATION LEVEL `;
+const setIsolationLevel = isolationLevelSql + isolationLevelDefault
+
 const updateController = {
 
     updatePage: function (req, res) {   
@@ -39,7 +43,11 @@ const updateController = {
 				// connections
 				node1Connection = await mysql.createConnection(config.node1conn)
 				//nodeLogsConnection = await mysql.createConnection(config.nodeLogsConn)
-                
+                await node1Connection.query(setIsolationLevel)
+                console.log("Isolation level is set to: " + isolationLevelDefault)
+
+                await node1Connection.query("set autocommit = 0;")
+                console.log("autocommit=0")
 				await node1Connection.query("set autocommit = 0;")
                 console.log("autocommit=0")
 				await node1Connection.query("START TRANSACTION;")
@@ -101,6 +109,9 @@ const updateController = {
 					// throw Error // simulate
 					node2Connection = await mysql.createConnection(config.node2conn)
 					//nodeLogsConnection = await mysql.createConnection(config.nodeLogsConn)
+
+                    await node2Connection.query(setIsolationLevel)
+                    console.log("Isolation level is set to: " + isolationLevelDefault)
 		
 					await node2Connection.query("set autocommit = 0;")
 					await node2Connection.query("START TRANSACTION;")
@@ -185,6 +196,9 @@ const updateController = {
                     console.log("node 2")
 					node2Connection = await mysql.createConnection(config.node2conn)
 					//nodeLogsConnection = await mysql.createConnection(config.nodeLogsConn)
+
+                    await node2Connection.query(setIsolationLevel)
+                    console.log("Isolation level is set to: " + isolationLevelDefault)
 		
 					await node2Connection.query("set autocommit = 0;")
                     console.log("node2: autocommit=0")
@@ -259,6 +273,9 @@ const updateController = {
 				node1Connection = await mysql.createConnection(config.node1conn)
 				//nodeLogsConnection = await mysql.createConnection(config.nodeLogsConn)
                 console.log("node 1: connected to node 1")
+
+                await node1Connection.query(setIsolationLevel)
+                console.log("Isolation level is set to: " + isolationLevelDefault)
 		
 				await node1Connection.query("set autocommit = 0;")
                 console.log("node 1: autocommit = 0")
@@ -325,6 +342,9 @@ const updateController = {
 					node3Connection = await mysql.createConnection(config.node3conn)
                     console.log('node 3: established connection')
 					//nodeLogsConnection = await mysql.createConnection(config.nodeLogsConn)
+
+                    await node3Connection.query(setIsolationLevel)
+                    console.log("Isolation level is set to: " + isolationLevelDefault)
 		
 					await node3Connection.query("set autocommit = 0;")
                     console.log('node 3: set autocommit')
@@ -417,6 +437,8 @@ const updateController = {
                     console.log('node 3: established connection')
 
 					//nodeLogsConnection = await mysql.createConnection(config.nodeLogsConn)
+                    await node3Connection.query(setIsolationLevel)
+                    console.log("Isolation level is set to: " + isolationLevelDefault)
 		
 					await node3Connection.query("set autocommit = 0;")
                     console.log('node 3: autocommit')
