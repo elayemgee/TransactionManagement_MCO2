@@ -156,41 +156,65 @@ const globalFR1Controller = {
                 })
             }
             catch (err){
+                node3Connection = await mysql.createConnection(config.node2conn)
+                console.log('connected to node 2!');
+
                 node3Connection = await mysql.createConnection(config.node3conn)
                 console.log('connected to node 3!');
-    
+ 
                 await node3Connection.query(setIsolationLevel)
                 console.log("Isolation level is set to: " + isolationLevelDefault)
 
-                //get most recent id
-                sqlEntryFill = 'SELECT id FROM node3 ORDER BY id DESC LIMIT 1';
-                let selectlist = node3Connection.query(sqlEntryFill)
+                //look at the ids from node 2 and node 3 to get the bigger one and increment from there
+                var sqlEntryFill = 'SELECT id FROM node3 ORDER BY id DESC LIMIT 1';
+                let selectlist = await node3Connection.query(sqlEntryFill)
+
+                /*
+                selectlist.then(function(result) {
+                    console.log('-------')
+                    console.log(result)
+                    recentIdNode2 = parseInt(result[0][0].id) + 1
+                    console.log("recentIdNode2: ")
+                    console.log(recentIdNode2)
+                }) */
+
+                var sqlEntryFill = 'SELECT id FROM node2 ORDER BY id DESC LIMIT 1';
+                selectlist = node2Connection.query(sqlEntryFill)
 
                 selectlist.then(function(result) {
                     console.log('-------')
                     console.log(result)
-                    recentId = result
-                    console.log('.......')
-                    console.log(result[0]) // "Some User token"
-                    console.log('///////')
-                    console.log(result[0][0].id)
-                    console.log(result[0][0])
-                    recentId = parseInt(result[0][0].id) + 1
-                    console.log("?")
-                    console.log(recentId)
+                    recentIdNode3 = parseInt(result[0][0].id) + 1
+                    console.log("recentIdNode3 :")
+                    console.log(recentIdNode3)
                 }) 
 
+                console.log('before autocommit')
                 await node3Connection.query("set autocommit = 0;");
+                console.log("after autocommit, before start transaction")
                 await node3Connection.query("START TRANSACTION;");
+                console.log("after start transaction, before lock tables")
                 await node3Connection.query("LOCK TABLES node3 WRITE, logs WRITE;");
+
+                if (recentIdNode2 > recentIdNode3){
+                    console.log("THIS SHOULD BE AFTER BIG OBJECT LOGS")
+                    newId = recentIdNode2;
+                }
+                else {
+                    console.log("THIS SHOULD BE AFTER BIG OBJECT LOGS")
+                    newId = recentIdNode3;
+                }
+                console.log('newId:' + newId)
+                node2Connection.end()
+                
                 
                 //table for reference: id, operation, sql_statement, node_id, status
                 //await node2Connection.query("INSERT INTO `logs` (id, operation, sql_statement, node_id, status) VALUES ('insert', '" + movieName + "'," + movieYear + "," + movieRank + ", 'start', 'node1');")
-                console.log("Start log inserted to node 3 logs")
-                var sqlEntryLog = `INSERT INTO central (id, title, year, genre, director, actor1, actor2) VALUES ('${recentId}','${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+				console.log("Start log inserted to node 3 logs")
+                var sqlEntryLog = `INSERT INTO central (id, title, year, genre, director, actor1, actor2) VALUES ('${newId}', '${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
 
                 //update logs
-                var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+                sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
                 let datalist = node3Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'write'])
 
                 datalist.then(function(result) {
@@ -200,10 +224,9 @@ const globalFR1Controller = {
                     console.log(logId)
                 }) 
 
-            
                 //perform insert
                 sqlEntryFill = 'INSERT INTO node3 (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?,?)';
-                datalist = node3Connection.query(sqlEntryFill, [recentId, title, year, genre, director, actor1,actor2])
+                datalist = node3Connection.query(sqlEntryFill, [newId, title, year, genre, director, actor1,actor2])
 
                 datalist.then(function(result) {
                     console.log(result)
@@ -212,7 +235,6 @@ const globalFR1Controller = {
                 
                 //set log as write
                 //await nodeLogsConnection.query('UPDATE `logs` SET `status` = ? WHERE `name` = ? AND `dest` = ?;', ['committing', title, 'central'])
-
                 await node3Connection.query("COMMIT;");
                 //node2Connection.query("UPDATE logs SET status = 'committed' WHERE id = " + [logId]);
                 await node3Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
@@ -225,32 +247,63 @@ const globalFR1Controller = {
             
         }
                 
-        try { //check node 2 logs
-            console.log('gonna check node 2 logs')
-            node2Connection = await mysql.createConnection(config.node2conn)
-		    const [rows1, fields1] = await node2Connection.query("SELECT * FROM `logs` WHERE `status` = ?;", ['committing'])
-            console.log('connection 2 created')
-            node1Connection = await mysql.createConnection(config.node1conn)
-            console.log('connected to central node');
+        //check node 2 logs
+        try{
+        console.log('gonna check node 2 logs')
+        node2Connection = await mysql.createConnection(config.node2conn)
+        var [rows1, fields1] = await node2Connection.query("SELECT * FROM `logs` WHERE `status` = ?;", ['committing'])
+        console.log('connection 2 created')
+        node1Connection = await mysql.createConnection(config.node1conn)
+        console.log('connected to central node');
 
-            rows1.forEach(e => {
-                console.log("made it in wee")
-                console.log(e)
-                var query = e.sql_statement
-                console.log(query)
-                console.log("This is the id : " + e.id)
-                //e.sql_statement
-                node1Connection.query(query)
-                console.log("isnertered into node 1")
-                //datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
-                node2Connection.query("UPDATE `logs` SET `status` = ? WHERE `id` = ?;", ['committed', e.id])
-				
-                })
-
-        } catch (err) {
-
+        rows1.forEach(e => {
+            console.log("made it in wee")
+            console.log(e)
+            var query = e.sql_statement
+            console.log(query)
+            console.log("This is the id : " + e.id)
+            //e.sql_statement
+            node1Connection.query(query)
+            console.log("isnertered into node 1")
+            //datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
+            node2Connection.query("UPDATE `logs` SET `status` = ? WHERE `id` = ?;", ['committed', e.id])
+            })
+        } catch (err){
+            if(node1Connection != null) {
+				node1Connection.end()
+			}
+            if(node2Connection != null) {
+				node2Connection.end()
+			}
         }
-        
+
+        try{
+        console.log('gonna check node 3 logs')
+        node3Connection = await mysql.createConnection(config.node3conn)
+        var [rows2, fields1] = await node3Connection.query("SELECT * FROM `logs` WHERE `status` = ?;", ['committing'])
+        console.log('connection 2 created')
+        console.log('connected to central node');
+
+        rows2.forEach(e => {
+            console.log("made it in wee")
+            console.log(e)
+            var query = e.sql_statement
+            console.log(query)
+            console.log("This is the id : " + e.id)
+            //e.sql_statement
+            node1Connection.query(query)
+            console.log("isnertered into node 1")
+            //datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
+            node3Connection.query("UPDATE `logs` SET `status` = ? WHERE `id` = ?;", ['committed', e.id])
+            })
+        } catch (err){
+            if(node1Connection != null) {
+				node1Connection.end()
+			}
+            if(node3Connection != null) {
+				node2Connection.end()
+			}
+        }
 
     }
 }
