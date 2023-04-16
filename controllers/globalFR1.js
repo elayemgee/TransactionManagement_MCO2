@@ -209,9 +209,7 @@ const globalFR1Controller = {
 
             rows1.forEach(e => {
                 console.log("made it in wee")
-                console.log(e[0])
-                console.log(e[1])
-                console.log(e[2])
+                console.log(e)
                 var query = e.sql_statement
                 console.log(query)
                 //e.sql_statement
