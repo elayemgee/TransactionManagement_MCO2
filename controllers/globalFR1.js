@@ -138,7 +138,7 @@ const globalFR1Controller = {
 
                 //get most recent id
                 sqlEntryFill = 'SELECT id FROM node3 ORDER BY id DESC LIMIT 1';
-                let selectlist = node2Connection.query(sqlEntryFill)
+                let selectlist = node3Connection.query(sqlEntryFill)
 
                 selectlist.then(function(result) {
                     console.log('-------')
