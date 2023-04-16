@@ -63,8 +63,8 @@ const globalFR2Controller = {
                     console.log('-------')
                     console.log(result)
                     newId = parseInt(result[0][0].id) + 1
-                    console.log("recentIdNode2: ")
-                    console.log(recentIdNode2)
+                    console.log("newId: ")
+                    console.log(newId)
                 }) 
 
                 console.log('before autocommit')
