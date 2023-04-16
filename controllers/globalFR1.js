@@ -209,6 +209,9 @@ const globalFR1Controller = {
 
             rows1.forEach(e => {
                 console.log(e)
+                console.log(e[2])
+                var query = e[2]
+                console.log(query)
                 //e.sql_statement
                 //node1Connection.query('INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)')
                 //datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
