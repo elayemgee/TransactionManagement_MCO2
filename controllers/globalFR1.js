@@ -215,7 +215,7 @@ const globalFR1Controller = {
                 console.log(e.id)
                 //e.sql_statement
                 node1Connection.query(query)
-                
+                console.log("isnertered into node 1")
                 //datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
                 node2LogsConnection.query("UPDATE `logs` SET `status` = ? WHERE `id` = ?;", ['committed', e.id])
 
