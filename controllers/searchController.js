@@ -21,9 +21,7 @@ const searchController = {
         const searchCriteria = req.query.search;
         console.log(searchCriteria);
 
-        var flag = false;
-        var flag2 = false;
-        var originalYear
+        var results
 
         
 			// search node 1
@@ -45,6 +43,7 @@ const searchController = {
 
             datalist.then(function(result) {
                 console.log(result)
+                results = result
                 })   
             console.log('performed update')
 
@@ -53,12 +52,6 @@ const searchController = {
             await node1Connection.query("UNLOCK TABLES;")
             console.log("unlock")
 
-            node1Connection.query(sqlQuery, [searchCriteria, substr, substr, substr, substr, substr], function (error, results) {
-                if (error) throw error;
-                console.log(results);
-                res.render('search', { result: results });
-            });
-    
             // end connections
             node1Connection.end()
 
@@ -133,6 +126,8 @@ const searchController = {
                 
             }
         }
+
+        res.render('search', { result: results })
 		
     }
 }
