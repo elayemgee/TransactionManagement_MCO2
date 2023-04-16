@@ -385,7 +385,7 @@ const inController = {
 
                 // insert new movie
                 //await node3Connection.query("INSERT INTO `node3` (`name`, `year`, `rank`) values ('" + movieName + "'," + movieYear + "," + movieRank + ");")
-                va sqlEntryFill = 'INSERT INTO node3 (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
+                var sqlEntryFill = 'INSERT INTO node3 (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
                 let datalist = node3Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
                 //console.log(datalist)
 
