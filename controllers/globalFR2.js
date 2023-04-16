@@ -55,6 +55,18 @@ const globalFR2Controller = {
                 await node1Connection.query(setIsolationLevel)
                 console.log("Isolation level is set to: " + isolationLevelDefault)
 
+                //get most recent id and increment
+                var sqlEntryFill = 'SELECT id FROM central ORDER BY id DESC LIMIT 1';
+                let selectlist = node1Connection.query(sqlEntryFill)
+
+                selectlist.then(function(result) {
+                    console.log('-------')
+                    console.log(result)
+                    newId = parseInt(result[0][0].id) + 1
+                    console.log("recentIdNode2: ")
+                    console.log(recentIdNode2)
+                }) 
+
                 console.log('before autocommit')
                 await node1Connection.query("set autocommit = 0;");
                 console.log("after autocommit, before start transaction")
@@ -65,7 +77,7 @@ const globalFR2Controller = {
                 //table for reference: id, operation, sql_statement, node_id, status
                 //await node2Connection.query("INSERT INTO `logs` (id, operation, sql_statement, node_id, status) VALUES ('insert', '" + movieName + "'," + movieYear + "," + movieRank + ", 'start', 'node1');")
 				console.log("Start log inserted to node 1 logs")
-                var sqlEntryFill = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+                var sqlEntryFill = `INSERT INTO central (id, title, year, genre, director, actor1, actor2) VALUES ('${newId}','${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
 
                 //update logs
                 var sqlEntryLog = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
@@ -99,7 +111,7 @@ const globalFR2Controller = {
 
                 //update logs
                 node1Connection.end()
-                console.log('inserted into node 2')
+                console.log('inserted into node 1')
             }
 
             try{
@@ -118,7 +130,7 @@ const globalFR2Controller = {
                     console.log("This is the id : " + e.id)
                     //e.sql_statement
                     node2Connection.query(query)
-                    console.log("isnertered into node 1")
+                    console.log("isnertered into node 2")
                     //datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
                     node1Connection.query("UPDATE `logs` SET `status` = ? WHERE `id` = ?;", ['committed', e.id])
                     })
