@@ -77,7 +77,7 @@ const globalFR1Controller = {
                     //console.log(result[0][0])
                     recentIdNode2 = parseInt(result[0][0].id) + 1
                     console.log("?")
-                    console.log(recentId)
+                    console.log(recentIdNode2)
                 }) 
 
                 var sqlEntryFill = 'SELECT id FROM node3 ORDER BY id DESC LIMIT 1';
@@ -93,7 +93,7 @@ const globalFR1Controller = {
                     //console.log(result[0][0])
                     recentIdNode3 = parseInt(result[0][0].id) + 1
                     console.log("?")
-                    console.log(recentId)
+                    console.log(recentIdNode3)
                 }) 
 
                 if (recentIdNode2 > recentIdNode3){
@@ -112,7 +112,7 @@ const globalFR1Controller = {
                 //table for reference: id, operation, sql_statement, node_id, status
                 //await node2Connection.query("INSERT INTO `logs` (id, operation, sql_statement, node_id, status) VALUES ('insert', '" + movieName + "'," + movieYear + "," + movieRank + ", 'start', 'node1');")
 				console.log("Start log inserted to node 2 logs")
-                var sqlEntryLog = `INSERT INTO central (id, title, year, genre, director, actor1, actor2) VALUES ('${recentId}', '${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+                var sqlEntryLog = `INSERT INTO central (id, title, year, genre, director, actor1, actor2) VALUES ('${newId}', '${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
 
                 //update logs
                 sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
@@ -127,7 +127,7 @@ const globalFR1Controller = {
 
                 //perform insert
                 sqlEntryFill = 'INSERT INTO node2 (id, title, year, genre, director, actor1, actor2) VALUES (?, ?,?,?,?,?,?)';
-                datalist = node2Connection.query(sqlEntryFill, [recentId, title, year, genre, director, actor1,actor2])
+                datalist = node2Connection.query(sqlEntryFill, [newId, title, year, genre, director, actor1,actor2])
 
                 datalist.then(function(result) {
                     console.log(result)
