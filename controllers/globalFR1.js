@@ -89,9 +89,11 @@ const globalFR1Controller = {
                 }) 
 
                 if (recentIdNode2 > recentIdNode3){
+                    console.log("THIS SHOULD BE AFTER BIG OBJECT LOGS")
                     newId = recentIdNode2;
                 }
                 else {
+                    console.log("THIS SHOULD BE AFTER BIG OBJECT LOGS")
                     newId = recentIdNode3;
                 }
                 console.log('newId:' + newId)
