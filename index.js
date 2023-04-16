@@ -7,7 +7,6 @@ const fs = require('fs');
 const router = express.Router();
 const path = require('path');
 
-
 //const port = 3000;
 
 const routes = require('./routes.js');
@@ -29,12 +28,12 @@ app.engine("hbs", exphbs.engine({
 app.set('view engine', '.hbs')
 app.use(express.static(path.join(__dirname, '/public')))
 
-const config = require('./config')
+const config = require('./config');
+const { error } = require('console');
 
 dotenv.config()
 port = process.env.PORT;
 hostname = process.env.HOSTNAME;
-
 
 app.use(express.urlencoded({ extended: true })) // might change later
 
@@ -42,11 +41,12 @@ app.use(express.static('public'));
 
 app.use('/', routes);
 
-/*
+
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
-});*/
-app.listen(process.env.PORT || 8080)
+    console.log(error)
+});
+//app.listen(process.env.PORT || 8080)
 
 console.log('here router')
 //module.exports = router;
