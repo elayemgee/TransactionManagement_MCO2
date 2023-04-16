@@ -50,7 +50,7 @@ const updateController = {
                 await console.log('Locked tables central');
 
                 //logs
-               /* console.log("Start log inserted to central logs")
+                console.log("Start log inserted to central logs")
                 var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
 
                 //update logs
@@ -63,11 +63,11 @@ const updateController = {
                     logId = result[0].insertId
                     console.log("logid:")
                     console.log(logId)
-                })*/
+                })
 
 				console.log("before hi")
                 sqlEntryFill = 'UPDATE central SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
-                let datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
+                datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
                 console.log(datalist)
 				console.log("hiii")
                 
