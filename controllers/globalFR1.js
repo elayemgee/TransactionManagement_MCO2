@@ -97,7 +97,7 @@ const globalFR1Controller = {
                     //recentId = result[0].id
                     //console.log(recentId)
                 }) 
-                console.log(recentId)
+                console.log("Recent id is: " + recentId)
 
                 //perform insert
                 sqlEntryFill = 'INSERT INTO node2 (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?,?)';
