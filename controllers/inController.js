@@ -490,7 +490,7 @@ const inController = {
                 await console.log('node3: autocommit = 0')
                 await node3Connection.query("START TRANSACTION;")
                 await console.log('node3: start transaction')
-                await node3Connection.query("LOCK TABLES node2 write, logs WRITE;")
+                await node3Connection.query("LOCK TABLES node3 write, logs WRITE;")
                 await console.log('node3: lock tables')
 
                 //logs
