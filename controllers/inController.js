@@ -61,7 +61,7 @@ const inController = {
                 await console.log('Locked tables central');
 
                 //logs
-                await node1Connection.query("LOCK TABLES node2 WRITE, logs WRITE;");
+                await node1Connection.query("LOCK TABLES central WRITE, logs WRITE;");
                 console.log("Start log inserted to central logs")
                 var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
 
@@ -121,6 +121,11 @@ const inController = {
                     await node2Connection.query("START TRANSACTION;");
                     await node2Connection.query("LOCK TABLES node2 write;");
                     
+                    //logs
+                    await node2Connection.query("LOCK TABLES node2 WRITE, logs WRITE;");
+                    console.log("Start log inserted to central logs")
+                    var sqlEntryLog = `INSERT INTO node2 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+
                     //update logs
                     var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
                     let datalist = node2Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
@@ -142,9 +147,9 @@ const inController = {
                         insertedId = result[0].insertId
                         results = result[0]
                     }) 
-                    await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
+                    await node2Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
                     await node2Connection.query("COMMIT;");
-                    await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committed', logId]);
+                    await node2Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committed', logId]);
                     await node2Connection.query("UNLOCK TABLES;");
 
                     node2Connection.end()
@@ -178,7 +183,7 @@ const inController = {
                         await console.log('Locked tables central');
 
                         //logs
-                        await node1Connection.query("LOCK TABLES node1 WRITE, logs WRITE;");
+                        await node1Connection.query("LOCK TABLES central WRITE, logs WRITE;");
                         console.log("Start log inserted to central logs")
                         var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
                         
@@ -239,6 +244,11 @@ const inController = {
                     await node2Connection.query("LOCK TABLES node2 write;")
                     await console.log('node2: lock tables')
 
+                    //logs
+                    await node2Connection.query("LOCK TABLES node2 WRITE, logs WRITE;");
+                    console.log("Start log inserted to central logs")
+                    var sqlEntryLog = `INSERT INTO node2 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+                    
                     //update logs
                     var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
                     let datalist = node2Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
@@ -299,6 +309,11 @@ const inController = {
             await node1Connection.query("LOCK TABLES central write;")
             console.log("tables are locked")
 
+            //logs
+            await node1Connection.query("LOCK TABLES central WRITE, logs WRITE;");
+            console.log("Start log inserted to central logs")
+            var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+
             //update logs
             var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
             datalist = node1Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
@@ -313,7 +328,6 @@ const inController = {
             // insert new movie
             sqlEntryFill = 'INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
             let datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
-                //console.log(datalist)
 
                 datalist.then(function(result) {
                     console.log(result)
@@ -356,6 +370,11 @@ const inController = {
                 await node3Connection.query("set autocommit = 0;")
                 await node3Connection.query("START TRANSACTION;")
                 await node3Connection.query("LOCK TABLES node3 write;")
+
+                //logs
+                await node3Connection.query("LOCK TABLES node3 WRITE, logs WRITE;");
+                console.log("Start log inserted to central logs")
+                var sqlEntryLog = `INSERT INTO node3 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
 
                 //update logs
                 var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
@@ -437,6 +456,11 @@ const inController = {
                     await node1Connection.query("LOCK TABLES central write;")
                     await console.log('Locked tables central');
 
+                    //logs
+                    await node1Connection.query("LOCK TABLES central WRITE, logs WRITE;");
+                    console.log("Start log inserted to central logs")
+                    var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+
                     //update logs
                     var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
                     datalist = node1Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
@@ -498,6 +522,11 @@ const inController = {
                 console.log('node3: started transaction')
                 await node3Connection.query("LOCK TABLES node3 write;")
                 console.log('node3: locked tables')
+
+                //logs
+                await node3Connection.query("LOCK TABLES node3 WRITE, logs WRITE;");
+                console.log("Start log inserted to central logs")
+                var sqlEntryLog = `INSERT INTO node3 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
 
                 //update logs
                 var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
