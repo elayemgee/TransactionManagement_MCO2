@@ -110,8 +110,8 @@ const globalFR1Controller = {
                 var sqlEntryLog = `INSERT INTO central (id, title, year, genre, director, actor1, actor2) VALUES ('${newId}', '${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
 
                 //update logs
-                sqlEntryFill = 'INSERT INTO logs (id, operation, sql_statement, node_id, status) VALUES (?,?,?,?,?)';
-                let datalist = node2Connection.query(sqlEntryFill, [newId, 'INSERT', sqlEntryLog, 1, 'write'])
+                sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+                let datalist = node2Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'write'])
 
                 datalist.then(function(result) {
                     console.log(result)
