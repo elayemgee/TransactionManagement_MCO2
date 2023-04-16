@@ -76,7 +76,7 @@ const searchController = {
 
                 datalist.then(function(result) {
                     console.log(result)
-                    res.send('search', { result: results })
+                    results = result[0]
                 })   
 
                 await node2Connection.query("COMMIT;")
@@ -109,6 +109,7 @@ const searchController = {
     
                     datalist.then(function(result) {
                         console.log(result)
+                        results = result[0]
                     })   
 
                     await node3Connection.query("COMMIT;")

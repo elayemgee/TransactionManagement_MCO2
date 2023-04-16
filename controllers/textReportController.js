@@ -1,54 +1,94 @@
-const mySQL = require('mysql');
 const dotenv = require('dotenv');
 const e = require('express');
 dotenv.config();
 
-const DATABASE = 'movies';
-
-const mysql = require('mysql2');
-var con = mysql.createConnection({
-    host: '172.16.3.142',
-    port: '3306',
-    user: 'group16',
-    password: '12341234',
-    database: DATABASE
-});
+const mysql = require('mysql2/promise');
+const config = require('../models/conn');
+var node1Connection
+var node2Connection
+var node3Connection
 
 const textReportController = {
-    moviesPage: function (req, res) {   
-        console.log('present');
-        con.connect(function (err) {
-            if (err) {
-                console.error('error connecting: ' + err.stack);
-                return;
-            }
-            console.log('connected as id ' + con.threadId);
-            console.log('in textReport controller');
-            res.render('report');
-        });
-    },
+    getReport: async function (req, res) { 
+        console.log('gonna generate reports');
 
-    getReport: function (req, res) {
-        //const textReport = "SELECT * FROM central LIMIT 10;";
-        var query = "SELECT * FROM central LIMIT 10;"
+        const data = {
+			title: "report",
+			styles: ["style"],
+			scripts: ["home"]
+		}
+			
+        try {// search node 1
+            node1Connection = await mysql.createConnection(config.node1conn)
+            
+            await node1Connection.query("set autocommit = 0;")
+            console.log("autocommit=0")
+            await node1Connection.query("START TRANSACTION;")
+            console.log("start transaction")
+            await node1Connection.query("LOCK TABLES central read;")
+            console.log("lock")
+    
+            //search movie
+            const sqlQuery = `SELECT * FROM central LIMIT 100`;
+            const substr = `%${searchCriteria}%`;                
+            let datalist = node1Connection.query(sqlQuery)
+            console.log(datalist)
 
-        con.connect(function (err) {
-            if (err) {
-                console.error('error connecting: ' + err.stack);
-                return;
+            datalist.then(function(result) {
+                console.log(result)
+                data.dataDB1 = result[0]
+                })   
+            console.log('performed update')
+
+            await node1Connection.query("COMMIT;")
+            console.log("commit")
+            await node1Connection.query("UNLOCK TABLES;")
+            console.log("unlock")
+
+            // end connections
+            node1Connection.end()
+
+        } catch (err) {
+            console.log(err)
+            if (node1Connection != null) {
+                node1Connection.end()
             }
-            console.log('connected as id ' + con.threadId);
-            console.log('in text report controller');
-        });
-        
-        con.query(query, function (error, results, fields) {
-        if (error) throw error;
-        console.log(results);
-        // connected!
-        res.render('report', { tuple: results });
-        
-    });
+            
+            // goto node 2 and 3
+			try {
+				node2Connection = await mysql.createConnection(config.node2conn)
+				const qResult1 = await node2Connection.query(`SELECT * FROM node2 LIMIT 50;`)
+
+				node2Connection.end()
+
+				node3Connection = await mysql.createConnection(config.node3conn)
+				const qResult2 = await node3Connection.query(`SELECT * FROM node3 LIMIT 50;`)
+				node3Connection.end()
+
+				data.dataDB1 = qResult1[0]
+				data.dataDB2 = qResult2[0]
+
+				console.log("CONNECTED TO NODE 2 AND 3")
+
+			} catch (err) {
+				if(node2Connection != null) {
+					node2Connection.end()
+				}
+
+				if(node3Connection != null) {
+					node3Connection.end()
+				}
+				
+				console.log(err)
+			}
+                
+            
+        }
+
+        //res.render('search', { result: results })
+        res.render('report', data)
+		
     }
 }
-
-module.exports = textReportController;
+    
+module.exports = searchController;
