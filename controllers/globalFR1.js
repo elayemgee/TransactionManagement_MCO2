@@ -94,6 +94,8 @@ const globalFR1Controller = {
                     console.log(result[0][0].id)
                     console.log(result[0][0])
                     recentId = parseInt(result[0][0].id) + 1
+                    console.log("?")
+                    console.log(recentId)
                     //recentId = result[0].id
                     //console.log(recentId)
                 }) 
