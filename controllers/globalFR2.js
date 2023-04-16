@@ -83,7 +83,7 @@ const globalFR2Controller = {
 
                 //perform insert
                 sqlEntryFill = 'INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
-                datalist = node2Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
+                datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
 
                 datalist.then(function(result) {
                     console.log(result)
