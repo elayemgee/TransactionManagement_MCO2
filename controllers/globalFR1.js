@@ -85,7 +85,7 @@ const globalFR1Controller = {
 
                 //update logs
                 sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
-                let datalist = node2Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
+                let datalist = node2Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'write'])
 
                 datalist.then(function(result) {
                     console.log(result)
@@ -165,7 +165,7 @@ const globalFR1Controller = {
 
                 //update logs
                 var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
-                let datalist = node3Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
+                let datalist = node3Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'write'])
 
                 datalist.then(function(result) {
                     console.log(result)
