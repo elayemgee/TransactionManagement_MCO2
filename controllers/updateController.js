@@ -51,10 +51,10 @@ const updateController = {
 
                 //logs
                 console.log("Start log inserted to central logs")
-                var sqlEntryLog = `UPDATE INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+                var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
 
                 //update logs
-                var sqlEntryFill = 'UPDATE INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+                var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
                 let datalist = node1Connection.query(sqlEntryFill, ['UPDATE', sqlEntryLog, 1, 'start'])
                 console.log("after start")
                 
@@ -110,10 +110,10 @@ const updateController = {
 
                 	//logs
                 	console.log("Start log inserted to central logs")
-                	var sqlEntryLog = `UPDATE INTO node2 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+                	var sqlEntryLog = `INSERT INTO node2 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
 
                 	//update logs
-                	var sqlEntryFill = 'UPDATE INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+                	var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
                 	datalist = node2Connection.query(sqlEntryFill, ['UPDATE', sqlEntryLog, 1, 'start'])
                 	console.log("after start")
                 
@@ -167,10 +167,10 @@ const updateController = {
 
                 		//logs
                 		console.log("Start log inserted to central logs")
-                		var sqlEntryLog = `UPDATE INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+                		var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
 
                 		//update logs
-                		var sqlEntryFill = 'UPDATE INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+                		var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
                 		datalist = node1Connection.query(sqlEntryFill, ['UPDATE', sqlEntryLog, 1, 'start'])
                 		console.log("after start")
                 
@@ -229,10 +229,10 @@ const updateController = {
 
                 	//logs
                 	console.log("Start log inserted to node2 logs")
-                	var sqlEntryLog = `UPDATE INTO node2 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+                	var sqlEntryLog = `INSERT INTO node2 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
 
                 	//update logs
-                	var sqlEntryFill = 'UPDATE INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+                	var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
                 	datalist = node2Connection.query(sqlEntryFill, ['UPDATE', sqlEntryLog, 1, 'start'])
                 	console.log("after start")
                 
@@ -293,10 +293,10 @@ const updateController = {
 
 				//logs
 				console.log("Start log inserted to central logs")
-				var sqlEntryLog = `UPDATE INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+				var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
 
 				//update logs
-				var sqlEntryFill = 'UPDATE INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+				var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
 				datalist = node1Connection.query(sqlEntryFill, ['UPDATE', sqlEntryLog, 1, 'start'])
 				console.log("after start")
 			
@@ -356,10 +356,10 @@ const updateController = {
 
 					//logs
 					console.log("Start log inserted to node3 logs")
-					var sqlEntryLog = `UPDATE INTO node3 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+					var sqlEntryLog = `INSERT INTO node3 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
 
 					//update logs
-					var sqlEntryFill = 'UPDATE INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+					var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
 					datalist = node1Connection.query(sqlEntryFill, ['UPDATE', sqlEntryLog, 1, 'start'])
 					console.log("after start")
 			
@@ -417,10 +417,10 @@ const updateController = {
 
 						//logs
 						console.log("Start log inserted to central logs")
-						var sqlEntryLog = `UPDATE INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+						var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
 
 						//update logs
-						var sqlEntryFill = 'UPDATE INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+						var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
 						datalist = node1Connection.query(sqlEntryFill, ['UPDATE', sqlEntryLog, 1, 'start'])
 						console.log("after start")
 			
@@ -483,10 +483,10 @@ const updateController = {
 
 					//logs
 					console.log("Start log inserted to central logs")
-					var sqlEntryLog = `UPDATE INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+					var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
 
 					//update logs
-					sqlEntryFill = 'UPDATE INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+					sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
 					datalist = node1Connection.query(sqlEntryFill, ['UPDATE', sqlEntryLog, 1, 'start'])
 					console.log("after start")
 			
