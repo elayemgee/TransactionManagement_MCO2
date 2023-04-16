@@ -67,19 +67,19 @@ const inController = {
                 //update logs
                 var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
                 let datalist = node1Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
-                
+                console.log("after start")
                 datalist.then(function(result) {
                     console.log(result)
                     logId = result[0].insertId
                     console.log("logid:")
                     console.log(logId)
                 }) 
-
+                console.log("insert movie")
                 //insert new movie
                 sqlEntryFill = 'INSERT INTO central (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?,?)';
                 datalist = node1Connection.query(sqlEntryFill, [recentId, title, year, genre, director, actor1,actor2])
                 //console.log(datalist)
-                
+                console.log("after insert")
                 datalist.then(function(result) {
                     console.log(result)
                     console.log(result[0].insertId) // "Some User token"
@@ -95,7 +95,7 @@ const inController = {
                 console.log('tables are unlocked')
 
                 //update logs
-                results = [insertedId, title, year, genre, director, actor1, actor2];
+                //results = [insertedId, title, year, genre, director, actor1, actor2];
 
                 //end connection
                 node1Connection.end()
