@@ -534,6 +534,7 @@ const updateController = {
 					console.log("Start log inserted to node3 logs")
 					var sqlEntryLog = `INSERT INTO node3 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
 
+                    console.log("preeesent")
 					//update logs
 					sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
 					datalist = node3Connection.query(sqlEntryFill, ['UPDATE', sqlEntryLog, 1, 'start'])
