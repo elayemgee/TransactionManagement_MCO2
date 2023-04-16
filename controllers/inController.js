@@ -350,61 +350,6 @@ const inController = {
             console.log('ended connection')
             flag = true
             console.log(flag)
-            /*console.log("Entered >= 1980 condition")
-            // throw Error // simulate
-            node1Connection = await mysql.createConnection(config.node1conn)
-            //await node1Connection.query(setIsolationLevel)
-            //console.log("Isolation level is set to: " + isolationLevelDefault)
-
-            await node1Connection.query("set autocommit = 0;")
-            console.log("autocommit = 0")
-            await node1Connection.query("START TRANSACTION;")
-            console.log("transaction started")
-            await node1Connection.query("LOCK TABLES central write, logs WRITE;")
-            console.log("tables are locked")
-
-            //logs
-            console.log("Start log inserted to central logs")
-            var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
-            console.log("after log")
-
-            //update logs
-            var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
-            datalist = node1Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
-            console.log("after insert log")
-            datalist.then(function(result) {
-                console.log(result)
-                logId = result[0].insertId
-                console.log("logid:")
-                console.log(logId)
-            }) 
-            console.log("insert new movie")
-            // insert new movie
-            sqlEntryFill = 'INSERT INTO central (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?,?)';
-            let datalist = node1Connection.query(sqlEntryFill, [recentId, title, year, genre, director, actor1,actor2])
-            console.log(error)
-            console.log("after insert movie")
-
-            datalist.then(function(result) {
-                console.log(result)
-                console.log(result[0].insertId) // "Some User token"
-                insertedId = result[0].insertId
-                results = result[0]
-            })   
-            console.log('performed insert')
-
-            await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
-            await node1Connection.query("COMMIT;")
-            console.log("committed")
-            await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committed', logId]);
-            await node1Connection.query("UNLOCK TABLES;")
-            console.log("tables unlocked")
-            console.log("Inserted to node 1 central table")
-
-            // end connections
-            node1Connection.end()
-            //nodeLogsConnection.end()
-            flag = true //insert in node 1 was successful*/
 
         } catch (err) {
             if (node1Connection != null) {
@@ -534,8 +479,67 @@ const inController = {
         if (flag) {
             // insert to node 3 if node 1 is successful
             try {
+                console.log("---------------")
+                console.log("enters node 3")
+                node3Connection = await mysql.createConnection(config.node3conn)
+
+                await node3Connection.query(setIsolationLevel)
+                console.log("Isolation level is set to: " + isolationLevelDefault)
+
+                await node3Connection.query("set autocommit = 0;")
+                await console.log('node3: autocommit = 0')
+                await node3Connection.query("START TRANSACTION;")
+                await console.log('node3: start transaction')
+                await node3Connection.query("LOCK TABLES node2 write, logs WRITE;")
+                await console.log('node3: lock tables')
+
+                //logs
+                //await node2Connection.query("LOCK TABLES node2 WRITE, logs WRITE;");
+                console.log("Start log inserted to central logs")
+                var sqlEntryLog = `INSERT INTO node3 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+                    
+                //update logs
+                var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+                let datalist = node2Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
+            
+                datalist.then(function(result) {
+                    console.log(result)
+                    logId = result[0].insertId
+                    console.log("logid:")
+                    console.log(logId)
+                }) 
+
+                // insert new movie
+                sqlEntryFill = 'INSERT INTO node3 (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?,?)';
+                datalist = node3Connection.query(sqlEntryFill, [recentId, title, year, genre, director, actor1,actor2])
+                //console.log(datalist)
+
+                datalist.then(function(result) {
+                    console.log(result)
+                    console.log(result[0].insertId) // "Some User token"
+                    insertedId = result[0].insertId
+                    results = result[0]
+                })               
+            
+                console.log('performed insert')
+
+                await node3Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
+                await node3Connection.query("COMMIT;")
+                await console.log('node3: commit')
+                await node3Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committed', logId]);
+                await node3Connection.query("UNLOCK TABLES;")
+                await console.log('node3: unlock tables')
+
+                node3Connection.end()
+
+                } catch (err) {
+                    // log to node 1 na di gumana ung node 2, may unCOMMITted sa node 2, node 1 = on RECOVERY
+                    if (node3Connection != null) {
+                        node3Connection.end()
+                    }
+                }
                 // throw Error // simulate
-                console.log("--------------------")
+                /*console.log("--------------------")
                 console.log("Enter node 3")
                 node3Connection = await mysql.createConnection(config.node3conn)
                 //nodeLogsConnection = await mysql.createConnection(config.nodeLogsConn)
@@ -594,27 +598,7 @@ const inController = {
                 if (node3Connection != null) {
                     node3Connection.end()
                 }
-                /*
-                if (nodeLogsConnection != null) {
-                    nodeLogsConnection.end()
-                }
-                */
-
-                // log to node 1 na di gumana ung node 3, may unCOMMITted sa node 3, node 1 = on, tas i query sa node 3 ung logged sa node 1
-                // create log in node1 na di pumasok sa node 3 ung insert, pero successful in node 1
-                // log na nag fail sa node 3
-                /*
-                try {
-                    nodeLogsConnection = await mysql.createConnection(config.nodeLogsConn)
-                    await nodeLogsConnection.query("INSERT INTO `node1_2_logs` (`operation`, `name`, `year`, `rank`, `status`, `dest`) VALUES ('insert', '" + movieName + "'," + movieYear + "," + movieRank + ", 'committing', 'node3');")
-                    console.log("Successful insert in node1 but unsuccessful in node3")
-                } catch(err) {
-                    if(nodeLogsConnection != null) {
-                        nodeLogsConnection.end()
-                    }
-                }
-                */
-            }
+            }*/
         }
     }   
     // false pag di na add sa node 1/node2 or 3
@@ -628,6 +612,6 @@ const inController = {
 			//res.send(true)
             res.render('insert', { records: results })
 		}
-}
+    }
 }
 module.exports = inController;
