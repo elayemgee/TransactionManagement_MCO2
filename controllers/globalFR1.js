@@ -63,11 +63,7 @@ const globalFR1Controller = {
 
                 //look at the ids from node 2 and node 3 to get the bigger one and increment from there
                 var sqlEntryFill = 'SELECT id FROM node2 ORDER BY id DESC LIMIT 1';
-                //let selectlist = 
-                await node2Connection.query(sqlEntryFill, function(result) {
-                    console.log(result)
-                    recentIdNode2 = parseInt(result[0][0].id) + 1
-                })
+                let selectlist = await node2Connection.query(sqlEntryFill)
 
                 /*
                 selectlist.then(function(result) {
