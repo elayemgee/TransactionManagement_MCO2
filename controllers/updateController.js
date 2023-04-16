@@ -53,7 +53,7 @@ const updateController = {
 
                 //update logs
                 var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
-                datalist = node1Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
+                let datalist = node1Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
                 console.log("after start")
                 
 				datalist.then(function(result) {
@@ -64,7 +64,7 @@ const updateController = {
                 })
 
                 sqlEntryFill = 'UPDATE central SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
-                let datalist = await node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
+                datalist = await node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
                 console.log(datalist)
 
                 datalist.then(function(result) {
@@ -121,7 +121,7 @@ const updateController = {
 		
 					// update movie
                     sqlEntryFill = 'UPDATE node2 SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
-                    let datalist = node2Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
+                    datalist = node2Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
                     console.log(datalist)
 
                     datalist.then(function(result) {
@@ -177,7 +177,7 @@ const updateController = {
                 		})
 							
                 		sqlEntryFill = 'UPDATE central SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
-                		let datalist = await node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
+                		datalist = await node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
                 		console.log(datalist)
 
                 		datalist.then(function(result) {
@@ -240,7 +240,7 @@ const updateController = {
 					
 					// update movie
                     sqlEntryFill = 'UPDATE node2 SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
-                    let datalist = node2Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
+                    datalist = node2Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
                     console.log(datalist)
 
                     datalist.then(function(result) {
@@ -303,7 +303,7 @@ const updateController = {
 				})
 
                 sqlEntryFill = 'UPDATE central SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
-                let datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
+                datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
 
                 datalist.then(function(result) {
                     console.log(result)
@@ -367,7 +367,7 @@ const updateController = {
 		
 					// update movie
                     sqlEntryFill = 'UPDATE node3 SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
-                    let datalist = node3Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
+                    datalist = node3Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
                     console.log(datalist)
 
                     datalist.then(function(result) {
