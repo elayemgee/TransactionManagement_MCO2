@@ -76,16 +76,22 @@ const globalFR1Controller = {
                 datalist.then(function(result) {
                     console.log(result)
                     logId = result[0].insertId
+                    console.log("logid:")
+                    console.log(logId)
                 }) 
 
                 sqlEntryFill = 'SELECT id FROM node2 ORDER BY id DESC LIMIT 1';
                 datalist = node2Connection.query(sqlEntryFill)
                 var recentId
                 datalist.then(function(result) {
+                    console.log('-------')
                     console.log(result)
+                    recentId = result
+                    console.log('.......')
                     console.log(result[0].insertId) // "Some User token"
-                    recentId = result[0].id
-                    console.log(recentId)
+                    console.log('///////')
+                    //recentId = result[0].id
+                    //console.log(recentId)
                 }) 
 
                 //perform insert
