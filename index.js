@@ -32,8 +32,8 @@ const config = require('./config');
 const { error } = require('console');
 
 dotenv.config()
-port = process.env.PORT;
-hostname = process.env.HOSTNAME;
+//port = process.env.PORT;
+//hostname = process.env.HOSTNAME;
 
 app.use(express.urlencoded({ extended: true })) // might change later
 
