@@ -81,7 +81,7 @@ const globalFR1Controller = {
                 //table for reference: id, operation, sql_statement, node_id, status
                 //await node2Connection.query("INSERT INTO `logs` (id, operation, sql_statement, node_id, status) VALUES ('insert', '" + movieName + "'," + movieYear + "," + movieRank + ", 'start', 'node1');")
 				console.log("Start log inserted to node 2 logs")
-                var sqlEntryLog = `INSERT INTO node2 (id, title, year, genre, director, actor1, actor2) VALUES ('${recentId}', '${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+                var sqlEntryLog = `INSERT INTO central (id, title, year, genre, director, actor1, actor2) VALUES ('${recentId}', '${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
 
                 //update logs
                 sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
@@ -161,7 +161,7 @@ const globalFR1Controller = {
                 //table for reference: id, operation, sql_statement, node_id, status
                 //await node2Connection.query("INSERT INTO `logs` (id, operation, sql_statement, node_id, status) VALUES ('insert', '" + movieName + "'," + movieYear + "," + movieRank + ", 'start', 'node1');")
                 console.log("Start log inserted to node 3 logs")
-                var sqlEntryLog = `INSERT INTO node3 (id, title, year, genre, director, actor1, actor2) VALUES ('${recentId}','${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+                var sqlEntryLog = `INSERT INTO central (id, title, year, genre, director, actor1, actor2) VALUES ('${recentId}','${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
 
                 //update logs
                 var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
