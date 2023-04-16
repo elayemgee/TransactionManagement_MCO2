@@ -56,7 +56,7 @@ const globalFR1Controller = {
                 node2Connection = await mysql.createConnection(config.node2conn)
                 console.log('connected to node 2!');
 
-                node3Connection = await mysql.createConnection(config.node2conn)
+                node3Connection = await mysql.createConnection(config.node3conn)
                 console.log('connected to node 3!');
  
                 await node2Connection.query(setIsolationLevel)
@@ -70,11 +70,6 @@ const globalFR1Controller = {
                 selectlist.then(function(result) {
                     console.log('-------')
                     console.log(result)
-                    //recentId = result
-                    //console.log('.......')
-                    //console.log(result[0]) // "Some User token"
-                    //console.log(result[0][0].id)
-                    //console.log(result[0][0])
                     recentIdNode2 = parseInt(result[0][0].id) + 1
                     console.log("?")
                     console.log(recentIdNode2)
@@ -86,11 +81,6 @@ const globalFR1Controller = {
                 selectlist.then(function(result) {
                     console.log('-------')
                     console.log(result)
-                    //recentId = result
-                    //console.log('.......')
-                    //console.log(result[0]) // "Some User token"
-                    //console.log(result[0][0].id)
-                    //console.log(result[0][0])
                     recentIdNode3 = parseInt(result[0][0].id) + 1
                     console.log("?")
                     console.log(recentIdNode3)
