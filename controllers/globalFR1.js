@@ -198,9 +198,7 @@ const globalFR1Controller = {
             }
             
         }
-        
-
-        /*
+                
         try { //check node 2 logs
             node2LogsConnection = await mysql.createConnection(config.nodeLogsConn)
 		    const [rows1, fields1] = await nodeLogsConnection.query("SELECT * FROM `logs` WHERE `status` = ?;", ['committing'])
@@ -209,18 +207,20 @@ const globalFR1Controller = {
             console.log('connected to central node');
 
             rows1.forEach(e => {
-                node1Connection.query('INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)')
-                datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
-                node2LogsConnection.query("UPDATE `logs` SET `status` = ? WHERE `name` = ?;", ['committed', e.name])
+                console.log(e)
+                //e.sql_statement
+                //node1Connection.query('INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)')
+                //datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
+                //node2LogsConnection.query("UPDATE `logs` SET `status` = ? WHERE `name` = ?;", ['committed', e.name])
 
-                console.log("[RECOVERY] INSERTED IN NODE 1 TABLE 1")
+                //console.log("[RECOVERY] INSERTED IN NODE 1 TABLE 1")
 				
                 })
 
         } catch (err) {
 
         }
-        */
+        
 
     }
 }
