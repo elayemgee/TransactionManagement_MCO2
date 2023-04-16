@@ -130,7 +130,7 @@ const inController = {
                         console.log(logId)
                     }) 
 
-                    const sqlEntryFill = 'INSERT INTO node2 (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
+                    sqlEntryFill = 'INSERT INTO node2 (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
                     datalist = node2Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
                     //console.log(datalist)
 
