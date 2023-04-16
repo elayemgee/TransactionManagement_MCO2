@@ -187,7 +187,7 @@ const inController = {
                         }) 
 
                         //insert new movie
-                        const sqlEntryFill = 'INSERT INTO central (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?,?)';
+                        sqlEntryFill = 'INSERT INTO central (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?,?)';
                         datalist = node1Connection.query(sqlEntryFill, [insertedId, title, year, genre, director, actor1,actor2])
                     
 
@@ -244,7 +244,7 @@ const inController = {
                     }) 
 
                     // insert new movie
-                    const sqlEntryFill = 'INSERT INTO node2 (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?,?)';
+                    sqlEntryFill = 'INSERT INTO node2 (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?,?)';
                     datalist = node2Connection.query(sqlEntryFill, [insertedId, title, year, genre, director, actor1,actor2])
                     //console.log(datalist)
 
@@ -320,7 +320,7 @@ const inController = {
             */
 
             // insert new movie
-            const sqlEntryFill = 'INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
+            sqlEntryFill = 'INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
             let datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
                 //console.log(datalist)
 
@@ -385,7 +385,7 @@ const inController = {
 
                 // insert new movie
                 //await node3Connection.query("INSERT INTO `node3` (`name`, `year`, `rank`) values ('" + movieName + "'," + movieYear + "," + movieRank + ");")
-                const sqlEntryFill = 'INSERT INTO node3 (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
+                va sqlEntryFill = 'INSERT INTO node3 (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
                 let datalist = node3Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
                 //console.log(datalist)
 
@@ -472,7 +472,7 @@ const inController = {
                     await console.log('Locked tables central');
 
                     //insert new movie
-                    const sqlEntryFill = 'INSERT INTO central (id, title, year, genre, director, actor1, actor2) VALUES (?, ?,?,?,?,?,?)';
+                    var sqlEntryFill = 'INSERT INTO central (id, title, year, genre, director, actor1, actor2) VALUES (?, ?,?,?,?,?,?)';
                     let datalist = node1Connection.query(sqlEntryFill, [insertedId, title, year, genre, director, actor1,actor2])
                     
 
@@ -534,7 +534,7 @@ const inController = {
                     res.render('insert', { records: results });
                 });*/
                 
-                const sqlEntryFill = 'INSERT INTO node3 (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?,?)';
+                sqlEntryFill = 'INSERT INTO node3 (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?,?)';
                 let datalist = node3Connection.query(sqlEntryFill, [insertedId, title, year, genre, director, actor1,actor2])
                 //console.log(datalist)
 
