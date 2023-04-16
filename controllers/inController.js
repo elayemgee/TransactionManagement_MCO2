@@ -257,16 +257,12 @@ const inController = {
             
                     console.log('performed insert')
 
+                    await node2Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
                     await node2Connection.query("COMMIT;")
                     await console.log('node2: commit')
+                    await node2Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committed', logId]);
                     await node2Connection.query("UNLOCK TABLES;")
                     await console.log('node2: unlock tables')
-
-                    // update logs 
-                    /*
-                    await nodeLogsConnection.query("UPDATE `node2_logs` SET `status` = 'write' WHERE `name` = ? AND `dest` = 'node2';", [movieName])
-                    console.log("Log updated to write in node 2")
-                    */
 
                     node2Connection.end()
 
@@ -275,23 +271,6 @@ const inController = {
                     if (node2Connection != null) {
                         node2Connection.end()
                     }
-
-                    //nodeLogsConnection = await mysql.createConnection(config.nodeLogsConn)
-
-                    // create log in node1 na di pumasok sa node 2 ung insert, pero successful in node 1
-                    // log na nag fail sa node 2
-                    /*
-                    try {
-                        
-                        await nodeLogsConnection.query("INSERT INTO `node1_logs` (`operation`, `name`, `year`, `rank`, `status`, `dest`) VALUES ('insert', '" + movieName + "'," + movieYear + "," + movieRank + ", 'committing', 'node2');")
-                        console.log("Successful insert in node1 but unsuccessful in node2")
-                        nodeLogsConnection.end()
-                    } catch(err) {
-                        if(nodeLogsConnection != null) {
-                            nodeLogsConnection.end()
-                        }
-                    }
-                    */
                 }
         
         }
@@ -312,6 +291,17 @@ const inController = {
             console.log("transaction started")
             await node1Connection.query("LOCK TABLES central write;")
             console.log("tables are locked")
+
+            //update logs
+            var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+            datalist = node1Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
+    
+            datalist.then(function(result) {
+                console.log(result)
+                logId = result[0].insertId
+                console.log("logid:")
+                console.log(logId)
+            }) 
 
             // insert in logs
             /*

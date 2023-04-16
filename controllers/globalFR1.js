@@ -30,9 +30,7 @@ const globalFR1Controller = {
 		const director = req.query.director;
 		const actor1 = req.query.actor1;
 		const actor2 = req.query.actor2;
-        var insertedId;
         var logId;
-        var results;
         var recentId;
 
         var flag = false;
@@ -59,27 +57,7 @@ const globalFR1Controller = {
                 await node2Connection.query(setIsolationLevel)
                 console.log("Isolation level is set to: " + isolationLevelDefault)
 
-                await node2Connection.query("set autocommit = 0;");
-                await node2Connection.query("START TRANSACTION;");
-                await node2Connection.query("LOCK TABLES node2 WRITE, logs WRITE;");
-                
-                //table for reference: id, operation, sql_statement, node_id, status
-                //await node2Connection.query("INSERT INTO `logs` (id, operation, sql_statement, node_id, status) VALUES ('insert', '" + movieName + "'," + movieYear + "," + movieRank + ", 'start', 'node1');")
-				console.log("Start log inserted to node 2 logs")
-                var sqlEntryLog = `INSERT INTO node2 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
-
-                //update logs
-                var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
-                let datalist = node2Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
-
-                datalist.then(function(result) {
-                    console.log(result)
-                    logId = result[0].insertId
-                    console.log("logid:")
-                    console.log(logId)
-                }) 
-
-                sqlEntryFill = 'SELECT id FROM node2 ORDER BY id DESC LIMIT 1';
+                var sqlEntryFill = 'SELECT id FROM node2 ORDER BY id DESC LIMIT 1';
                 let selectlist = node2Connection.query(sqlEntryFill)
 
                 selectlist.then(function(result) {
@@ -95,6 +73,27 @@ const globalFR1Controller = {
                     console.log("?")
                     console.log(recentId)
                 }) 
+
+                await node2Connection.query("set autocommit = 0;");
+                await node2Connection.query("START TRANSACTION;");
+                await node2Connection.query("LOCK TABLES node2 WRITE, logs WRITE;");
+                
+                //table for reference: id, operation, sql_statement, node_id, status
+                //await node2Connection.query("INSERT INTO `logs` (id, operation, sql_statement, node_id, status) VALUES ('insert', '" + movieName + "'," + movieYear + "," + movieRank + ", 'start', 'node1');")
+				console.log("Start log inserted to node 2 logs")
+                var sqlEntryLog = `INSERT INTO node2 (id, title, year, genre, director, actor1, actor2) VALUES ('${recentId}', '${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+
+                //update logs
+                sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+                let datalist = node2Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
+
+                datalist.then(function(result) {
+                    console.log(result)
+                    logId = result[0].insertId
+                    console.log("logid:")
+                    console.log(logId)
+                }) 
+
                 //perform insert
                 sqlEntryFill = 'INSERT INTO node2 (id, title, year, genre, director, actor1, actor2) VALUES (?, ?,?,?,?,?,?)';
                 datalist = node2Connection.query(sqlEntryFill, [recentId, title, year, genre, director, actor1,actor2])
@@ -137,26 +136,7 @@ const globalFR1Controller = {
                 await node3Connection.query(setIsolationLevel)
                 console.log("Isolation level is set to: " + isolationLevelDefault)
 
-                await node3Connection.query("set autocommit = 0;");
-                await node3Connection.query("START TRANSACTION;");
-                await node3Connection.query("LOCK TABLES node3 WRITE, logs WRITE;");
-                
-                //table for reference: id, operation, sql_statement, node_id, status
-                //await node2Connection.query("INSERT INTO `logs` (id, operation, sql_statement, node_id, status) VALUES ('insert', '" + movieName + "'," + movieYear + "," + movieRank + ", 'start', 'node1');")
-                console.log("Start log inserted to node 3 logs")
-                var sqlEntryLog = `INSERT INTO node3 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
-
-                //update logs
-                var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
-                let datalist = node3Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
-
-                datalist.then(function(result) {
-                    console.log(result)
-                    logId = result[0].insertId
-                    console.log("logid:")
-                    console.log(logId)
-                }) 
-
+                //get most recent id
                 sqlEntryFill = 'SELECT id FROM node3 ORDER BY id DESC LIMIT 1';
                 let selectlist = node2Connection.query(sqlEntryFill)
 
@@ -174,6 +154,27 @@ const globalFR1Controller = {
                     console.log(recentId)
                 }) 
 
+                await node3Connection.query("set autocommit = 0;");
+                await node3Connection.query("START TRANSACTION;");
+                await node3Connection.query("LOCK TABLES node3 WRITE, logs WRITE;");
+                
+                //table for reference: id, operation, sql_statement, node_id, status
+                //await node2Connection.query("INSERT INTO `logs` (id, operation, sql_statement, node_id, status) VALUES ('insert', '" + movieName + "'," + movieYear + "," + movieRank + ", 'start', 'node1');")
+                console.log("Start log inserted to node 3 logs")
+                var sqlEntryLog = `INSERT INTO node3 (id, title, year, genre, director, actor1, actor2) VALUES ('${recentId}','${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+
+                //update logs
+                var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+                let datalist = node3Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
+
+                datalist.then(function(result) {
+                    console.log(result)
+                    logId = result[0].insertId
+                    console.log("logid:")
+                    console.log(logId)
+                }) 
+
+            
                 //perform insert
                 sqlEntryFill = 'INSERT INTO node3 (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?,?)';
                 datalist = node3Connection.query(sqlEntryFill, [recentId, title, year, genre, director, actor1,actor2])
