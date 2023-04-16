@@ -86,7 +86,8 @@ const inController = {
                     insertedId = result[0].insertId
                     results = result[0]
                  })               
-        
+                 console.log("going to committ")
+
                 await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
                 await node1Connection.query("COMMIT;")
                 console.log('committed')
@@ -95,7 +96,7 @@ const inController = {
                 console.log('tables are unlocked')
 
                 //update logs
-                //results = [insertedId, title, year, genre, director, actor1, actor2];
+                results = [insertedId, title, year, genre, director, actor1, actor2];
 
                 //end connection
                 node1Connection.end()
