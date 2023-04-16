@@ -20,8 +20,6 @@ const updateController = {
 
     updateRecord: async function (req, res) { 
         console.log('gonna execute update');
-//        const sqlEntry = `UPDATE movies SET name ='${title}',year='${year}', genre='${genre}',director='${director}',actor1='${actor1}',actor2='${actor2}' WHERE id=${id}`;
-        const id = req.query.id;
         const title = req.query.movie;
 		const year = req.query.year;
 		const genre = req.query.genre;
@@ -32,37 +30,40 @@ const updateController = {
         var flag = false;
         var flag2 = false;
 		var flag3 = false;
-        var originalYear
         var results
 
         if (year < 1980) {
 			// insert to node 1
 			try {
-				// throw Error // simulate
-				// insert in node 1 table 1
-				// connections
+				console.log("<1980")
 				node1Connection = await mysql.createConnection(config.node1conn)
-				//nodeLogsConnection = await mysql.createConnection(config.nodeLogsConn)
                 await node1Connection.query(setIsolationLevel)
                 console.log("Isolation level is set to: " + isolationLevelDefault)
 
                 await node1Connection.query("set autocommit = 0;")
                 console.log("autocommit=0")
-				await node1Connection.query("set autocommit = 0;")
-                console.log("autocommit=0")
 				await node1Connection.query("START TRANSACTION;")
                 console.log("start transaction")
-				await node1Connection.query("LOCK TABLES central write;")
-                console.log("lock")
-		
-				// insert in logs
-				/*await nodeLogsConnection.query("INSERT INTO `node1_logs` (`operation`, `name`, `year`, `rank`, `status`, `dest`) VALUES ('update', '" + movieName + "'," + movieYear + "," + movieRank + ", 'start', 'node1');")
-				console.log("Start log inserted to node 1 table 1")*/
-		
-				// update movie
-				//await node1Connection.query("UPDATE central SET `title` = '" + title + "'," + "`year` = " + year + "," + "`genre` = " + genre  + "',"+ "`director` = " + director + "',"+ "`actor1 = `" + actor1 + "',"+ "`actor2 = `" + actor2 + " WHERE id = " + id + ";")
-                //console.log("updated works")
-                const sqlEntryFill = 'UPDATE central SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
+				await node1Connection.query("LOCK TABLES central write, logs WRITE;")
+                await console.log('Locked tables central');
+
+                //logs
+                console.log("Start log inserted to central logs")
+                var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+
+                //update logs
+                var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+                datalist = node1Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
+                console.log("after start")
+                
+				datalist.then(function(result) {
+                    console.log(result)
+                    logId = result[0].insertId
+                    console.log("logid:")
+                    console.log(logId)
+                })
+
+                sqlEntryFill = 'UPDATE central SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
                 let datalist = await node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
                 console.log(datalist)
 
@@ -71,27 +72,16 @@ const updateController = {
                  })   
                 console.log('performed update')
 
-				// update logs 
-				//await nodeLogsConnection.query("UPDATE `node1_logs` SET `status` = 'write' WHERE `name` = ? AND `dest` = 'node1';", [movieName])
-				// await nodeLogsConnection.query("UPDATE `node1_logs` SET `status` = 'write' WHERE `name` = '" + movieName + "' AND `dest` = 'node1';")
-				//console.log("Log updated to write in node 1 table 1")
+				await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
 				await node1Connection.query("COMMIT;")
                 console.log("commit")
-
+				
+				await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committed', logId]);
 				await node1Connection.query("UNLOCK TABLES;")
                 console.log("unlock")
 		
-				// update logs
-				//await nodeLogsConnection.query('UPDATE `node1_logs` SET `status` = ? WHERE `name` = ? AND `dest` = ?;', ['committing', movieName, 'node1'])
-				//console.log("Log updated to committing in node 1 table 1")
-				//await nodeLogsConnection.query('UPDATE `node1_logs` SET `status` = ? WHERE `name` = ? AND `dest` = ?;', ['committed', movieName, 'node1'])
-				//console.log("Log updated to committed in node 1 table 1")
-				//console.log("Inserted to node 1 table 1")
-		
 				// end connections
-				node1Connection.end()
-				//nodeLogsConnection.end()
-		
+				node1Connection.end()		
 				flag = true
 		
 			} catch (err) {
@@ -99,30 +89,37 @@ const updateController = {
 				if (node1Connection != null) {
 					node1Connection.end()
 				}
-                /*
-				if (nodeLogsConnection != null) {
-					nodeLogsConnection.end()
-				}*/
 		
 				// insert to node 2 if node 1 isn't successful
 				try {
 					// throw Error // simulate
 					node2Connection = await mysql.createConnection(config.node2conn)
-					//nodeLogsConnection = await mysql.createConnection(config.nodeLogsConn)
 
                     await node2Connection.query(setIsolationLevel)
                     console.log("Isolation level is set to: " + isolationLevelDefault)
-		
 					await node2Connection.query("set autocommit = 0;")
 					await node2Connection.query("START TRANSACTION;")
-					await node2Connection.query("LOCK TABLES node2 write;")
-		
-					// insert in logs
-					//await nodeLogsConnection.query("INSERT INTO `node2_logs` (`operation`, `name`, `year`, `rank`, `status`, `dest`) VALUES ('update', '" + movieName + "'," + movieYear + "," + movieRank + ", 'start', 'node2');")
-					//console.log("Start log inserted to node 2")
+					await node2Connection.query("LOCK TABLES node2 write, logs WRITE;")
+                	await console.log('Locked tables central');
+
+                	//logs
+                	console.log("Start log inserted to central logs")
+                	var sqlEntryLog = `INSERT INTO node2 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+
+                	//update logs
+                	var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+                	datalist = node2Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
+                	console.log("after start")
+                
+					datalist.then(function(result) {
+                    	console.log(result)
+                    	logId = result[0].insertId
+                    	console.log("logid:")
+                    	console.log(logId)
+                	})
 		
 					// update movie
-                    const sqlEntryFill = 'UPDATE node2 SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
+                    sqlEntryFill = 'UPDATE node2 SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
                     let datalist = node2Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
                     console.log(datalist)
 
@@ -133,57 +130,19 @@ const updateController = {
                     console.log('performed update')
 
 					// update logs 
-					//await nodeLogsConnection.query("UPDATE `node2_logs` SET `status` = 'write' WHERE `name` = ? AND `dest` = 'node2';", [movieName])
-					//console.log("Log updated to write in node 2")
+					await node2Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
 					await node2Connection.query("COMMIT;")
+					await node2Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committed', logId]);
 					await node2Connection.query("UNLOCK TABLES;")
-		
-					// update logs
-					//await nodeLogsConnection.query("UPDATE `node2_logs` SET `status` = ? WHERE `name` = ? AND `dest` = 'node2';", ['committing', movieName])
-					//console.log("Log updated to committing in node 2")
-					//await nodeLogsConnection.query("UPDATE `node2_logs` SET `status` = ? WHERE `name` = ? AND `dest` = 'node2';", ['committed', movieName])
-					//console.log("Log updated to committed in node 2")
-					//console.log("Inserted to node 2")
-		
-					// log na nag fail sa node 1
-					//await nodeLogsConnection.query("INSERT INTO `node2_logs` (`operation`, `name`, `year`, `rank`, `status`, `dest`) VALUES ('update', '" + movieName + "'," + movieYear + "," + movieRank + ", 'committing', 'node1');")
-					//console.log("Successful insert in node2 but unsuccessful in node1")
-		
+			
 					// end connections
 					node2Connection.end()
-					//nodeLogsConnection.end()
-		
-					// create log to put to node 2 na unCOMMITted ung last query, tas after, query in node 1 pag naka recover na
-		
+					flag3=true
 				} catch (err) {
 					var flag2 = true
-					//console.log(err)
 					if (node2Connection != null) {
 						node2Connection.end()
 					}
-                    /*
-					if (nodeLogsConnection != null) {
-						nodeLogsConnection.end()
-					}*/
-		
-					// update logs status = terminated, since nag error sa lahat
-                    /*
-					try {
-						nodeLogsConnection = await mysql.createConnection(config.nodeLogsConn)
-		
-						await nodeLogsConnection.query("INSERT INTO `node2_logs` (`operation`, `name`, `year`, `rank`, `status`, `dest`) VALUES ('update', '" + movieName + "'," + movieYear + "," + movieRank + ", 'terminated', 'node2');")
-						//console.log("Logs in node2_logs terminated")
-		
-						await nodeLogsConnection.query("INSERT INTO `node1_logs` (`operation`, `name`, `year`, `rank`, `status`, `dest`) VALUES ('update', '" + movieName + "'," + movieYear + "," + movieRank + ", 'terminated', 'node1');")
-						//console.log("Logs in node1_logs terminated")
-		
-					} catch(err) {
-						//console.log(err)
-						if(nodeLogsConnection != null) {
-							nodeLogsConnection.end()
-						}
-					}
-                    */	
 				}
 				if (flag3) { //if node 2 inserts we insert to node 1
 					try {
@@ -193,16 +152,30 @@ const updateController = {
                 		await node1Connection.query(setIsolationLevel)
                 		console.log("Isolation level is set to: " + isolationLevelDefault)
 
-                		await node1Connection.query("set autocommit = 0;")
-                		console.log("autocommit=0")
 						await node1Connection.query("set autocommit = 0;")
                 		console.log("autocommit=0")
 						await node1Connection.query("START TRANSACTION;")
                 		console.log("start transaction")
-						await node1Connection.query("LOCK TABLES central write;")
-                		console.log("lock")
-		
-                		const sqlEntryFill = 'UPDATE central SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
+						await node1Connection.query("LOCK TABLES central write, logs WRITE;")
+                		await console.log('Locked tables central');
+
+                		//logs
+                		console.log("Start log inserted to central logs")
+                		var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+
+                		//update logs
+                		var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+                		datalist = node1Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
+                		console.log("after start")
+                
+						datalist.then(function(result) {
+                    		console.log(result)
+                    		logId = result[0].insertId
+                    		console.log("logid:")
+                    		console.log(logId)
+                		})
+							
+                		sqlEntryFill = 'UPDATE central SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
                 		let datalist = await node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
                 		console.log(datalist)
 
@@ -211,9 +184,11 @@ const updateController = {
                  		})   
                 		console.log('performed update')
 
+						await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
 						await node1Connection.query("COMMIT;")
                 		console.log("commit")
 
+						await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committed', logId]);
 						await node1Connection.query("UNLOCK TABLES;")
                 		console.log("unlock")
 		
@@ -221,6 +196,7 @@ const updateController = {
 						node1Connection.end()
 					}
 					catch (err) {
+						flag2=true
 						if (node1Connection != null) {
 							node1Connection.end()
 						}
@@ -230,11 +206,10 @@ const updateController = {
 		
 			if (flag) {
 				try {
-					// throw Error // simulate
+					//update node2
                     console.log("---------------")
                     console.log("node 2")
 					node2Connection = await mysql.createConnection(config.node2conn)
-					//nodeLogsConnection = await mysql.createConnection(config.nodeLogsConn)
 
                     await node2Connection.query(setIsolationLevel)
                     console.log("Isolation level is set to: " + isolationLevelDefault)
@@ -243,16 +218,27 @@ const updateController = {
                     console.log("node2: autocommit=0")
 					await node2Connection.query("START TRANSACTION;")
                     console.log("node 2: start transaction")
-					await node2Connection.query("LOCK TABLES node2 write;")
-                    console.log("node 2: lock")
+					await node2Connection.query("LOCK TABLES node2 write, logs WRITE;")
+                	await console.log('Locked tables central');
 
-		
-					// insert in logs
-					//await nodeLogsConnection.query("INSERT INTO `node2_logs` (`operation`, `name`, `year`, `rank`, `status`, `dest`) VALUES ('update', '" + movieName + "'," + movieYear + "," + movieRank + ", 'start', 'node2');")
-					//console.log("Start log inserted to node 2")
-		
+                	//logs
+                	console.log("Start log inserted to node2 logs")
+                	var sqlEntryLog = `INSERT INTO node2 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+
+                	//update logs
+                	var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+                	datalist = node2Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
+                	console.log("after start")
+                
+					datalist.then(function(result) {
+                    	console.log(result)
+                    	logId = result[0].insertId
+                    	console.log("logid:")
+                    	console.log(logId)
+                	})
+					
 					// update movie
-                    const sqlEntryFill = 'UPDATE node2 SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
+                    sqlEntryFill = 'UPDATE node2 SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
                     let datalist = node2Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
                     console.log(datalist)
 
@@ -263,45 +249,20 @@ const updateController = {
                     console.log('performed update')
 
 					// update logs 
-					//await nodeLogsConnection.query("UPDATE `node2_logs` SET `status` = 'write' WHERE `name` = ? AND `dest` = 'node2';", [movieName])
-					//console.log("Log updated to write in node 2")
+					await node2Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
 					await node2Connection.query("COMMIT;")
                     console.log("node2: commit")
+					await node2Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committed', logId]);
 					await node2Connection.query("UNLOCK TABLES;")
                     console.log("node2: update tables")
 		
-					// update logs
-					//await nodeLogsConnection.query("UPDATE `node2_logs` SET `status` = ? WHERE `name` = ? AND `dest` = 'node2'", ['committing', movieName])
-					//console.log("Log updated to committing in node 2")
-					//await nodeLogsConnection.query("UPDATE `node2_logs` SET `status` = ? WHERE `name` = ? AND `dest` = 'node2';", ['committed', movieName])
-					//console.log("Log updated to committed in node 2")
-					//console.log("Inserted to node 2 no error in node 1")
-		
 					// end connections
 					node2Connection.end()
-					//nodeLogsConnection.end()
 				} catch (err) {
-					// log to node 1 na di gumana ung node 2, may unCOMMITted sa node 2, node 1 = on RECOVERY
+					flag2=true
 					if (node2Connection != null) {
 						node2Connection.end()
 					}
-		
-					//nodeLogsConnection = await mysql.createConnection(config.nodeLogsConn)
-		
-					// create log in node1 na di pumasok sa node 2 ung insert, pero successful in node 1
-					// log na nag fail sa node 2
-                    /*
-					try {
-						
-						await nodeLogsConnection.query("INSERT INTO `node1_logs` (`operation`, `name`, `year`, `rank`, `status`, `dest`) VALUES ('update', '" + movieName + "'," + movieYear + "," + movieRank + ", 'committing', 'node2');")
-						//console.log("Successful insert in node1 but unsuccessful in node2")
-						nodeLogsConnection.end()
-					} catch(err) {
-						if(nodeLogsConnection != null) {
-							nodeLogsConnection.end()
-						}
-					}
-                    */
 				}
 			}
 		} 
@@ -321,21 +282,27 @@ const updateController = {
 
 				await node1Connection.query("START TRANSACTION;")
                 console.log("node 1: started transaction")
+				await node1Connection.query("LOCK TABLES central write, logs WRITE;")
+                await console.log('Locked tables central');
 
-				await node1Connection.query("LOCK TABLES central write;")
-                console.log("node 1: locked central")
+				//logs
+				console.log("Start log inserted to central logs")
+				var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
 
-		
-				// insert in logs
-				//await nodeLogsConnection.query("INSERT INTO `node1_2_logs` (`operation`, `name`, `year`, `rank`, `status`, `dest`) VALUES ('update', '" + movieName + "'," + movieYear + "," + movieRank + ", 'start', 'node1_2');")
-				//console.log("Start log inserted to node 1 table 2")
-		
-				// update movie
-                //await node1Connection.query("UPDATE central SET `title` = '" + title + "'," + "`year` = " + year + "," + "`genre` = " + genre  + "',"+ "`director` = " + director + "',"+ "`actor1 = `" + actor1 + "',"+ "`actor2 = `" + actor2 + " WHERE id = " + id + ";")				
-                //console.log("node 1: performed update")
-                const sqlEntryFill = 'UPDATE central SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
+				//update logs
+				var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+				datalist = node1Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
+				console.log("after start")
+			
+				datalist.then(function(result) {
+					console.log(result)
+					logId = result[0].insertId
+					console.log("logid:")
+					console.log(logId)
+				})
+
+                sqlEntryFill = 'UPDATE central SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
                 let datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
-                //console.log(datalist)
 
                 datalist.then(function(result) {
                     console.log(result)
@@ -344,40 +311,27 @@ const updateController = {
                 console.log('performed update')
 
                 // update logs 
-				//await nodeLogsConnection.query("UPDATE `node1_2_logs` SET `status` = 'write' WHERE `name` = ? AND `dest` = 'node1_2';", [movieName])
-				//console.log("Log updated to write in node 1 table 2")
+				await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
 				await node1Connection.query("COMMIT;")
                 console.log("node 1: performed commit")
 
+				await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committed', logId]);
 				await node1Connection.query("UNLOCK TABLES;")
                 console.log("node 1: unlocked tables")
-
-		
-				// update logs
-				//await nodeLogsConnection.query("UPDATE `node1_2_logs` SET `status` = ? WHERE `name` = ? AND `dest` = 'node1_2';", ['committing', movieName])
-				//console.log("Log updated to committing in node 1 table 2")
-				//await nodeLogsConnection.query("UPDATE `node1_2_logs` SET `status` = ? WHERE `name` = ? AND `dest` = 'node1_2';", ['committed', movieName])
-				//console.log("Log updated to committed in node 1 table 2")
-				//console.log("Inserted to node 1 table 2")
 		
 				// end connections
 				node1Connection.end()
                 console.log("node 1: ended connection")
-
-				//nodeLogsConnection.end()
-		
 				flag = true
+
 			} catch (err) {
+				flag2=true
 				if (node1Connection != null) {
 					node1Connection.end()
 				}
-                /*
-				if (nodeLogsConnection != null) {
-					nodeLogsConnection.end()
-				}*/
 		
 				try {
-					// throw Error // simulate
+					// enter node 3 if node 1 fails
 					node3Connection = await mysql.createConnection(config.node3conn)
                     console.log('node 3: established connection')
 					//nodeLogsConnection = await mysql.createConnection(config.nodeLogsConn)
@@ -391,15 +345,27 @@ const updateController = {
 					await node3Connection.query("START TRANSACTION;")
                     console.log('node 3: started transaction')
 
-					await node3Connection.query("LOCK TABLES node3 write;")
-                    console.log('node 3: locked tables')
-		
-					// insert in logs
-					//await nodeLogsConnection.query("INSERT INTO `node3_logs` (`operation`, `name`, `year`, `rank`, `status`, `dest`) VALUES ('update', '" + movieName + "'," + movieYear + "," + movieRank + ", 'start', 'node3');")
-					//console.log("Start log inserted to node3")
+					await node3Connection.query("LOCK TABLES node3 write, logs WRITE;")
+                	await console.log('Locked tables node3');
+
+					//logs
+					console.log("Start log inserted to node3 logs")
+					var sqlEntryLog = `INSERT INTO node3 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+
+					//update logs
+					var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+					datalist = node1Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
+					console.log("after start")
+			
+					datalist.then(function(result) {
+						console.log(result)
+						logId = result[0].insertId
+						console.log("logid:")
+						console.log(logId)
+					})
 		
 					// update movie
-                    const sqlEntryFill = 'UPDATE node3 SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
+                    sqlEntryFill = 'UPDATE node3 SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
                     let datalist = node3Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
                     console.log(datalist)
 
@@ -410,27 +376,14 @@ const updateController = {
                     console.log('performed update')
 
                     // update logs 
-					//await nodeLogsConnection.query("UPDATE `node3_logs` SET `status` = 'write' WHERE `name` = ? AND `dest` = 'node3';", [movieName])
-					//console.log("Log updated to write in node3")
+					await node3Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
 					await node3Connection.query("COMMIT;")
                     console.log('node 3: committed')
 
+					await node3Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committed', logId]);
 					await node3Connection.query("UNLOCK TABLES;")
                     console.log('node 3: unlocked tables')
-		
-					// update logs
-					//await nodeLogsConnection.query("UPDATE `node3_logs` SET `status` = ? WHERE `name` = ? AND `dest` = 'node3';", ['committing', movieName])
-					//console.log("Log updated to committing in node3")
-					//await nodeLogsConnection.query("UPDATE `node3_logs` SET `status` = ? WHERE `name` = ? AND `dest` = 'node3';", ['committed', movieName])
-					//console.log("Log updated to committed in node3")
-					//console.log("Inserted to node3")
-		
-					// log na nag fail sa node 1
-                    /*
-					await nodeLogsConnection.query("INSERT INTO `node3_logs` (`operation`, `name`, `year`, `rank`, `status`, `dest`) VALUES ('update', '" + movieName + "'," + movieYear + "," + movieRank + ", 'committing', 'node1_2');")
-					console.log("Successful insert in node3 but unsuccessful in node1")
-                    */
-		
+
 					// end connections
 					node3Connection.end()
 					flag3=true
@@ -440,30 +393,6 @@ const updateController = {
 					if (node3Connection != null) {
 						node3Connection.end()
 					}
-                    /*
-					if (nodeLogsConnection != null) {
-						node3Connection.end()
-					}*/
-		
-					// update logs status = terminated, since nag error sa lahat
-                    /*
-					try {
-						nodeLogsConnection = await mysql.createConnection(config.nodeLogsConn)
-		
-						await nodeLogsConnection.query("INSERT INTO `node3_logs` (`operation`, `name`, `year`, `rank`, `status`, `dest`) VALUES ('update', '" + movieName + "'," + movieYear + "," + movieRank + ", 'terminated', 'node3');")
-						console.log("Logs in node3_logs terminated")
-		
-						await nodeLogsConnection.query("INSERT INTO `node1_2_logs` (`operation`, `name`, `year`, `rank`, `status`, `dest`) VALUES ('update', '" + movieName + "'," + movieYear + "," + movieRank + ", 'terminated', 'node1');")
-						console.log("Logs in node1_logs terminated")
-		
-					} catch(err) {
-						console.log(err)
-                        
-						if(nodeLogsConnection != null) {
-							nodeLogsConnection.end()
-						}
-                        
-					}*/
 				}
 				if (flag3) {
 					try {
@@ -473,16 +402,30 @@ const updateController = {
                 		await node1Connection.query(setIsolationLevel)
                 		console.log("Isolation level is set to: " + isolationLevelDefault)
 
-                		await node1Connection.query("set autocommit = 0;")
-                		console.log("autocommit=0")
 						await node1Connection.query("set autocommit = 0;")
                 		console.log("autocommit=0")
 						await node1Connection.query("START TRANSACTION;")
                 		console.log("start transaction")
-						await node1Connection.query("LOCK TABLES central write;")
-                		console.log("lock")
+						await node1Connection.query("LOCK TABLES central write, logs WRITE;")
+                		await console.log('Locked tables central');
+
+						//logs
+						console.log("Start log inserted to central logs")
+						var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+
+						//update logs
+						var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+						datalist = node1Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
+						console.log("after start")
+			
+						datalist.then(function(result) {
+							console.log(result)
+							logId = result[0].insertId
+							console.log("logid:")
+							console.log(logId)
+						})
 		
-                		const sqlEntryFill = 'UPDATE central SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
+                		sqlEntryFill = 'UPDATE central SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
                 		let datalist = await node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
                 		console.log(datalist)
 
@@ -491,9 +434,11 @@ const updateController = {
                  		})   
                 		console.log('performed update')
 
+						await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
 						await node1Connection.query("COMMIT;")
                 		console.log("commit")
 
+						await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committed', logId]);
 						await node1Connection.query("UNLOCK TABLES;")
                 		console.log("unlock")
 		
@@ -502,6 +447,7 @@ const updateController = {
 					}
 
 					catch(err) {
+						flag2=true
 						if (node1Connection != null) {
 							node1Connection.end()
 						}
@@ -526,14 +472,24 @@ const updateController = {
 					await node3Connection.query("START TRANSACTION;")
                     console.log('node 3: started transaction')
 
-					await node3Connection.query("LOCK TABLES node3 write;")
-                    console.log('node 3: locked tables')
+					await node1Connection.query("LOCK TABLES central write, logs WRITE;")
+                	await console.log('Locked tables central');
 
-					// insert in logs
-                    /*
-					await nodeLogsConnection.query("INSERT INTO `node3_logs` (`operation`, `name`, `year`, `rank`, `status`, `dest`) VALUES ('update', '" + movieName + "'," + movieYear + "," + movieRank + ", 'start', 'node3');")
-					console.log("Start log inserted to node3")
-                    */
+					//logs
+					console.log("Start log inserted to central logs")
+					var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+
+					//update logs
+					var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+					datalist = node1Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
+					console.log("after start")
+			
+				    datalist.then(function(result) {
+						console.log(result)
+						logId = result[0].insertId
+						console.log("logid:")
+						console.log(logId)
+					})
 		
 					// update movie
                     const sqlEntryFill = 'UPDATE node3 SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
@@ -548,53 +504,22 @@ const updateController = {
 
                     // update logs 
                     
-					//await nodeLogsConnection.query("UPDATE `node3_logs` SET `status` = 'write' WHERE `name` = ? AND `dest` = 'node3';", [movieName])
-					//console.log("Log updated to write in node3")
-
+					await node3Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
 					await node3Connection.query("COMMIT;")
                     console.log('node 3: committed')
-
+					await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committed', logId]);
 					await node3Connection.query("UNLOCK TABLES;")
                     console.log('node 3: unlocked tables')
-
-					// update logs
-                    /*
-					await nodeLogsConnection.query("UPDATE `node3_logs` SET `status` = ? WHERE `name` = ? AND `dest` = 'node3';", ['committing', movieName])
-					console.log("Log updated to committing in node3")
-					await nodeLogsConnection.query("UPDATE `node3_logs` SET `status` = ? WHERE `name` = ? AND `dest` = 'node3';", ['committed', movieName])
-					console.log("Log updated to committed in node3")
-					console.log("Inserted to node3")
-                    */
 		
 					// end connections
 					node3Connection.end()
                     console.log('node 3: ended connection')
 
-					//nodeLogsConnection.end()
 				} catch (err) {
+					flag2=true
 					if (node3Connection != null) {
 						node3Connection.end()
 					}
-                    /*
-					if (nodeLogsConnection != null) {
-						nodeLogsConnection.end()
-					}
-                    */
-		
-					// log to node 1 na di gumana ung node 3, may unCOMMITted sa node 3, node 1 = on, tas i query sa node 3 ung logged sa node 1
-					// create log in node1 na di pumasok sa node 3 ung insert, pero successful in node 1
-					// log na nag fail sa node 3
-                    /*
-					try {
-						nodeLogsConnection = await mysql.createConnection(config.nodeLogsConn)
-						await nodeLogsConnection.query("INSERT INTO `node1_2_logs` (`operation`, `name`, `year`, `rank`, `status`, `dest`) VALUES ('update', '" + movieName + "'," + movieYear + "," + movieRank + ", 'committing', 'node3');")
-						console.log("Successful insert in node1 but unsuccessful in node3")
-					} catch(err) {
-						if(nodeLogsConnection != null) {
-							nodeLogsConnection.end()
-						}
-					}
-                    */
 				}
 			}
 		}
