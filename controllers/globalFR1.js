@@ -7,9 +7,7 @@ const mysql = require('mysql2/promise');
 const config = require('../models/conn');
 var node1Connection
 var node2Connection
-var node2LogsConnection
 var node3Connection
-var node3LogsConnection 
 
 
 const isolationLevelDefault = `READ UNCOMMITTED`;
@@ -98,8 +96,8 @@ const globalFR1Controller = {
                     console.log(recentId)
                 }) 
                 //perform insert
-                sqlEntryFill = 'INSERT INTO node2 (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
-                datalist = node2Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
+                sqlEntryFill = 'INSERT INTO node2 (id, title, year, genre, director, actor1, actor2) VALUES (?, ?,?,?,?,?,?)';
+                datalist = node2Connection.query(sqlEntryFill, [recentId, title, year, genre, director, actor1,actor2])
 
                 datalist.then(function(result) {
                     console.log(result)
@@ -108,11 +106,9 @@ const globalFR1Controller = {
                 
                 //set log as write
                 //await nodeLogsConnection.query('UPDATE `logs` SET `status` = ? WHERE `name` = ? AND `dest` = ?;', ['committing', title, 'central'])
-
-                await node2Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
                 await node2Connection.query("COMMIT;");
                 //node2Connection.query("UPDATE logs SET status = 'committed' WHERE id = " + [logId]);
-                await node2Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committed', logId]);
+                await node2Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
                 await node2Connection.query("UNLOCK TABLES;");
 
                 //update logs
@@ -161,9 +157,26 @@ const globalFR1Controller = {
                     console.log(logId)
                 }) 
 
+                sqlEntryFill = 'SELECT id FROM node3 ORDER BY id DESC LIMIT 1';
+                let selectlist = node2Connection.query(sqlEntryFill)
+
+                selectlist.then(function(result) {
+                    console.log('-------')
+                    console.log(result)
+                    recentId = result
+                    console.log('.......')
+                    console.log(result[0]) // "Some User token"
+                    console.log('///////')
+                    console.log(result[0][0].id)
+                    console.log(result[0][0])
+                    recentId = parseInt(result[0][0].id) + 1
+                    console.log("?")
+                    console.log(recentId)
+                }) 
+
                 //perform insert
-                sqlEntryFill = 'INSERT INTO node3 (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
-                datalist = node3Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
+                sqlEntryFill = 'INSERT INTO node3 (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?,?)';
+                datalist = node3Connection.query(sqlEntryFill, [recentId, title, year, genre, director, actor1,actor2])
 
                 datalist.then(function(result) {
                     console.log(result)
@@ -173,10 +186,9 @@ const globalFR1Controller = {
                 //set log as write
                 //await nodeLogsConnection.query('UPDATE `logs` SET `status` = ? WHERE `name` = ? AND `dest` = ?;', ['committing', title, 'central'])
 
-                await node3Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
                 await node3Connection.query("COMMIT;");
                 //node2Connection.query("UPDATE logs SET status = 'committed' WHERE id = " + [logId]);
-                await node3Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committed', logId]);
+                await node3Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
                 await node3Connection.query("UNLOCK TABLES;");
 
                 //update logs
@@ -185,11 +197,29 @@ const globalFR1Controller = {
             }
             
         }
-        node2LogsConnection = await mysql.createConnection(config.nodeLogsConn)
-		const [rows1, fields1] = await nodeLogsConnection.query("SELECT * FROM `logs` WHERE `status` = ?;", ['committing'])
+        
 
-        node1Connection = await mysql.createConnection(config.node1conn)
-        console.log('reconnected to central node');
+        /*
+        try { //check node 2 logs
+            node2LogsConnection = await mysql.createConnection(config.nodeLogsConn)
+		    const [rows1, fields1] = await nodeLogsConnection.query("SELECT * FROM `logs` WHERE `status` = ?;", ['committing'])
+
+            node1Connection = await mysql.createConnection(config.node1conn)
+            console.log('connected to central node');
+
+            rows1.forEach(e => {
+                node1Connection.query('INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)')
+                datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
+                node2LogsConnection.query("UPDATE `logs` SET `status` = ? WHERE `name` = ?;", ['committed', e.name])
+
+                console.log("[RECOVERY] INSERTED IN NODE 1 TABLE 1")
+				
+                })
+
+        } catch (err) {
+
+        }
+        */
 
     }
 }

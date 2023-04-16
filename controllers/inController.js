@@ -36,6 +36,7 @@ const inController = {
         var insertedId;
         var results;
         var recentId;
+        var logId;
 
         var flag = false;
         var flag2 = false;
@@ -59,11 +60,25 @@ const inController = {
                 await node1Connection.query("LOCK TABLES central write;")
                 await console.log('Locked tables central');
 
+                console.log("Start log inserted to central logs")
+                var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+
+                //update logs
+                var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+                let datalist = node1Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
+                
+                datalist.then(function(result) {
+                    console.log(result)
+                    logId = result[0].insertId
+                    console.log("logid:")
+                    console.log(logId)
+                }) 
+
                 //insert new movie
                 const sqlEntryFill = 'INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
-                let datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
+                datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
                 //console.log(datalist)
-
+                
                 datalist.then(function(result) {
                     console.log(result)
                     console.log(result[0].insertId) // "Some User token"
@@ -71,10 +86,10 @@ const inController = {
                     results = result[0]
                  })               
         
-                console.log('performed insert')
+                await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
                 await node1Connection.query("COMMIT;")
-                console.log(insertedId)
                 console.log('committed')
+                await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committed', logId]);
                 await node1Connection.query("UNLOCK TABLES;")
                 console.log('tables are unlocked')
 
@@ -103,8 +118,20 @@ const inController = {
                     await node2Connection.query("set autocommit = 0;");
                     await node2Connection.query("START TRANSACTION;");
                     await node2Connection.query("LOCK TABLES node2 write;");
+                    
+                    //update logs
+                    var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+                    let datalist = node2Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
+                
+                    datalist.then(function(result) {
+                        console.log(result)
+                        logId = result[0].insertId
+                        console.log("logid:")
+                        console.log(logId)
+                    }) 
+
                     const sqlEntryFill = 'INSERT INTO node2 (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
-                    let datalist = node2Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
+                    datalist = node2Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
                     //console.log(datalist)
 
                     datalist.then(function(result) {
@@ -113,7 +140,9 @@ const inController = {
                         insertedId = result[0].insertId
                         results = result[0]
                     }) 
+                    await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
                     await node2Connection.query("COMMIT;");
+                    await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committed', logId]);
                     await node2Connection.query("UNLOCK TABLES;");
 
                     node2Connection.end()
@@ -146,9 +175,20 @@ const inController = {
                         await node1Connection.query("LOCK TABLES central write;")
                         await console.log('Locked tables central');
 
+                        //update logs
+                        var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+                        let datalist = node1Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
+                
+                        datalist.then(function(result) {
+                            console.log(result)
+                            logId = result[0].insertId
+                            console.log("logid:")
+                            console.log(logId)
+                        }) 
+
                         //insert new movie
                         const sqlEntryFill = 'INSERT INTO central (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?,?)';
-                        let datalist = node1Connection.query(sqlEntryFill, [insertedId, title, year, genre, director, actor1,actor2])
+                        datalist = node1Connection.query(sqlEntryFill, [insertedId, title, year, genre, director, actor1,actor2])
                     
 
                         datalist.then(function(result) {
@@ -159,9 +199,9 @@ const inController = {
                         })               
         
                         console.log('performed insert')
+                        await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
                         await node1Connection.query("COMMIT;")
-                        console.log(insertedId)
-                        console.log('committed')
+                        await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committed', logId]);
                         await node1Connection.query("UNLOCK TABLES;")
                         console.log('tables are unlocked')
 
