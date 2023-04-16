@@ -15,8 +15,8 @@ app.get('/updateRecord', updateController.updateRecord);
 app.get('/searchPage', searchController.searchPage);
 app.get('/searchRecord', searchController.searchRecord);
 
-app.get('/inPage', inController.insertPage);
-app.get('/inRecord', inController.insertRecord);
+app.get('/insertPage', inController.insertPage);
+app.get('/insertRecord', inController.insertRecord);
 
 
 module.exports = app;
