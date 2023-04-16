@@ -71,7 +71,7 @@ const globalFR1Controller = {
                     console.log('-------')
                     console.log(result)
                     recentIdNode2 = parseInt(result[0][0].id) + 1
-                    console.log("?")
+                    console.log("recentIdNode2: ")
                     console.log(recentIdNode2)
                 }) 
 
@@ -82,7 +82,7 @@ const globalFR1Controller = {
                     console.log('-------')
                     console.log(result)
                     recentIdNode3 = parseInt(result[0][0].id) + 1
-                    console.log("?")
+                    console.log("recentIdNode3 :")
                     console.log(recentIdNode3)
                 }) 
 
