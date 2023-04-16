@@ -134,12 +134,6 @@ const searchController = {
             }
         }
 		
-		// false pag di na add sa node 1/node2 or 3
-		if(flag2) {
-			res.send(false)
-		} else {
-			res.send(true)
-		}
     }
 }
     
