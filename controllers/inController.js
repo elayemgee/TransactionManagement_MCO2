@@ -75,7 +75,7 @@ const inController = {
                 }) 
 
                 //insert new movie
-                const sqlEntryFill = 'INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
+                sqlEntryFill = 'INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
                 datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
                 //console.log(datalist)
                 
@@ -232,13 +232,20 @@ const inController = {
                     await node2Connection.query("LOCK TABLES node2 write;")
                     await console.log('node2: lock tables')
 
-                    // insert in logs
-                        //await nodeLogsConnection.query("INSERT INTO `node2_logs` (`operation`, `name`, `year`, `rank`, `status`, `dest`) VALUES ('insert', '" + movieName + "'," + movieYear + "," + movieRank + ", 'start', 'node2');")
-                        //console.log("Start log inserted to node 2")
+                    //update logs
+                    var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+                    let datalist = node2Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
+            
+                    datalist.then(function(result) {
+                        console.log(result)
+                        logId = result[0].insertId
+                        console.log("logid:")
+                        console.log(logId)
+                    }) 
 
                     // insert new movie
                     const sqlEntryFill = 'INSERT INTO node2 (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?,?)';
-                    let datalist = node2Connection.query(sqlEntryFill, [insertedId, title, year, genre, director, actor1,actor2])
+                    datalist = node2Connection.query(sqlEntryFill, [insertedId, title, year, genre, director, actor1,actor2])
                     //console.log(datalist)
 
                     datalist.then(function(result) {
