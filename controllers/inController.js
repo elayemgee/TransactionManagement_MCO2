@@ -320,9 +320,20 @@ const inController = {
             await node1Connection.query("LOCK TABLES central write, logs WRITE;")
             await console.log('Locked tables central');
 
+            var sqlEntryFill = 'SELECT id FROM central ORDER BY id DESC LIMIT 1';
+                selectlist = node1Connection.query(sqlEntryFill)
+
+                selectlist.then(function(result) {
+                    console.log('-------')
+                    console.log(result)
+                    id = parseInt(result[0][0].id) + 1
+                    console.log("id :")
+                    console.log(id)
+                }) 
+
             //logs
             console.log("Start log inserted to central logs")
-            var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+            var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${id}','${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
 
             //update logs
             var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
@@ -337,7 +348,7 @@ const inController = {
             console.log("insert movie")
             //insert new movie
             sqlEntryFill = 'INSERT INTO central (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?,?)';
-            datalist = node1Connection.query(sqlEntryFill, [recentId, title, year, genre, director, actor1,actor2])
+            datalist = node1Connection.query(sqlEntryFill, [id, title, year, genre, director, actor1,actor2])
             //console.log(datalist)
             console.log("after insert")
             datalist.then(function(result) {
@@ -346,7 +357,7 @@ const inController = {
                 insertedId = result[0].insertId
                 results = result[0]
             })               
-            console.log("going to committ")
+            console.log("going to commit")
 
             await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
             await node1Connection.query("COMMIT;")
@@ -356,7 +367,7 @@ const inController = {
             console.log('tables are unlocked')
 
             //update logs
-            results = [insertedId, title, year, genre, director, actor1, actor2];
+            results = [id, title, year, genre, director, actor1, actor2];
 
             //end connection
             node1Connection.end()
@@ -503,13 +514,13 @@ const inController = {
                 await console.log('node3: autocommit = 0')
                 await node3Connection.query("START TRANSACTION;")
                 await console.log('node3: start transaction')
-                await node3Connection.query("LOCK TABLES node3 write, logs WRITE;")
+                await node3Connection.query("LOCK TABLES node3 WRITE, logs WRITE;")
                 await console.log('node3: lock tables')
 
                 //logs
                 //await node2Connection.query("LOCK TABLES node2 WRITE, logs WRITE;");
                 console.log("Start log inserted to central logs")
-                var sqlEntryLog = `INSERT INTO node3 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+                var sqlEntryLog = `INSERT INTO node3 (id, title, year, genre, director, actor1, actor2) VALUES ('${id}','${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
                     
                 //update logs
                 var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
@@ -524,7 +535,7 @@ const inController = {
 
                 // insert new movie
                 sqlEntryFill = 'INSERT INTO node3 (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?,?)';
-                datalist = node3Connection.query(sqlEntryFill, [recentId, title, year, genre, director, actor1,actor2])
+                datalist = node3Connection.query(sqlEntryFill, [id, title, year, genre, director, actor1,actor2])
                 //console.log(datalist)
 
                 datalist.then(function(result) {

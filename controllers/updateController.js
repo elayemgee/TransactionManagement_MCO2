@@ -46,7 +46,7 @@ const updateController = {
                 console.log("autocommit=0")
 				await node1Connection.query("START TRANSACTION;")
                 console.log("start transaction")
-				await node1Connection.query("LOCK TABLES central write, logs WRITE;")
+				await node1Connection.query("LOCK TABLES central WRITE, logs WRITE;")
                 await console.log('Locked tables central');
 
                 //logs
