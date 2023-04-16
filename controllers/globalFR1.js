@@ -185,6 +185,12 @@ const globalFR1Controller = {
             }
             
         }
+        node2LogsConnection = await mysql.createConnection(config.nodeLogsConn)
+		const [rows1, fields1] = await nodeLogsConnection.query("SELECT * FROM `logs` WHERE `status` = ?;", ['committing'])
+
+        node1Connection = await mysql.createConnection(config.node1conn)
+        console.log('reconnected to central node');
+
     }
 }
 module.exports = globalFR1Controller;
