@@ -220,7 +220,7 @@ const updateController = {
                 	await node2Connection.query("set autocommit = 0;")
                 	console.log("autocommit=0")
 					await node2Connection.query("START TRANSACTION;")
-                	console.log("start transaction")
+                	console.log("start transaction heeere")
 					await node2Connection.query("LOCK TABLES node2, logs WRITE;")
                 	await console.log('Locked tables node2');
 
