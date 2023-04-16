@@ -294,8 +294,6 @@ const inController = {
             console.log("Entered >= 1980 condition")
             // throw Error // simulate
             node1Connection = await mysql.createConnection(config.node1conn)
-            console.log("Entered >= 1980 condition")
-
             await node1Connection.query(setIsolationLevel)
             console.log("Isolation level is set to: " + isolationLevelDefault)
 
@@ -407,6 +405,7 @@ const inController = {
                 //nodeLogsConnection.end()
 
             } catch (err) {
+                console.log("failure to connect node 1 and node 3")
                 flag2 = true //if there's a failure to connect to node 1 and node 3
                 if (node3Connection != null) {
                     node3Connection.end()
