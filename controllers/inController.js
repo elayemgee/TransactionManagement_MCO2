@@ -15,7 +15,7 @@ const setIsolationLevel = isolationLevelSql + isolationLevelDefault
 
 
 const inController = {
-    inPage: function (req, res) {   
+    insertPage: function (req, res) {   
         res.render('in');
     },
 
@@ -24,7 +24,7 @@ const inController = {
 	 * @param {*} req 
 	 * @param {*} res 
 	 */
-    inRecord: async function (req, res) { 
+    insertRecord: async function (req, res) { 
 
         console.log('gonna execute insert');
         const title = req.query.movie;
