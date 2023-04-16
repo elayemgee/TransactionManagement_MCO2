@@ -601,7 +601,6 @@ const inController = {
             }*/
         }
     }   
-    // false pag di na add sa node 1/node2 or 3
     //flag 2 means that insert was failed on all nodes
 
 		if(flag2) {

@@ -85,6 +85,13 @@ const globalFR1Controller = {
                     console.log(recentIdNode3)
                 }) 
 
+                console.log('before autocommit')
+                await node2Connection.query("set autocommit = 0;");
+                console.log("after autocommit, before start transaction")
+                await node2Connection.query("START TRANSACTION;");
+                console.log("after start transaction, before lock tables")
+                await node2Connection.query("LOCK TABLES node2 WRITE, logs WRITE;");
+
                 if (recentIdNode2 > recentIdNode3){
                     console.log("THIS SHOULD BE AFTER BIG OBJECT LOGS")
                     newId = recentIdNode2;
@@ -95,12 +102,7 @@ const globalFR1Controller = {
                 }
                 console.log('newId:' + newId)
                 node3Connection.end()
-                console.log('before autocommit')
-                await node2Connection.query("set autocommit = 0;");
-                console.log("after autocommit, before start transaction")
-                await node2Connection.query("START TRANSACTION;");
-                console.log("after start transaction, before lock tables")
-                await node2Connection.query("LOCK TABLES node2 WRITE, logs WRITE;");
+                
                 
                 //table for reference: id, operation, sql_statement, node_id, status
                 //await node2Connection.query("INSERT INTO `logs` (id, operation, sql_statement, node_id, status) VALUES ('insert', '" + movieName + "'," + movieYear + "," + movieRank + ", 'start', 'node1');")
