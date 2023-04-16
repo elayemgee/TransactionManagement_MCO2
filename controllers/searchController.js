@@ -43,7 +43,7 @@ const searchController = {
 
             datalist.then(function(result) {
                 console.log(result)
-                results = result
+                results = result[0]
                 })   
             console.log('performed update')
 
