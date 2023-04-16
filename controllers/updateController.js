@@ -480,7 +480,7 @@ const updateController = {
 					var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
 
 					//update logs
-					var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+					sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
 					datalist = node1Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
 					console.log("after start")
 			
@@ -492,7 +492,7 @@ const updateController = {
 					})
 		
 					// update movie
-                    const sqlEntryFill = 'UPDATE node3 SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
+                    sqlEntryFill = 'UPDATE node3 SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
                     let datalist = node3Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
                     console.log(datalist)
 
