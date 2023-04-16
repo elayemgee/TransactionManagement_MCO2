@@ -22,9 +22,12 @@ const textReportController = {
 			
         try {// search node 1
             node1Connection = await mysql.createConnection(config.node1conn)
+            console.log("node 1: successfully connected")
         
             //search movie
             const qResult = await node1Connection.query(`SELECT * FROM central LIMIT 100;`)
+            console.log("node 1: ran query")
+
             
             // end connections
             node1Connection.end()
@@ -38,8 +41,10 @@ const textReportController = {
             console.log(err)
             if (node1Connection != null) {
                 node1Connection.end()
+                console.log("node 1: ended connection")
+
             }
-            
+            console.log("gonna try node 2 and 3")
             // goto node 2 and 3
 			try {
 				node2Connection = await mysql.createConnection(config.node2conn)
@@ -67,10 +72,7 @@ const textReportController = {
 				
 				console.log(err)
 			}
-                
-            
         }
-
         //res.render('search', { result: results })
         res.render('report', { tuple: results })
 		
