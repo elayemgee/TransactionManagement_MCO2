@@ -68,9 +68,9 @@ const updateController = {
                 datalist = await node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
                 console.log(datalist)
 
-                datalist.then(function(result) {
+                /*datalist.then(function(result) {
                     console.log(result)
-                 })   
+                 })  */ 
                 console.log('performed update')
 
 				await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
