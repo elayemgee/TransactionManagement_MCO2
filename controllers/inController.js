@@ -308,22 +308,22 @@ const inController = {
             //logs
             console.log("Start log inserted to central logs")
             var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
-
+            console.log("after log")
             //update logs
             var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
             datalist = node1Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
-    
+            console.log("after insert log")
             datalist.then(function(result) {
                 console.log(result)
                 logId = result[0].insertId
                 console.log("logid:")
                 console.log(logId)
             }) 
-
+            console.log("insert new movie")
             // insert new movie
             sqlEntryFill = 'INSERT INTO central (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?,?)';
             let datalist = node1Connection.query(sqlEntryFill, [recentId, title, year, genre, director, actor1,actor2])
-
+            console.log("after insert movie")
                 datalist.then(function(result) {
                     console.log(result)
                     console.log(result[0].insertId) // "Some User token"
@@ -349,13 +349,9 @@ const inController = {
             if (node1Connection != null) {
                 node1Connection.end()
             }
-            /*
-            if (nodeLogsConnection != null) {
-                nodeLogsConnection.end()
-            }*/
-
             try { //if connection to node 1 fails, try connecting to node 3
                 // throw Error // simulate
+                console.log("if connection to node 1 fails, try connecting to node 3")
                 node3Connection = await mysql.createConnection(config.node3conn)
                 //nodeLogsConnection = await mysql.createConnection(config.nodeLogsConn)
 
