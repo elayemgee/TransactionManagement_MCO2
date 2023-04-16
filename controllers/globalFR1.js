@@ -156,7 +156,7 @@ const globalFR1Controller = {
                 })
             }
             catch (err){
-                node3Connection = await mysql.createConnection(config.node2conn)
+                node2Connection = await mysql.createConnection(config.node2conn)
                 console.log('connected to node 2!');
 
                 node3Connection = await mysql.createConnection(config.node3conn)
@@ -166,19 +166,19 @@ const globalFR1Controller = {
                 console.log("Isolation level is set to: " + isolationLevelDefault)
 
                 //look at the ids from node 2 and node 3 to get the bigger one and increment from there
-                var sqlEntryFill = 'SELECT id FROM node3 ORDER BY id DESC LIMIT 1';
-                let selectlist = await node3Connection.query(sqlEntryFill)
+                var sqlEntryFill = 'SELECT id FROM node2 ORDER BY id DESC LIMIT 1';
+                let selectlist = node2Connection.query(sqlEntryFill)
 
-                /*
+                
                 selectlist.then(function(result) {
                     console.log('-------')
                     console.log(result)
                     recentIdNode2 = parseInt(result[0][0].id) + 1
                     console.log("recentIdNode2: ")
                     console.log(recentIdNode2)
-                }) */
+                }) 
 
-                var sqlEntryFill = 'SELECT id FROM node2 ORDER BY id DESC LIMIT 1';
+                var sqlEntryFill = 'SELECT id FROM node3 ORDER BY id DESC LIMIT 1';
                 selectlist = node3Connection.query(sqlEntryFill)
 
                 selectlist.then(function(result) {
