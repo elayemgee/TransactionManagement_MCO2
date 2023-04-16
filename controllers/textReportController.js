@@ -20,33 +20,14 @@ const textReportController = {
 			
         try {// search node 1
             node1Connection = await mysql.createConnection(config.node1conn)
-            
-            await node1Connection.query("set autocommit = 0;")
-            console.log("autocommit=0")
-            await node1Connection.query("START TRANSACTION;")
-            console.log("start transaction")
-            await node1Connection.query("LOCK TABLES central read;")
-            console.log("lock")
-    
+        
             //search movie
-            const sqlQuery = `SELECT * FROM central LIMIT 100`;
-            const substr = `%${searchCriteria}%`;                
-            let datalist = node1Connection.query(sqlQuery)
-            console.log(datalist)
-
-            datalist.then(function(result) {
-                console.log(result)
-                data.dataDB1 = result[0]
-                })   
-            console.log('performed update')
-
-            await node1Connection.query("COMMIT;")
-            console.log("commit")
-            await node1Connection.query("UNLOCK TABLES;")
-            console.log("unlock")
-
+            const qResult = await node2Connection.query(`SELECT * FROM central LIMIT 100;`)
+    
             // end connections
             node1Connection.end()
+
+            data.dataDB1 = qResult[0]
 
         } catch (err) {
             console.log(err)
