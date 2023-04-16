@@ -295,21 +295,21 @@ const inController = {
             console.log("Entered >= 1980 condition")
             // throw Error // simulate
             node1Connection = await mysql.createConnection(config.node1conn)
-            await node1Connection.query(setIsolationLevel)
-            console.log("Isolation level is set to: " + isolationLevelDefault)
+            //await node1Connection.query(setIsolationLevel)
+            //console.log("Isolation level is set to: " + isolationLevelDefault)
 
             await node1Connection.query("set autocommit = 0;")
             console.log("autocommit = 0")
             await node1Connection.query("START TRANSACTION;")
             console.log("transaction started")
-            await node1Connection.query("LOCK TABLES central write, logs WRITE;;")
+            await node1Connection.query("LOCK TABLES central write, logs WRITE;")
             console.log("tables are locked")
 
             //logs
             console.log("Start log inserted to central logs")
             var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
             console.log("after log")
-            console.log(err)
+
             //update logs
             var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
             datalist = node1Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
@@ -324,13 +324,15 @@ const inController = {
             // insert new movie
             sqlEntryFill = 'INSERT INTO central (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?,?)';
             let datalist = node1Connection.query(sqlEntryFill, [recentId, title, year, genre, director, actor1,actor2])
+            console.log(error)
             console.log("after insert movie")
-                datalist.then(function(result) {
-                    console.log(result)
-                    console.log(result[0].insertId) // "Some User token"
-                    insertedId = result[0].insertId
-                    results = result[0]
-                })   
+
+            datalist.then(function(result) {
+                console.log(result)
+                console.log(result[0].insertId) // "Some User token"
+                insertedId = result[0].insertId
+                results = result[0]
+            })   
             console.log('performed insert')
 
             await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
@@ -344,8 +346,8 @@ const inController = {
             // end connections
             node1Connection.end()
             //nodeLogsConnection.end()
-
             flag = true //insert in node 1 was successful
+
         } catch (err) {
             if (node1Connection != null) {
                 node1Connection.end()
@@ -408,29 +410,6 @@ const inController = {
                 if (node3Connection != null) {
                     node3Connection.end()
                 }
-                /*
-                if (nodeLogsConnection != null) {
-                    node3Connection.end()
-                }*/
-
-                // update logs status = terminated, since nag error sa lahat
-                /*
-                try {
-                    nodeLogsConnection = await mysql.createConnection(config.nodeLogsConn)
-
-                    await nodeLogsConnection.query("INSERT INTO `node3_logs` (`operation`, `name`, `year`, `rank`, `status`, `dest`) VALUES ('insert', '" + movieName + "'," + movieYear + "," + movieRank + ", 'terminated', 'node3');")
-                    console.log("Logs in node3_logs terminated")
-
-                    await nodeLogsConnection.query("INSERT INTO `node1_2_logs` (`operation`, `name`, `year`, `rank`, `status`, `dest`) VALUES ('insert', '" + movieName + "'," + movieYear + "," + movieRank + ", 'terminated', 'node1');")
-                    console.log("Logs in node1_logs terminated")
-
-                } catch(err) {
-                    console.log(err)
-                    if(nodeLogsConnection != null) {
-                        nodeLogsConnection.end()
-                    }
-                }
-                */
             }
                if (flag3) {
                 try{
