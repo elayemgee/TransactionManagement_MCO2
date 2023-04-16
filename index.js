@@ -42,9 +42,8 @@ app.use(express.static('public'));
 app.use('/', routes);
 
 
-app.listen(port, (error) => {
+app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
-    console.log(error)
 });
 //app.listen(process.env.PORT || 8080)
 

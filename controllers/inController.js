@@ -29,6 +29,7 @@ const inController = {
 		const actor1 = req.query.actor1;
 		const actor2 = req.query.actor2;
         var insertedId;
+        var results;
 
         var flag = false;
         var flag2 = false;
@@ -59,6 +60,7 @@ const inController = {
                     console.log(result)
                     console.log(result[0].insertId) // "Some User token"
                     insertedId = result[0].insertId
+                    results = result[0]
                  })               
         
                 console.log('performed insert')
@@ -87,11 +89,16 @@ const inController = {
                     await node2Connection.query("set autocommit = 0;");
                     await node2Connection.query("START TRANSACTION;");
                     await node2Connection.query("LOCK TABLES node2 write;");
-                    await node2Connection.query(`INSERT INTO node2 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`, function( error, results, fields){
-                        if (error) throw error;
-                        console.log(results);
-                        res.render('insert', { records: results });
-                    });
+                    const sqlEntryFill = 'INSERT INTO node2 (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
+                    let datalist = node2Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
+                    //console.log(datalist)
+
+                    datalist.then(function(result) {
+                        console.log(result)
+                        console.log(result[0].insertId) // "Some User token"
+                        insertedId = result[0].insertId
+                        results = result[0]
+                    }) 
                     await node2Connection.query("COMMIT;");
                     await node2Connection.query("UNLOCK TABLES;");
 
@@ -152,6 +159,7 @@ const inController = {
                         console.log(result)
                         console.log(result[0].insertId) // "Some User token"
                         insertedId = result[0].insertId
+                        results = result[0]
                     })               
             
                     console.log('performed insert')
@@ -224,6 +232,7 @@ const inController = {
                     console.log(result)
                     console.log(result[0].insertId) // "Some User token"
                     insertedId = result[0].insertId
+                    results = result[0]
                  })   
             console.log('performed insert')
 
@@ -285,6 +294,7 @@ const inController = {
                     console.log(result)
                     console.log(result[0].insertId) // "Some User token"
                     insertedId = result[0].insertId
+                    results = result[0]
                 })               
         
                 console.log('performed insert')
@@ -386,6 +396,7 @@ const inController = {
                     console.log(result)
                     console.log(result[0].insertId) // "Some User token"
                     insertedId = result[0].insertId
+                    results = result[0]
                 })               
         
                 console.log('performed insert')
@@ -449,8 +460,18 @@ const inController = {
 			res.send(false)
 		} else {
             console.log('insert was completed')
-			res.send(true)
+			//res.send(true)
+            res.render('insert', { records: results })
 		}
+        /*
+        const select = `SELECT * FROM central ORDER BY id DESC LIMIT 1`;
+
+        con.query(select, function (error, results, fields) {
+            if (error) throw error;
+            console.log(results);
+            res.render('insert', { records: results });
+        });
+        */
 }
 }
 module.exports = inController;
