@@ -433,7 +433,7 @@ const inController = {
                     //logs
                     console.log("Start log inserted to central logs")
                     var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
-                    console.log("should end here")
+
                     //update logs
                     var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
                     datalist = node1Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
@@ -490,7 +490,7 @@ const inController = {
                 await console.log('node3: autocommit = 0')
                 await node3Connection.query("START TRANSACTION;")
                 await console.log('node3: start transaction')
-                await node3Connection.query("LOCK TABLES node2 write, logs WRITE;")
+                await node3Connection.query("LOCK TABLES node3 write, logs WRITE;")
                 await console.log('node3: lock tables')
 
                 //logs
@@ -500,7 +500,7 @@ const inController = {
                     
                 //update logs
                 var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
-                let datalist = node2Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
+                let datalist = node3Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
             
                 datalist.then(function(result) {
                     console.log(result)
@@ -533,6 +533,7 @@ const inController = {
                 node3Connection.end()
 
                 } catch (err) {
+                    flag2=true
                     // log to node 1 na di gumana ung node 2, may unCOMMITted sa node 2, node 1 = on RECOVERY
                     if (node3Connection != null) {
                         node3Connection.end()
