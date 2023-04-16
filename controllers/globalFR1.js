@@ -185,36 +185,6 @@ const globalFR1Controller = {
             }
             
         }
-
-        /*
-        node1Pool.getConnection(function (err, centralConnection) {
-            if (err) {
-				throw err;
-			}
-            centralConnection.destroy();
-            centralConnection.ping(function (err) {
-                if (err) {
-					console.log('Central node failed!');
-                    if (year < 1980) {
-                        node2Pool.getConnection(function(err, node2Connection) {
-                            if (err) {
-								throw err;
-							}
-
-                            node2Connection.ping(function(err){
-                                if (err) {
-									console.log('Node 2 failed!');
-									// should be in node 2 but node 2 is down --> unavailable all servers
-									res.send('Node 1 and Node 2 are down. Sorry for the inconvenience.');
-								}
-                            })
-
-                        })
-                    }
-            }
-            
-        })
-    })*/
     }
 }
 module.exports = globalFR1Controller;
