@@ -238,9 +238,7 @@ const globalFR1Controller = {
                 node1Connection.query(query)
                 console.log("isnertered into node 1")
                 //datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
-                node2LogsConnection.query("UPDATE `logs` SET `status` = ? WHERE `id` = ?;", ['committed', e.id])
-
-                //console.log("[RECOVERY] INSERTED IN NODE 1 TABLE 1")
+                node2Connection.query("UPDATE `logs` SET `status` = ? WHERE `id` = ?;", ['committed', e.id])
 				
                 })
 
