@@ -105,7 +105,7 @@ const inController = {
                 }
                 //insert in node 2 if node 1 is not successful
                 try {
-                    console.log('node2');
+                    console.log('in node2 because node 1 was unsuccessful');
                     node2Connection = await mysql.createConnection(config.node2conn);
                     console.log('created connection to node 2');
 
