@@ -88,8 +88,9 @@ const globalFR1Controller = {
                     console.log(result)
                     recentId = result
                     console.log('.......')
-                    console.log(result[0].insertId) // "Some User token"
+                    console.log(result[0]) // "Some User token"
                     console.log('///////')
+                    console.log(result[0].id)
                     //recentId = result[0].id
                     //console.log(recentId)
                 }) 
