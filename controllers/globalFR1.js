@@ -98,9 +98,8 @@ const globalFR1Controller = {
                 }) 
                 console.log(recentId)
 
-                
                 //perform insert
-                sqlEntryFill = 'INSERT INTO node2 (id, title, year, genre, director, actor1, actor2) VALUES (?, ?,?,?,?,?,?)';
+                sqlEntryFill = 'INSERT INTO node2 (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?,?)';
                 datalist = node2Connection.query(sqlEntryFill, [recentId, title, year, genre, director, actor1,actor2])
 
                 datalist.then(function(result) {

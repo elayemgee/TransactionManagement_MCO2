@@ -194,8 +194,8 @@ const inController = {
                         //console.log("Start log inserted to node 2")
 
                     // insert new movie
-                    const sqlEntryFill = 'INSERT INTO node2 (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
-                    let datalist = node2Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
+                    const sqlEntryFill = 'INSERT INTO node2 (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?,?)';
+                    let datalist = node2Connection.query(sqlEntryFill, [insertedId, title, year, genre, director, actor1,actor2])
                     //console.log(datalist)
 
                     datalist.then(function(result) {
