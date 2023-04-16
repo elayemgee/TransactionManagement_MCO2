@@ -78,6 +78,16 @@ const globalFR1Controller = {
                     logId = result[0].insertId
                 }) 
 
+                sqlEntryFill = 'SELECT id FROM node2 ORDER BY id DESC LIMIT 1';
+                datalist = node2Connection.query(sqlEntryFill)
+                var recentId
+                datalist.then(function(result) {
+                    console.log(result)
+                    console.log(result[0].insertId) // "Some User token"
+                    recentId = result[0]
+                    console.log(recentId)
+                }) 
+
                 //perform insert
                 sqlEntryFill = 'INSERT INTO node2 (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
                 datalist = node2Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
