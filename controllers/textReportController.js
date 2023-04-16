@@ -91,4 +91,4 @@ const textReportController = {
     }
 }
     
-module.exports = searchController;
+module.exports = textReportController;
