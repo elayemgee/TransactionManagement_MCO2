@@ -112,9 +112,9 @@ const globalFR1Controller = {
                 
                 //set log as write
                 
-                node2Connection.query("UPDATE logs SET status = 'committing' WHERE id == " + [logId]);
+                node2Connection.query("UPDATE logs SET status = 'committing' WHERE id = " + [logId]);
                 await node2Connection.query("COMMIT;");
-                node2Connection.query("UPDATE logs SET status = 'committed' WHERE id == " + [logId]);
+                node2Connection.query("UPDATE logs SET status = 'committed' WHERE id = " + [logId]);
                 await node2Connection.query("UNLOCK TABLES;");
 
                 //update logs
