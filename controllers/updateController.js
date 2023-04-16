@@ -26,12 +26,12 @@ const updateController = {
 		const director = req.query.director;
 		const actor1 = req.query.actor1;
 		const actor2 = req.query.actor2;
+        const id = req.query.id;
 
         var flag = false;
         var flag2 = false;
 		var flag3 = false;
         var results
-		var id;
 		var logId;
 
         if (year < 1980) {
