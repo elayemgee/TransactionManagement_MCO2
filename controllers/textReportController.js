@@ -22,7 +22,7 @@ const textReportController = {
             node1Connection = await mysql.createConnection(config.node1conn)
         
             //search movie
-            const qResult = await node2Connection.query(`SELECT * FROM central LIMIT 100;`)
+            const qResult = await node1Connection.query(`SELECT * FROM central LIMIT 100;`)
     
             // end connections
             node1Connection.end()
