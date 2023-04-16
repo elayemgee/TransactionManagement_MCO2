@@ -70,13 +70,6 @@ const updateController = {
 				await node1Connection.query("COMMIT;")
                 console.log("commit")
 
-                sqlEntryFill = 'SELECT * FROM central WHERE id = ?;';
-                datalist = await node1Connection.query(sqlEntryFill, [id])
-                datalist.then(function(result) {
-                    console.log(result)
-                    results = result[0]
-                 })   
-                
 				await node1Connection.query("UNLOCK TABLES;")
                 console.log("unlock")
 		
@@ -510,6 +503,7 @@ const updateController = {
 			res.send(false)
 		} else {
 			//res.send(true)
+            results = [id, title, year, genre, director, actor1, actor2]
 			res.render('update', { records: results })
 		}
     }
