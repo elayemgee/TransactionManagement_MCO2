@@ -72,7 +72,7 @@ const textReportController = {
         }
 
         //res.render('search', { result: results })
-        res.render('report', { tuple: data })
+        res.render('report', { tuple: results })
 		
     }
 }
