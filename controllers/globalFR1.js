@@ -92,7 +92,7 @@ const globalFR1Controller = {
                 else {
                     newId = recentIdNode3 + 1;
                 }
-
+                console.log(newId)
                 node3Connection.end()
 
                 await node2Connection.query("set autocommit = 0;");
