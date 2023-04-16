@@ -80,7 +80,7 @@ const inController = {
 
                 //update logs
 
-                /*
+                
                 var sqlentry = 'SELECT id FROM node2 ORDER BY id DESC LIMIT 1';
                 let selectlist = await node1Connection.query(sqlentry)
                 
@@ -93,7 +93,7 @@ const inController = {
                     console.log('///////')
                     console.log(result[0][0].id)
                     results = result[0][0]
-                }) */
+                }) 
 
                 //end connection
                 node1Connection.end()
