@@ -77,7 +77,7 @@ const globalFR2Controller = {
                 //table for reference: id, operation, sql_statement, node_id, status
                 //await node2Connection.query("INSERT INTO `logs` (id, operation, sql_statement, node_id, status) VALUES ('insert', '" + movieName + "'," + movieYear + "," + movieRank + ", 'start', 'node1');")
 				console.log("Start log inserted to node 1 logs")
-                var sqlEntryFill = `INSERT INTO central (id, title, year, genre, director, actor1, actor2) VALUES ('${newId}','${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+                var sqlEntryFill = `INSERT INTO node2 (id, title, year, genre, director, actor1, actor2) VALUES ('${newId}','${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
 
                 //update logs
                 var sqlEntryLog = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
