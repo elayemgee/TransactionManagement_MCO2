@@ -539,69 +539,9 @@ const inController = {
                         node3Connection.end()
                     }
                 }
-                // throw Error // simulate
-                /*console.log("--------------------")
-                console.log("Enter node 3")
-                node3Connection = await mysql.createConnection(config.node3conn)
-                //nodeLogsConnection = await mysql.createConnection(config.nodeLogsConn)
-                console.log('node3: established connection')
-
-                await node3Connection.query(setIsolationLevel)
-                console.log("Isolation level is set to: " + isolationLevelDefault)
-
-                await node3Connection.query("set autocommit = 0;")
-                console.log('node3: autocommitted')
-                await node3Connection.query("START TRANSACTION;")
-                console.log('node3: started transaction')
-                await node3Connection.query("LOCK TABLES node3 write, logs WRITE;")
-                console.log('node3: locked tables')
-
-                //logs
-                console.log("Start log inserted to central logs")
-                var sqlEntryLog = `INSERT INTO node3 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
-
-                //update logs
-                var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
-                datalist = node3Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
-
-                datalist.then(function(result) {
-                    console.log(result)
-                    logId = result[0].insertId
-                    console.log("logid:")
-                    console.log(logId)
-                }) 
-                
-                sqlEntryFill = 'INSERT INTO node3 (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?,?)';
-                let datalist = node3Connection.query(sqlEntryFill, [recentId, title, year, genre, director, actor1,actor2])
-                //console.log(datalist)
-
-                datalist.then(function(result) {
-                    console.log(result)
-                    console.log(result[0].insertId) // "Some User token"
-                    insertedId = result[0].insertId
-                    results = result[0]
-                })               
-        
-                console.log('performed insert')
-
-                await node3Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
-                await node3Connection.query("COMMIT;")
-                console.log('node 3: committed')
-                await node3Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committed', logId]);
-                await node3Connection.query("UNLOCK TABLES;")
-                console.log('node 3: unlocked tables')
-
-                // end connections
-                console.log('finished insert in node 3')
-                node3Connection.end()
-                //nodeLogsConnection.end()
-            } catch (err) {
-                if (node3Connection != null) {
-                    node3Connection.end()
-                }
-            }*/
-        }
-    }   
+            }
+        }   
+    // false pag di na add sa node 1/node2 or 3
     //flag 2 means that insert was failed on all nodes
 
 		if(flag2) {
