@@ -533,6 +533,7 @@ const inController = {
                 node3Connection.end()
 
                 } catch (err) {
+                    flag2=true
                     // log to node 1 na di gumana ung node 2, may unCOMMITted sa node 2, node 1 = on RECOVERY
                     if (node3Connection != null) {
                         node3Connection.end()
