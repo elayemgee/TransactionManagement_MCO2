@@ -35,6 +35,7 @@ const globalFR1Controller = {
         var insertedId;
         var logId;
         var results;
+        var recentId;
 
         var flag = false;
         var flag2 = false;
@@ -82,7 +83,7 @@ const globalFR1Controller = {
 
                 sqlEntryFill = 'SELECT id FROM node2 ORDER BY id DESC LIMIT 1';
                 datalist = node2Connection.query(sqlEntryFill)
-                var recentId
+                
                 datalist.then(function(result) {
                     console.log('-------')
                     console.log(result)
@@ -92,7 +93,7 @@ const globalFR1Controller = {
                     console.log('///////')
                     console.log(result[0][0].id)
                     console.log(result[0][0])
-                    recentId = result[0][0].id + 1
+                    recentId = parseInt(result[0][0].id) + 1
                     //recentId = result[0].id
                     //console.log(recentId)
                 }) 
