@@ -55,7 +55,7 @@ const updateController = {
 				//await node1Connection.query("UPDATE central SET `title` = '" + title + "'," + "`year` = " + year + "," + "`genre` = " + genre  + "',"+ "`director` = " + director + "',"+ "`actor1 = `" + actor1 + "',"+ "`actor2 = `" + actor2 + " WHERE id = " + id + ";")
                 //console.log("updated works")
                 const sqlEntryFill = 'UPDATE central SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
-                let datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
+                let datalist = await node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
                 console.log(datalist)
 
                 datalist.then(function(result) {
@@ -71,7 +71,7 @@ const updateController = {
                 console.log("commit")
 
                 sqlEntryFill = 'SELECT * FROM central WHERE id = ?;';
-                datalist = node1Connection.query(sqlEntryFill, id)
+                datalist = await node1Connection.query(sqlEntryFill, [id])
                 datalist.then(function(result) {
                     console.log(result)
                     results = result[0]
