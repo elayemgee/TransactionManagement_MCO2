@@ -60,7 +60,6 @@ const updateController = {
 
                 datalist.then(function(result) {
                     console.log(result)
-                    results = result[0]
                  })   
                 console.log('performed update')
 
@@ -70,6 +69,14 @@ const updateController = {
 				//console.log("Log updated to write in node 1 table 1")
 				await node1Connection.query("COMMIT;")
                 console.log("commit")
+
+                sqlEntryFill = 'SELECT * FROM central WHERE id = ?;';
+                datalist = node1Connection.query(sqlEntryFill, id)
+                datalist.then(function(result) {
+                    console.log(result)
+                    results = result[0]
+                 })   
+                
 				await node1Connection.query("UNLOCK TABLES;")
                 console.log("unlock")
 		
