@@ -208,7 +208,8 @@ const globalFR1Controller = {
             console.log('connected to central node');
 
             rows1.forEach(e => {
-                console.log(e)
+                console.log(e[0])
+                console.log(e[1])
                 console.log(e[2])
                 var query = e.sql_statement
                 console.log(query)
