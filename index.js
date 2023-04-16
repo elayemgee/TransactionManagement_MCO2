@@ -7,7 +7,7 @@ const fs = require('fs');
 const router = express.Router();
 const path = require('path');
 
-//const port = 3000;
+const port = 3000;
 
 const routes = require('./routes.js');
 
@@ -42,7 +42,7 @@ app.use(express.static('public'));
 app.use('/', routes);
 
 
-app.listen(port, () => {
+app.listen(port, (error) => {
     console.log(`Server listening on port ${port}`);
     console.log(error)
 });
