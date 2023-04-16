@@ -324,13 +324,15 @@ const inController = {
             // insert new movie
             sqlEntryFill = 'INSERT INTO central (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?,?)';
             let datalist = node1Connection.query(sqlEntryFill, [recentId, title, year, genre, director, actor1,actor2])
+            console.log(error)
             console.log("after insert movie")
-                datalist.then(function(result) {
-                    console.log(result)
-                    console.log(result[0].insertId) // "Some User token"
-                    insertedId = result[0].insertId
-                    results = result[0]
-                })   
+
+            datalist.then(function(result) {
+                console.log(result)
+                console.log(result[0].insertId) // "Some User token"
+                insertedId = result[0].insertId
+                results = result[0]
+            })   
             console.log('performed insert')
 
             await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
@@ -344,8 +346,8 @@ const inController = {
             // end connections
             node1Connection.end()
             //nodeLogsConnection.end()
-
             flag = true //insert in node 1 was successful
+
         } catch (err) {
             if (node1Connection != null) {
                 node1Connection.end()
