@@ -96,7 +96,7 @@ const inController = {
                 console.log('tables are unlocked')
 
                 //update logs
-                results = [insertedId, title, year, genre, director, actor1, actor2];
+                //results = [insertedId, title, year, genre, director, actor1, actor2];
 
                 //end connection
                 node1Connection.end()
