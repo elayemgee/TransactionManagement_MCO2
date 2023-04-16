@@ -93,6 +93,7 @@ const updateController = {
 				// insert to node 2 if node 1 isn't successful
 				try {
 					// throw Error // simulate
+					console.log("insert to node 2 if node 1 isn't successful")
 					node2Connection = await mysql.createConnection(config.node2conn)
 
                     await node2Connection.query(setIsolationLevel)
