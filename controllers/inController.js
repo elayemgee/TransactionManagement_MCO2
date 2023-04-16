@@ -38,6 +38,7 @@ const inController = {
 
         var flag = false;
         var flag2 = false;
+        var flag3 = false;
 
         if(year < 1980){
             //select from node 1
@@ -113,36 +114,64 @@ const inController = {
                     await node2Connection.query("UNLOCK TABLES;");
 
                     node2Connection.end()
+                    flag3 = true
                     console.log('gonna render results');
                     res.render('in',  { records: results });
 
                 } catch (err) {
+                    flag2=true
                     if (node2Connection != null) {
                         node2Connection.end()
                     }
                     console.log('node2 failed')   
                     res.render('in')     
-                
-                //update log status
-                /*
-                try {
-                    nodeLogsConnection = await mysql.createConnection(config.nodeLogsConn)
+                }
+                //if node 2 inserts then we insert to node 1
+                if (flag3) {
+                    try { 
+                        console.log("inserts to node 1 after node 2")
+                        node1Connection = await mysql.createConnection(config.node1conn)
+                        console.log('connected to central node');
 
-                    await nodeLogsConnection.query("INSERT INTO `node2_logs` (`operation`, `name`, `year`, `rank`, `status`, `dest`) VALUES ('insert', '" + movieName + "'," + movieYear + "," + movieRank + ", 'terminated', 'node2');")
-                    console.log("Logs in node2_logs terminated")
+                        await node1Connection.query(setIsolationLevel)
+                        console.log("Isolation level is set to: " + isolationLevelDefault)
 
-                    await nodeLogsConnection.query("INSERT INTO `node1_logs` (`operation`, `name`, `year`, `rank`, `status`, `dest`) VALUES ('insert', '" + movieName + "'," + movieYear + "," + movieRank + ", 'terminated', 'node1');")
-                    console.log("Logs in node1_logs terminated")
+                        await node1Connection.query("set autocommit = 0;")
+                        await console.log('autocommit = 0')
+                        await node1Connection.query("START TRANSACTION;")
+                        await console.log('started transaction')
+                        await node1Connection.query("LOCK TABLES central write;")
+                        await console.log('Locked tables central');
 
-                } catch(err) {
-                    console.log(err)
-                    if(nodeLogsConnection != null) {
-                        nodeLogsConnection.end()
+                        //insert new movie
+                        const sqlEntryFill = 'INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
+                        let datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
+                    
+
+                        datalist.then(function(result) {
+                            console.log(result)
+                            console.log(result[0].insertId) // "Some User token"
+                            insertedId = result[0].insertId
+                            results = result[0]
+                        })               
+        
+                        console.log('performed insert')
+                        await node1Connection.query("COMMIT;")
+                        console.log(insertedId)
+                        console.log('committed')
+                        await node1Connection.query("UNLOCK TABLES;")
+                        console.log('tables are unlocked')
+
+                        //end connection
+                        node1Connection.end()
+                }
+                catch (err) {
+                    if (node1Connection != null) {
+                        node1Connection.end()
                     }
                 }
-                */
-                }
             }
+        }
             console.log("Finished inserting in node 1")
             if (flag) { //if insert in node 1 was successful, insert in node 2
                 try {
@@ -344,9 +373,9 @@ const inController = {
 
                 // end connections
                 node3Connection.end()
+                flag3=true
                 //nodeLogsConnection.end()
 
-                //
             } catch (err) {
                 flag2 = true //if there's a failure to connect to node 1 and node 3
                 if (node3Connection != null) {
@@ -375,6 +404,50 @@ const inController = {
                     }
                 }
                 */
+            }
+               if (flag3) {
+                try{
+                    console.log("inserts to node 1 after node 3")
+                    node1Connection = await mysql.createConnection(config.node1conn)
+                    console.log('connected to central node');
+
+                    await node1Connection.query(setIsolationLevel)
+                    console.log("Isolation level is set to: " + isolationLevelDefault)
+
+                    await node1Connection.query("set autocommit = 0;")
+                    await console.log('autocommit = 0')
+                    await node1Connection.query("START TRANSACTION;")
+                    await console.log('started transaction')
+                    await node1Connection.query("LOCK TABLES central write;")
+                    await console.log('Locked tables central');
+
+                    //insert new movie
+                    const sqlEntryFill = 'INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
+                    let datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
+                    
+
+                    datalist.then(function(result) {
+                        console.log(result)
+                        console.log(result[0].insertId) // "Some User token"
+                        insertedId = result[0].insertId
+                        results = result[0]
+                    })               
+        
+                    console.log('performed insert')
+                    await node1Connection.query("COMMIT;")
+                    console.log(insertedId)
+                    console.log('committed')
+                    await node1Connection.query("UNLOCK TABLES;")
+                    console.log('tables are unlocked')
+
+                    //end connection
+                    node1Connection.end()
+                }
+                catch (err) {
+                    if (node1Connection != null) {
+                        node1Connection.end()
+                    }
+                }
             }
         }
 

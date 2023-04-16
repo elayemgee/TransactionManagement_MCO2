@@ -31,6 +31,7 @@ const updateController = {
 
         var flag = false;
         var flag2 = false;
+		var flag3 = false;
         var originalYear
         var results
 
@@ -182,9 +183,48 @@ const updateController = {
 							nodeLogsConnection.end()
 						}
 					}
-                    */
+                    */	
+				}
+				if (flag3) { //if node 2 inserts we insert to node 1
+					try {
+						console.log("inserts to node 1 after node 2")
+						node1Connection = await mysql.createConnection(config.node1conn)
+						//nodeLogsConnection = await mysql.createConnection(config.nodeLogsConn)
+                		await node1Connection.query(setIsolationLevel)
+                		console.log("Isolation level is set to: " + isolationLevelDefault)
+
+                		await node1Connection.query("set autocommit = 0;")
+                		console.log("autocommit=0")
+						await node1Connection.query("set autocommit = 0;")
+                		console.log("autocommit=0")
+						await node1Connection.query("START TRANSACTION;")
+                		console.log("start transaction")
+						await node1Connection.query("LOCK TABLES central write;")
+                		console.log("lock")
 		
-					
+                		const sqlEntryFill = 'UPDATE central SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
+                		let datalist = await node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
+                		console.log(datalist)
+
+                		datalist.then(function(result) {
+                    		console.log(result)
+                 		})   
+                		console.log('performed update')
+
+						await node1Connection.query("COMMIT;")
+                		console.log("commit")
+
+						await node1Connection.query("UNLOCK TABLES;")
+                		console.log("unlock")
+		
+						// end connections
+						node1Connection.end()
+					}
+					catch (err) {
+						if (node1Connection != null) {
+							node1Connection.end()
+						}
+					}
 				}
 			}
 		
@@ -264,9 +304,9 @@ const updateController = {
                     */
 				}
 			}
+		} 
 		
-		
-		} else if (year >= 1980) {
+		else if (year >= 1980) {
 			try {
 				// throw Error // simulate
 				node1Connection = await mysql.createConnection(config.node1conn)
@@ -393,9 +433,8 @@ const updateController = {
 		
 					// end connections
 					node3Connection.end()
-					//nodeLogsConnection.end()
-		
-					//
+					flag3=true
+
 				} catch (err) {
 					flag2 = true
 					if (node3Connection != null) {
@@ -425,6 +464,48 @@ const updateController = {
 						}
                         
 					}*/
+				}
+				if (flag3) {
+					try {
+						console.log("inserts to node 1 after node 3")
+						node1Connection = await mysql.createConnection(config.node1conn)
+						//nodeLogsConnection = await mysql.createConnection(config.nodeLogsConn)
+                		await node1Connection.query(setIsolationLevel)
+                		console.log("Isolation level is set to: " + isolationLevelDefault)
+
+                		await node1Connection.query("set autocommit = 0;")
+                		console.log("autocommit=0")
+						await node1Connection.query("set autocommit = 0;")
+                		console.log("autocommit=0")
+						await node1Connection.query("START TRANSACTION;")
+                		console.log("start transaction")
+						await node1Connection.query("LOCK TABLES central write;")
+                		console.log("lock")
+		
+                		const sqlEntryFill = 'UPDATE central SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
+                		let datalist = await node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
+                		console.log(datalist)
+
+                		datalist.then(function(result) {
+                    		console.log(result)
+                 		})   
+                		console.log('performed update')
+
+						await node1Connection.query("COMMIT;")
+                		console.log("commit")
+
+						await node1Connection.query("UNLOCK TABLES;")
+                		console.log("unlock")
+		
+						// end connections
+						node1Connection.end()
+					}
+
+					catch(err) {
+						if (node1Connection != null) {
+							node1Connection.end()
+						}
+					}
 				}
 			}
 		

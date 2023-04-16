@@ -26,7 +26,7 @@
 		</div>
 
 		<div class = "inputTable">
-			<form method="GET" id="my_form" action = "/insertRecord">
+			<form method="GET" id="my_form">
 			<table>
 				<tr>
 					<td>
@@ -66,7 +66,7 @@
 			</table>
 			<div class="actions">
 				<input type='button' id='clear' onclick = "clearInsertInputs()" value='Clear'/>
-				<input type='submit' id='insert-entry-btn' class='btn btn-primary' value='Insert' />
+				<input type='submit' id='insert-entry-btn' class='btn btn-primary' formaction = "/insertRecord" value='Insert' />
 			</div>
 		</form>
 		
