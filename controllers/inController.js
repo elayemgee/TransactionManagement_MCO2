@@ -295,8 +295,8 @@ const inController = {
             console.log("Entered >= 1980 condition")
             // throw Error // simulate
             node1Connection = await mysql.createConnection(config.node1conn)
-            await node1Connection.query(setIsolationLevel)
-            console.log("Isolation level is set to: " + isolationLevelDefault)
+            //await node1Connection.query(setIsolationLevel)
+            //console.log("Isolation level is set to: " + isolationLevelDefault)
 
             await node1Connection.query("set autocommit = 0;")
             console.log("autocommit = 0")
