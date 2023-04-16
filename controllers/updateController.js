@@ -31,6 +31,7 @@ const updateController = {
         var flag2 = false;
 		var flag3 = false;
         var results
+		var id;
 
         if (year < 1980) {
 			// insert to node 1
