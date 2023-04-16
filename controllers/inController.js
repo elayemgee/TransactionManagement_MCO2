@@ -79,21 +79,7 @@ const inController = {
                 console.log('tables are unlocked')
 
                 //update logs
-
-                
-                var sqlentry = 'SELECT id FROM node2 ORDER BY id DESC LIMIT 1';
-                let selectlist = await node1Connection.query(sqlentry)
-                
-                selectlist.then(function(result) {
-                    console.log('-------')
-                    console.log(result)
-                    recentId = result
-                    console.log('.......')
-                    console.log(result[0]) // "Some User token"
-                    console.log('///////')
-                    console.log(result[0][0].id)
-                    results = result[0][0]
-                }) 
+                results = [insertedId, title, year, genre, director, actor1, actor2];
 
                 //end connection
                 node1Connection.end()
