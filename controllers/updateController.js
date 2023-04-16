@@ -63,16 +63,16 @@ const updateController = {
                     console.log("logid:")
                     console.log(logId)
                 })
-				
+
 				console.log("before hi")
                 sqlEntryFill = 'UPDATE central SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
                 datalist = await node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
                 console.log(datalist)
 				console.log("hiii")
-                datalist.then(function(result) {
+                /*datalist.then(function(result) {
 					console.log(result)
 					results = result[0]
-				})
+				})*/
 
                 console.log('performed update')
 
