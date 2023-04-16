@@ -60,6 +60,8 @@ const inController = {
                 await node1Connection.query("LOCK TABLES central write;")
                 await console.log('Locked tables central');
 
+                //logs
+                await node1Connection.query("LOCK TABLES node2 WRITE, logs WRITE;");
                 console.log("Start log inserted to central logs")
                 var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
 
@@ -175,6 +177,11 @@ const inController = {
                         await node1Connection.query("LOCK TABLES central write;")
                         await console.log('Locked tables central');
 
+                        //logs
+                        await node1Connection.query("LOCK TABLES node1 WRITE, logs WRITE;");
+                        console.log("Start log inserted to central logs")
+                        var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+                        
                         //update logs
                         var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
                         let datalist = node1Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
