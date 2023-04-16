@@ -49,7 +49,6 @@ const globalFR1Controller = {
                     if (err) {
                         console.log('Central node failed!')
                     } 
-                    
                 })
             }
             catch (err){
@@ -62,25 +61,21 @@ const globalFR1Controller = {
                 await node2Connection.query(setIsolationLevel)
                 console.log("Isolation level is set to: " + isolationLevelDefault)
 
-                
-                console.log('before autocommit')
-                await node2Connection.query("set autocommit = 0;");
-                console.log("after autocommit, before start transaction")
-                await node2Connection.query("START TRANSACTION;");
-                console.log("after start transaction, before lock tables")
-                await node2Connection.query("LOCK TABLES node2 WRITE, logs WRITE;");
-
                 //look at the ids from node 2 and node 3 to get the bigger one and increment from there
                 var sqlEntryFill = 'SELECT id FROM node2 ORDER BY id DESC LIMIT 1';
-                let selectlist = node2Connection.query(sqlEntryFill)
+                let selectlist = await node2Connection.query(sqlEntryFill, function(result) {
+                    console.log(result)
+                    recentIdNode2 = parseInt(result[0][0].id) + 1
+                })
 
+                /*
                 selectlist.then(function(result) {
                     console.log('-------')
                     console.log(result)
                     recentIdNode2 = parseInt(result[0][0].id) + 1
                     console.log("recentIdNode2: ")
                     console.log(recentIdNode2)
-                }) 
+                }) */
 
                 var sqlEntryFill = 'SELECT id FROM node3 ORDER BY id DESC LIMIT 1';
                 selectlist = node3Connection.query(sqlEntryFill)
@@ -101,6 +96,12 @@ const globalFR1Controller = {
                 }
                 console.log('newId:' + newId)
                 node3Connection.end()
+                console.log('before autocommit')
+                await node2Connection.query("set autocommit = 0;");
+                console.log("after autocommit, before start transaction")
+                await node2Connection.query("START TRANSACTION;");
+                console.log("after start transaction, before lock tables")
+                await node2Connection.query("LOCK TABLES node2 WRITE, logs WRITE;");
                 
                 //table for reference: id, operation, sql_statement, node_id, status
                 //await node2Connection.query("INSERT INTO `logs` (id, operation, sql_statement, node_id, status) VALUES ('insert', '" + movieName + "'," + movieYear + "," + movieRank + ", 'start', 'node1');")
