@@ -322,8 +322,8 @@ const inController = {
             }) 
 
             // insert new movie
-            sqlEntryFill = 'INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
-            let datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
+            sqlEntryFill = 'INSERT INTO central (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
+            let datalist = node1Connection.query(sqlEntryFill, [insertedId, title, year, genre, director, actor1,actor2])
 
                 datalist.then(function(result) {
                     console.log(result)
