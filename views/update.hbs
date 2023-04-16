@@ -27,7 +27,8 @@
 			</div>
 		</div>
 		<div class = "inputTable">
-			<form method="GET" id="my_form" action = "/updateRecord">
+			<!-- action = "/updateRecord" -->
+			<form method="GET" id="my_form" >
 			<table>
 				<tr>
 					<td>
@@ -74,7 +75,7 @@
 			</table>
 			<div class="actions" style="margin-top: -14px;">
 				<input type='button' id='clear' onclick = "clearUpdateInputs()" value='Clear'/>
-				<input type='submit' id='update-entry-btn' class='btn btn-primary' value='Update' />
+				<input type='submit' id='update-entry-btn' class='btn btn-primary' action = "/updateRecord" value='Update' />
 			</div>
 		</form>
 

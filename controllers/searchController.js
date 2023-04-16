@@ -8,6 +8,10 @@ var node1Connection
 var node2Connection
 var node3Connection
 
+const isolationLevelDefault = `READ UNCOMMITTED`;
+const isolationLevelSql = `SET SESSION TRANSACTION ISOLATION LEVEL `;
+const setIsolationLevel = isolationLevelSql + isolationLevelDefault
+
 const searchController = {
 
     searchPage: function (req, res) {   
@@ -27,6 +31,9 @@ const searchController = {
 			// search node 1
         try {
             node1Connection = await mysql.createConnection(config.node1conn)
+
+            await node1Connection.query(setIsolationLevel)
+            console.log("Isolation level is set to: " + isolationLevelDefault)
             
             await node1Connection.query("set autocommit = 0;")
             console.log("autocommit=0")
@@ -63,7 +70,9 @@ const searchController = {
             // search in node 2 and 3 if node 1 isn't successful
             try {
                 node2Connection = await mysql.createConnection(config.node2conn)
-    
+                await node2Connection.query(setIsolationLevel)
+                console.log("Isolation level is set to: " + isolationLevelDefault)
+            
                 await node2Connection.query("set autocommit = 0;")
                 await node2Connection.query("START TRANSACTION;")
                 await node2Connection.query("LOCK TABLES node2 read;")
@@ -95,6 +104,9 @@ const searchController = {
                 try { 
                     // search in node 3 if node 2 failss
                     node3Connection = await mysql.createConnection(config.node2conn)
+
+                    await node3Connection.query(setIsolationLevel)
+                    console.log("Isolation level is set to: " + isolationLevelDefault)
         
                     await node3Connection.query("set autocommit = 0;")
                     await node3Connection.query("START TRANSACTION;")

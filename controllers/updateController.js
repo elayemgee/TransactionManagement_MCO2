@@ -18,7 +18,6 @@ const updateController = {
             res.render('update');        
     },
 
-
     updateRecord: async function (req, res) { 
         console.log('gonna execute update');
 //        const sqlEntry = `UPDATE movies SET name ='${title}',year='${year}', genre='${genre}',director='${director}',actor1='${actor1}',actor2='${actor2}' WHERE id=${id}`;
