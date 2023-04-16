@@ -23,11 +23,13 @@ const textReportController = {
         
             //search movie
             const qResult = await node1Connection.query(`SELECT * FROM central LIMIT 100;`)
-    
+            
             // end connections
             node1Connection.end()
 
             data.dataDB1 = qResult[0]
+            console.log(qResult)
+
 
         } catch (err) {
             console.log(err)
