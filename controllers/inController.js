@@ -57,11 +57,11 @@ const inController = {
                 await console.log('autocommit = 0')
                 await node1Connection.query("START TRANSACTION;")
                 await console.log('started transaction')
-                await node1Connection.query("LOCK TABLES central write;")
+                await node1Connection.query("LOCK TABLES central write, logs WRITE;;")
                 await console.log('Locked tables central');
 
                 //logs
-                await node1Connection.query("LOCK TABLES central WRITE, logs WRITE;");
+                //await node1Connection.query("LOCK TABLES central WRITE, logs WRITE;");
                 console.log("Start log inserted to central logs")
                 var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
 
@@ -96,7 +96,7 @@ const inController = {
                 console.log('tables are unlocked')
 
                 //update logs
-                //results = [insertedId, title, year, genre, director, actor1, actor2];
+                results = [insertedId, title, year, genre, director, actor1, actor2];
 
                 //end connection
                 node1Connection.end()
@@ -241,11 +241,11 @@ const inController = {
                     await console.log('node2: autocommit = 0')
                     await node2Connection.query("START TRANSACTION;")
                     await console.log('node2: start transaction')
-                    await node2Connection.query("LOCK TABLES node2 write;")
+                    await node2Connection.query("LOCK TABLES node2 write, logs WRITE;")
                     await console.log('node2: lock tables')
 
                     //logs
-                    await node2Connection.query("LOCK TABLES node2 WRITE, logs WRITE;");
+                    //await node2Connection.query("LOCK TABLES node2 WRITE, logs WRITE;");
                     console.log("Start log inserted to central logs")
                     var sqlEntryLog = `INSERT INTO node2 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
                     
