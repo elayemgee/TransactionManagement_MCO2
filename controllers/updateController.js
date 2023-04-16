@@ -530,7 +530,7 @@ const updateController = {
 					await node3Connection.query("START TRANSACTION;")
                     console.log('node 3: started transaction')
 
-					await node1Connection.query("LOCK TABLES central write, logs WRITE;")
+					await node3Connection.query("LOCK TABLES node3 write, logs WRITE;")
                 	await console.log('Locked tables central');
 
 					//logs
@@ -539,7 +539,7 @@ const updateController = {
 
 					//update logs
 					sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
-					datalist = node1Connection.query(sqlEntryFill, ['UPDATE', sqlEntryLog, 1, 'start'])
+					datalist = node3Connection.query(sqlEntryFill, ['UPDATE', sqlEntryLog, 1, 'start'])
 					console.log("after start")
 			
 				    datalist.then(function(result) {
@@ -583,7 +583,7 @@ const updateController = {
 		}
 		
 		
-		// false pag di na add sa node 1/node2 or 3
+		// flag 2 means none of the nodes were able to be modified
 		if(flag2) {
 			res.send(false)
 		} else {
