@@ -200,6 +200,7 @@ const globalFR1Controller = {
         }
                 
         try { //check node 2 logs
+            console.log('gonna check node 2 logs')
             node2LogsConnection = await mysql.createConnection(config.nodeLogsConn)
 		    const [rows1, fields1] = await nodeLogsConnection.query("SELECT * FROM `logs` WHERE `status` = ?;", ['committing'])
 
