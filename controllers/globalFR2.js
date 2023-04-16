@@ -49,7 +49,7 @@ const globalFR2Controller = {
                 })
             }
             catch (err){
-                node1Connection = await mysql.createConnection(config.node2conn)
+                node1Connection = await mysql.createConnection(config.node1conn)
                 console.log('connected to node 1!');
 
                 await node1Connection.query(setIsolationLevel)
