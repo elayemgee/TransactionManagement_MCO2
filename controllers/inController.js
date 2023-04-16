@@ -135,8 +135,8 @@ const inController = {
                         console.log(logId)
                     }) 
 
-                    sqlEntryFill = 'INSERT INTO node2 (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
-                    datalist = node2Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
+                    sqlEntryFill = 'INSERT INTO node2 (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
+                    datalist = node2Connection.query(sqlEntryFill, [recentId, title, year, genre, director, actor1,actor2])
                     //console.log(datalist)
 
                     datalist.then(function(result) {
@@ -197,7 +197,7 @@ const inController = {
 
                         //insert new movie
                         sqlEntryFill = 'INSERT INTO central (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?,?)';
-                        datalist = node1Connection.query(sqlEntryFill, [insertedId, title, year, genre, director, actor1,actor2])
+                        datalist = node1Connection.query(sqlEntryFill, [recentId, title, year, genre, director, actor1,actor2])
                     
 
                         datalist.then(function(result) {
@@ -259,7 +259,7 @@ const inController = {
 
                     // insert new movie
                     sqlEntryFill = 'INSERT INTO node2 (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?,?)';
-                    datalist = node2Connection.query(sqlEntryFill, [insertedId, title, year, genre, director, actor1,actor2])
+                    datalist = node2Connection.query(sqlEntryFill, [recentId, title, year, genre, director, actor1,actor2])
                     //console.log(datalist)
 
                     datalist.then(function(result) {
@@ -321,7 +321,7 @@ const inController = {
 
             // insert new movie
             sqlEntryFill = 'INSERT INTO central (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
-            let datalist = node1Connection.query(sqlEntryFill, [insertedId, title, year, genre, director, actor1,actor2])
+            let datalist = node1Connection.query(sqlEntryFill, [recentId, title, year, genre, director, actor1,actor2])
 
                 datalist.then(function(result) {
                     console.log(result)
@@ -380,8 +380,8 @@ const inController = {
                     console.log(logId)
                 }) 
 
-                var sqlEntryFill = 'INSERT INTO node3 (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
-                let datalist = node3Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
+                var sqlEntryFill = 'INSERT INTO node3 (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
+                let datalist = node3Connection.query(sqlEntryFill, [recentId, title, year, genre, director, actor1,actor2])
                 //console.log(datalist)
 
                 datalist.then(function(result) {
@@ -467,7 +467,7 @@ const inController = {
                     
                     //insert new movie
                     var sqlEntryFill = 'INSERT INTO central (id, title, year, genre, director, actor1, actor2) VALUES (?, ?,?,?,?,?,?)';
-                    let datalist = node1Connection.query(sqlEntryFill, [insertedId, title, year, genre, director, actor1,actor2])
+                    let datalist = node1Connection.query(sqlEntryFill, [recentId, title, year, genre, director, actor1,actor2])
                     
 
                     datalist.then(function(result) {
@@ -532,7 +532,7 @@ const inController = {
                 }) 
                 
                 sqlEntryFill = 'INSERT INTO node3 (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?,?)';
-                let datalist = node3Connection.query(sqlEntryFill, [insertedId, title, year, genre, director, actor1,actor2])
+                let datalist = node3Connection.query(sqlEntryFill, [recentId, title, year, genre, director, actor1,actor2])
                 //console.log(datalist)
 
                 datalist.then(function(result) {
