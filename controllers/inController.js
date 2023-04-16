@@ -135,7 +135,7 @@ const inController = {
                         console.log(logId)
                     }) 
 
-                    sqlEntryFill = 'INSERT INTO node2 (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
+                    sqlEntryFill = 'INSERT INTO node2 (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?,?)';
                     datalist = node2Connection.query(sqlEntryFill, [recentId, title, year, genre, director, actor1,actor2])
                     //console.log(datalist)
 
@@ -320,7 +320,7 @@ const inController = {
             }) 
 
             // insert new movie
-            sqlEntryFill = 'INSERT INTO central (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
+            sqlEntryFill = 'INSERT INTO central (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?,?)';
             let datalist = node1Connection.query(sqlEntryFill, [recentId, title, year, genre, director, actor1,actor2])
 
                 datalist.then(function(result) {
@@ -380,7 +380,7 @@ const inController = {
                     console.log(logId)
                 }) 
 
-                var sqlEntryFill = 'INSERT INTO node3 (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
+                var sqlEntryFill = 'INSERT INTO node3 (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?,?)';
                 let datalist = node3Connection.query(sqlEntryFill, [recentId, title, year, genre, director, actor1,actor2])
                 //console.log(datalist)
 
