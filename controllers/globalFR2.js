@@ -117,7 +117,7 @@ const globalFR2Controller = {
             try{
                 console.log('gonna recover node 1 logs')
                 node1Connection = await mysql.createConnection(config.node1conn)
-                var [rows1, fields1] = await node2Connection.query("SELECT * FROM `logs` WHERE `status` = ?;", ['committing'])
+                var [rows1, fields1] = await node1Connection.query("SELECT * FROM `logs` WHERE `status` = ?;", ['committing'])
                 console.log('connected to node 1');
                 node2Connection = await mysql.createConnection(config.node2conn)
                 console.log('connected to node 2');
