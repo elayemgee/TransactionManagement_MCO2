@@ -17,6 +17,8 @@ const textReportController = {
 			styles: ["style"],
 			scripts: ["home"]
 		}
+
+        var results
 			
         try {// search node 1
             node1Connection = await mysql.createConnection(config.node1conn)
@@ -27,7 +29,8 @@ const textReportController = {
             // end connections
             node1Connection.end()
 
-            data.dataDB1 = qResult[0]
+            //data.dataDB1 = qResult[0]
+            results = qResult[0]
             console.log(qResult)
 
 
@@ -69,7 +72,7 @@ const textReportController = {
         }
 
         //res.render('search', { result: results })
-        res.render('report', data)
+        res.render('report', { tuple: data })
 		
     }
 }
