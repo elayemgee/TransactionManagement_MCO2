@@ -74,12 +74,12 @@ const inController = {
                     console.log("logid:")
                     console.log(logId)
                 }) 
-
+                console.log("insert movie")
                 //insert new movie
                 sqlEntryFill = 'INSERT INTO central (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?,?)';
                 datalist = node1Connection.query(sqlEntryFill, [recentId, title, year, genre, director, actor1,actor2])
                 //console.log(datalist)
-                
+                console.log("after insert")
                 datalist.then(function(result) {
                     console.log(result)
                     console.log(result[0].insertId) // "Some User token"
