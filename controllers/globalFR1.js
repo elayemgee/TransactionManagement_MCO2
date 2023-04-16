@@ -84,13 +84,13 @@ const globalFR1Controller = {
                 datalist.then(function(result) {
                     console.log(result)
                     console.log(result[0].insertId) // "Some User token"
-                    recentId = result[0]
+                    recentId = result[0].id
                     console.log(recentId)
                 }) 
 
                 //perform insert
-                sqlEntryFill = 'INSERT INTO node2 (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)';
-                datalist = node2Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
+                sqlEntryFill = 'INSERT INTO node2 (id, title, year, genre, director, actor1, actor2) VALUES (?, ?,?,?,?,?,?)';
+                datalist = node2Connection.query(sqlEntryFill, [recentId, title, year, genre, director, actor1,actor2])
 
                 datalist.then(function(result) {
                     console.log(result)
