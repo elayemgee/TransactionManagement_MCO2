@@ -492,18 +492,16 @@ const inController = {
                 await node3Connection.query("LOCK TABLES node3 write;")
                 console.log('node3: locked tables')
 
-                // insert in logs
-                //await nodeLogsConnection.query("INSERT INTO `node3_logs` (`operation`, `name`, `year`, `rank`, `status`, `dest`) VALUES ('insert', '" + movieName + "'," + movieYear + "," + movieRank + ", 'start', 'node3');")
-                //console.log("Start log inserted to node3")
+                //update logs
+                var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+                datalist = node3Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
 
-                // insert new movie
-                //await node3Connection.query("INSERT INTO `node3` (`name`, `year`, `rank`) values ('" + movieName + "'," + movieYear + "," + movieRank + ");")
-                /*
-                await node3Connection.query(`INSERT INTO node3 (id, title, year, genre, director, actor1, actor2) VALUES ('${insertedId}','${title}',${year},'${genre}', '${director}','${actor1}','${actor2}')`, function( error, results, fields){
-                    if (error) throw error;
-                    console.log(results);
-                    res.render('insert', { records: results });
-                });*/
+                datalist.then(function(result) {
+                    console.log(result)
+                    logId = result[0].insertId
+                    console.log("logid:")
+                    console.log(logId)
+                }) 
                 
                 sqlEntryFill = 'INSERT INTO node3 (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?,?)';
                 let datalist = node3Connection.query(sqlEntryFill, [insertedId, title, year, genre, director, actor1,actor2])
@@ -518,25 +516,12 @@ const inController = {
         
                 console.log('performed insert')
 
-                // update logs 
-                /*
-                await nodeLogsConnection.query("UPDATE `node3_logs` SET `status` = 'write' WHERE `name` = ? AND `dest` = 'node3';", [movieName])
-                console.log("Log updated to write in node3")
-                */
+                await node3Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
                 await node3Connection.query("COMMIT;")
                 console.log('node 3: committed')
+                await node3Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committed', logId]);
                 await node3Connection.query("UNLOCK TABLES;")
                 console.log('node 3: unlocked tables')
-
-
-                // update logs
-                /*
-                await nodeLogsConnection.query("UPDATE `node3_logs` SET `status` = ? WHERE `name` = ? AND `dest` = 'node3';", ['committing', movieName])
-                console.log("Log updated to committing in node3")
-                await nodeLogsConnection.query("UPDATE `node3_logs` SET `status` = ? WHERE `name` = ? AND `dest` = 'node3';", ['committed', movieName])
-                console.log("Log updated to committed in node3")
-                console.log("Inserted to node3")
-                */
 
                 // end connections
                 console.log('finished insert in node 3')
