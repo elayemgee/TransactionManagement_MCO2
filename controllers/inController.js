@@ -316,7 +316,7 @@ const inController = {
 
             //update logs
             var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
-            datalist = node1Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
+            datalist = node1Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'write'])
     
             datalist.then(function(result) {
                 console.log(result)
