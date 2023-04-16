@@ -90,7 +90,8 @@ const globalFR1Controller = {
                     console.log('.......')
                     console.log(result[0]) // "Some User token"
                     console.log('///////')
-                    console.log(result[0].id)
+                    console.log(result[0][0].id)
+                    console.log(result[0][0])
                     //recentId = result[0].id
                     //console.log(recentId)
                 }) 
