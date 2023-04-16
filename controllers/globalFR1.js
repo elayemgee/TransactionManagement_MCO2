@@ -71,7 +71,7 @@ const globalFR1Controller = {
                     console.log('-------')
                     console.log(result)
                     recentIdNode2 = parseInt(result[0][0].id) + 1
-                    console.log("?")
+                    console.log("recentIdNode2: ")
                     console.log(recentIdNode2)
                 }) 
 
@@ -82,17 +82,17 @@ const globalFR1Controller = {
                     console.log('-------')
                     console.log(result)
                     recentIdNode3 = parseInt(result[0][0].id) + 1
-                    console.log("?")
+                    console.log("recentIdNode3 :")
                     console.log(recentIdNode3)
                 }) 
 
                 if (recentIdNode2 > recentIdNode3){
-                    newId = recentIdNode2 + 1;
+                    newId = recentIdNode2;
                 }
                 else {
-                    newId = recentIdNode3 + 1;
+                    newId = recentIdNode3;
                 }
-                console.log(newId)
+                console.log('newId:' + newId)
                 node3Connection.end()
 
                 await node2Connection.query("set autocommit = 0;");
@@ -116,7 +116,7 @@ const globalFR1Controller = {
                 }) 
 
                 //perform insert
-                sqlEntryFill = 'INSERT INTO node2 (id, title, year, genre, director, actor1, actor2) VALUES (?, ?,?,?,?,?,?)';
+                sqlEntryFill = 'INSERT INTO node2 (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?,?)';
                 datalist = node2Connection.query(sqlEntryFill, [newId, title, year, genre, director, actor1,actor2])
 
                 datalist.then(function(result) {
