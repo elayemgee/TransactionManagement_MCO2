@@ -82,9 +82,9 @@ const globalFR1Controller = {
                 }) 
 
                 sqlEntryFill = 'SELECT id FROM node2 ORDER BY id DESC LIMIT 1';
-                datalist = node2Connection.query(sqlEntryFill)
+                let selectlist = node2Connection.query(sqlEntryFill)
                 
-                datalist.then(function(result) {
+                selectlist.then(function(result) {
                     console.log('-------')
                     console.log(result)
                     recentId = result
@@ -96,9 +96,8 @@ const globalFR1Controller = {
                     recentId = parseInt(result[0][0].id) + 1
                     console.log("?")
                     console.log(recentId)
-                    //recentId = result[0].id
-                    //console.log(recentId)
                 }) 
+                
                 console.log("WHERES THE ID")
 
                 //perform insert
