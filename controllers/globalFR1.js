@@ -62,7 +62,7 @@ const globalFR1Controller = {
 
                 await node2Connection.query("set autocommit = 0;");
                 await node2Connection.query("START TRANSACTION;");
-                await node2Connection.query("LOCK TABLE node2 write;");
+                await node2Connection.query("LOCK TABLES node2 WRITE, logs WRITE;");
                 
                 //table for reference: id, operation, sql_statement, node_id, status
                 //await node2Connection.query("INSERT INTO `logs` (id, operation, sql_statement, node_id, status) VALUES ('insert', '" + movieName + "'," + movieYear + "," + movieRank + ", 'start', 'node1');")
