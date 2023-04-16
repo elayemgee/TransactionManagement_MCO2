@@ -463,15 +463,6 @@ const inController = {
 			//res.send(true)
             res.render('insert', { records: results })
 		}
-        /*
-        const select = `SELECT * FROM central ORDER BY id DESC LIMIT 1`;
-
-        con.query(select, function (error, results, fields) {
-            if (error) throw error;
-            console.log(results);
-            res.render('insert', { records: results });
-        });
-        */
 }
 }
 module.exports = inController;

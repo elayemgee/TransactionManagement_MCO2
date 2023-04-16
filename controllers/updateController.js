@@ -29,6 +29,7 @@ const updateController = {
         var flag = false;
         var flag2 = false;
         var originalYear
+        var results
 
         if (year < 1980) {
 			// insert to node 1
@@ -59,6 +60,7 @@ const updateController = {
 
                 datalist.then(function(result) {
                     console.log(result)
+                    results = result[0]
                  })   
                 console.log('performed update')
 
@@ -115,6 +117,7 @@ const updateController = {
 
                     datalist.then(function(result) {
                         console.log(result)
+                        results = result[0]
                     })   
                     console.log('performed update')
 
@@ -202,6 +205,7 @@ const updateController = {
 
                     datalist.then(function(result) {
                         console.log(result)
+                        results = result[0]
                     })   
                     console.log('performed update')
 
@@ -279,6 +283,7 @@ const updateController = {
 
                 datalist.then(function(result) {
                     console.log(result)
+                    results = result[0]
                  })   
                 console.log('performed update')
 
@@ -341,6 +346,7 @@ const updateController = {
 
                     datalist.then(function(result) {
                         console.log(result)
+                        results = result[0]
                     })   
                     console.log('performed update')
 
@@ -434,6 +440,7 @@ const updateController = {
 
                     datalist.then(function(result) {
                         console.log(result)
+                        results = result[0]
                     })   
                     console.log('performed update')
 
@@ -495,7 +502,8 @@ const updateController = {
 		if(flag2) {
 			res.send(false)
 		} else {
-			res.send(true)
+			//res.send(true)
+			res.render('update', { records: results })
 		}
     }
 }

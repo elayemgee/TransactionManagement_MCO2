@@ -77,6 +77,30 @@
 				<input type='submit' id='update-entry-btn' class='btn btn-primary' value='Update' />
 			</div>
 		</form>
+
+		<table class = "recordMessage">
+			<tr class = "recordMessage">
+				<th class = "recordMessage" id = "rec">id</th>
+				<th class = "recordMessage" id = "rec">title</th>
+				<th class = "recordMessage" id = "rec">year</th>
+				<th class = "recordMessage" id = "rec">genre</th>
+				<th class = "recordMessage" id = "rec">director</th>
+				<th class = "recordMessage" id = "rec">actor1</th>
+				<th class = "recordMessage" id = "rec">actor2</th>
+			</tr>
+			{{#each records}}
+				<tr class = "recordMessage">
+					<td class = "recordMessage" id = "rec"> {{this.id}} </td>
+					<td class = "recordMessage" id = "rec"> {{this.title}} </td>
+					<td class = "recordMessage" id = "rec"> {{this.year}} </td>
+					<td class = "recordMessage" id = "rec"> {{this.genre}} </td>
+					<td class = "recordMessage" id = "rec"> {{this.director}} </td>
+					<td class = "recordMessage" id = "rec"> {{this.actor1}} </td>
+					<td class = "recordMessage" id = "rec"> {{this.actor2}} </td>
+				</tr>
+			{{/each}}
+		</table>
+
 		</div>
 
     </body>
