@@ -83,6 +83,7 @@ const globalFR1Controller = {
 
                 sqlEntryFill = 'SELECT id FROM node2 ORDER BY id DESC LIMIT 1';
                 let selectlist = node2Connection.query(sqlEntryFill)
+
                 
                 selectlist.then(function(result) {
                     console.log('-------')
@@ -97,12 +98,12 @@ const globalFR1Controller = {
                     console.log("?")
                     console.log(recentId)
                 }) 
-                
-                console.log("WHERES THE ID")
+                console.log("asdfasdfkjasd")
 
                 //perform insert
                 sqlEntryFill = 'INSERT INTO node2 (id, title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?,?)';
                 datalist = node2Connection.query(sqlEntryFill, [recentId, title, year, genre, director, actor1,actor2])
+                console.log("WHERES THE ID")
 
                 datalist.then(function(result) {
                     console.log(result)
