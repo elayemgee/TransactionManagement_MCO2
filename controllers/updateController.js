@@ -212,8 +212,58 @@ const updateController = {
 		
 			if (flag) {
 				try {
+					console.log("<1980")
+					node2Connection = await mysql.createConnection(config.node2conn)
+                	await node2Connection.query(setIsolationLevel)
+                	console.log("Isolation level is set to: " + isolationLevelDefault)
+
+                	await node2Connection.query("set autocommit = 0;")
+                	console.log("autocommit=0")
+					await node2Connection.query("START TRANSACTION;")
+                	console.log("start transaction")
+					await node2Connection.query("LOCK TABLES central node2, logs WRITE;")
+                	await console.log('Locked tables central');
+
+                	//logs
+                	console.log("Start log inserted to node2 logs")
+                	var sqlEntryLog = `INSERT INTO node2 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+
+                	//update logs
+                	var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+                	let datalist = node2Connection.query(sqlEntryFill, ['UPDATE', sqlEntryLog, 1, 'start'])
+                	console.log("after start")
+                
+					datalist.then(function(result) {
+                    	console.log(result)
+                    	logId = result[0].insertId
+                    	console.log("logid:")
+                    	console.log(logId)
+                	})
+
+					console.log("before hi")
+                	sqlEntryFill = 'UPDATE node2 SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
+                	datalist = node2Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
+                	console.log(datalist)
+					console.log("hiii")
+                
+					datalist.then(function(result) {
+						console.log(result)
+					})
+
+                	console.log('performed update')
+
+					await node2Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
+					await node2Connection.query("COMMIT;")
+                	console.log("commit")
+				
+					await node2Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committed', logId]);
+					await node2Connection.query("UNLOCK TABLES;")
+                	console.log("unlock")
+		
+					// end connections
+					node2Connection.end()		
 					//update node2
-                    console.log("---------------")
+                    /*console.log("---------------")
                     console.log("node 2")
 					node2Connection = await mysql.createConnection(config.node2conn)
 
@@ -263,7 +313,7 @@ const updateController = {
                     console.log("node2: update tables")
 		
 					// end connections
-					node2Connection.end()
+					node2Connection.end()*/
 				} catch (err) {
 					flag2=true
 					if (node2Connection != null) {
@@ -307,8 +357,10 @@ const updateController = {
 					console.log(logId)
 				})
 
+				console.log("before update")
                 sqlEntryFill = 'UPDATE central SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
                 datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
+				console.log("after update")
 
                 datalist.then(function(result) {
                     console.log(result)
