@@ -214,9 +214,10 @@ const globalFR1Controller = {
                 console.log(query)
                 console.log(e.id)
                 //e.sql_statement
-                //node1Connection.query('INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES (?,?,?,?,?,?)')
+                node1Connection.query(query)
+                
                 //datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
-                //node2LogsConnection.query("UPDATE `logs` SET `status` = ? WHERE `name` = ?;", ['committed', e.name])
+                node2LogsConnection.query("UPDATE `logs` SET `status` = ? WHERE `id` = ?;", ['committed', e.id])
 
                 //console.log("[RECOVERY] INSERTED IN NODE 1 TABLE 1")
 				
