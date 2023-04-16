@@ -49,7 +49,6 @@ const globalFR1Controller = {
                     if (err) {
                         console.log('Central node failed!')
                     } 
-                    
                 })
             }
             catch (err){
@@ -62,41 +61,45 @@ const globalFR1Controller = {
                 await node2Connection.query(setIsolationLevel)
                 console.log("Isolation level is set to: " + isolationLevelDefault)
 
-
                 //look at the ids from node 2 and node 3 to get the bigger one and increment from there
                 var sqlEntryFill = 'SELECT id FROM node2 ORDER BY id DESC LIMIT 1';
                 let selectlist = await node2Connection.query(sqlEntryFill)
 
+                /*
                 selectlist.then(function(result) {
                     console.log('-------')
                     console.log(result)
                     recentIdNode2 = parseInt(result[0][0].id) + 1
-                    console.log("?")
+                    console.log("recentIdNode2: ")
                     console.log(recentIdNode2)
-                }) 
+                }) */
 
                 var sqlEntryFill = 'SELECT id FROM node3 ORDER BY id DESC LIMIT 1';
-                selectlist = await node3Connection.query(sqlEntryFill)
+                selectlist = node3Connection.query(sqlEntryFill)
 
                 selectlist.then(function(result) {
                     console.log('-------')
                     console.log(result)
                     recentIdNode3 = parseInt(result[0][0].id) + 1
-                    console.log("?")
+                    console.log("recentIdNode3 :")
                     console.log(recentIdNode3)
                 }) 
 
                 if (recentIdNode2 > recentIdNode3){
+                    console.log("THIS SHOULD BE AFTER BIG OBJECT LOGS")
                     newId = recentIdNode2;
                 }
                 else {
+                    console.log("THIS SHOULD BE AFTER BIG OBJECT LOGS")
                     newId = recentIdNode3;
                 }
                 console.log('newId:' + newId)
                 node3Connection.end()
-
+                console.log('before autocommit')
                 await node2Connection.query("set autocommit = 0;");
+                console.log("after autocommit, before start transaction")
                 await node2Connection.query("START TRANSACTION;");
+                console.log("after start transaction, before lock tables")
                 await node2Connection.query("LOCK TABLES node2 WRITE, logs WRITE;");
                 
                 //table for reference: id, operation, sql_statement, node_id, status
@@ -105,8 +108,8 @@ const globalFR1Controller = {
                 var sqlEntryLog = `INSERT INTO central (id, title, year, genre, director, actor1, actor2) VALUES ('${newId}', '${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
 
                 //update logs
-                sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
-                let datalist = node2Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'write'])
+                sqlEntryFill = 'INSERT INTO logs (id, operation, sql_statement, node_id, status) VALUES (?,?,?,?,?)';
+                let datalist = node2Connection.query(sqlEntryFill, [newId, 'INSERT', sqlEntryLog, 1, 'write'])
 
                 datalist.then(function(result) {
                     console.log(result)
@@ -233,14 +236,12 @@ const globalFR1Controller = {
                 console.log(e)
                 var query = e.sql_statement
                 console.log(query)
-                console.log(e.id)
+                console.log("This is the id : " + e.id)
                 //e.sql_statement
                 node1Connection.query(query)
                 console.log("isnertered into node 1")
                 //datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
-                node2LogsConnection.query("UPDATE `logs` SET `status` = ? WHERE `id` = ?;", ['committed', e.id])
-
-                //console.log("[RECOVERY] INSERTED IN NODE 1 TABLE 1")
+                node2Connection.query("UPDATE `logs` SET `status` = ? WHERE `id` = ?;", ['committed', e.id])
 				
                 })
 
