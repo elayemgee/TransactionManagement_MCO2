@@ -240,7 +240,6 @@ const updateController = {
                     	console.log(logId)
                 	})
 
-					console.log("before hi")
                 	sqlEntryFill = 'UPDATE node2 SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
                 	datalist = node2Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
                 	console.log(datalist)
@@ -526,16 +525,14 @@ const updateController = {
 		
 					await node3Connection.query("set autocommit = 0;")
                     console.log('node 3: autocommit')
-
 					await node3Connection.query("START TRANSACTION;")
                     console.log('node 3: started transaction')
-
 					await node3Connection.query("LOCK TABLES node3 write, logs WRITE;")
                 	await console.log('Locked tables central');
 
 					//logs
-					console.log("Start log inserted to central logs")
-					var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+					console.log("Start log inserted to node3 logs")
+					var sqlEntryLog = `INSERT INTO node3 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
 
 					//update logs
 					sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
@@ -556,7 +553,7 @@ const updateController = {
 
                     datalist.then(function(result) {
                         console.log(result)
-                        results = result[0]
+                        //results = result[0]
                     })   
                     console.log('performed update')
 
