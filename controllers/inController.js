@@ -35,6 +35,7 @@ const inController = {
 		const actor2 = req.query.actor2;
         var insertedId;
         var results;
+        var recentId;
 
         var flag = false;
         var flag2 = false;
@@ -78,6 +79,20 @@ const inController = {
                 console.log('tables are unlocked')
 
                 //update logs
+
+                var sqlentry = 'SELECT id FROM node2 ORDER BY id DESC LIMIT 1';
+                let selectlist = await node1Connection.query(sqlentry)
+                
+                selectlist.then(function(result) {
+                    console.log('-------')
+                    console.log(result)
+                    recentId = result
+                    console.log('.......')
+                    console.log(result[0]) // "Some User token"
+                    console.log('///////')
+                    console.log(result[0][0].id)
+                    results = result[0][0]
+                }) 
 
                 //end connection
                 node1Connection.end()

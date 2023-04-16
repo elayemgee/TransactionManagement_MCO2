@@ -82,7 +82,7 @@ const globalFR1Controller = {
                 }) 
 
                 sqlEntryFill = 'SELECT id FROM node2 ORDER BY id DESC LIMIT 1';
-                let selectlist = node2Connection.query(sqlEntryFill)
+                let selectlist = await node2Connection.query(sqlEntryFill)
                 
                 selectlist.then(function(result) {
                     console.log('-------')
