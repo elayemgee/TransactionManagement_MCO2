@@ -31,7 +31,9 @@ const globalFR1Controller = {
 		const actor1 = req.query.actor1;
 		const actor2 = req.query.actor2;
         var logId;
-        var recentId;
+        var recentIdNode2;
+        var recentIdNode3;
+        var newId;
 
         var flag = false;
         var flag2 = false;
@@ -53,26 +55,55 @@ const globalFR1Controller = {
             catch (err){
                 node2Connection = await mysql.createConnection(config.node2conn)
                 console.log('connected to node 2!');
+
+                node3Connection = await mysql.createConnection(config.node2conn)
+                console.log('connected to node 3!');
  
                 await node2Connection.query(setIsolationLevel)
                 console.log("Isolation level is set to: " + isolationLevelDefault)
 
+
+                //look at the ids from node 2 and node 3 to get the bigger one and increment from there
                 var sqlEntryFill = 'SELECT id FROM node2 ORDER BY id DESC LIMIT 1';
                 let selectlist = node2Connection.query(sqlEntryFill)
 
                 selectlist.then(function(result) {
                     console.log('-------')
                     console.log(result)
-                    recentId = result
-                    console.log('.......')
-                    console.log(result[0]) // "Some User token"
-                    console.log('///////')
-                    console.log(result[0][0].id)
-                    console.log(result[0][0])
-                    recentId = parseInt(result[0][0].id) + 1
+                    //recentId = result
+                    //console.log('.......')
+                    //console.log(result[0]) // "Some User token"
+                    //console.log(result[0][0].id)
+                    //console.log(result[0][0])
+                    recentIdNode2 = parseInt(result[0][0].id) + 1
                     console.log("?")
                     console.log(recentId)
                 }) 
+
+                var sqlEntryFill = 'SELECT id FROM node3 ORDER BY id DESC LIMIT 1';
+                selectlist = node3Connection.query(sqlEntryFill)
+
+                selectlist.then(function(result) {
+                    console.log('-------')
+                    console.log(result)
+                    //recentId = result
+                    //console.log('.......')
+                    //console.log(result[0]) // "Some User token"
+                    //console.log(result[0][0].id)
+                    //console.log(result[0][0])
+                    recentIdNode3 = parseInt(result[0][0].id) + 1
+                    console.log("?")
+                    console.log(recentId)
+                }) 
+
+                if (recentIdNode2 > recentIdNode3){
+                    newId = recentIdNode2 + 1;
+                }
+                else {
+                    newId = recentIdNode3 + 1;
+                }
+
+                node3Connection.end()
 
                 await node2Connection.query("set autocommit = 0;");
                 await node2Connection.query("START TRANSACTION;");
