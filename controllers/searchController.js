@@ -8,7 +8,7 @@ var node1Connection
 var node2Connection
 var node3Connection
 
-const isolationLevelDefault = `READ UNCOMMITTED`;
+const isolationLevelDefault = `READ COMMITTED`;
 const isolationLevelSql = `SET SESSION TRANSACTION ISOLATION LEVEL `;
 const setIsolationLevel = isolationLevelSql + isolationLevelDefault
 
