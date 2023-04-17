@@ -107,13 +107,11 @@ const globalFR1Controller = {
                 //table for reference: id, operation, sql_statement, node_id, status
                 //await node2Connection.query("INSERT INTO `logs` (id, operation, sql_statement, node_id, status) VALUES ('insert', '" + movieName + "'," + movieYear + "," + movieRank + ", 'start', 'node1');")
 				console.log("Start log inserted to node 2 logs")
-                var sqlEntryLog = `INSERT INTO central (id, title, year, genre, director, actor1, actor2) VALUES ('${newId}', '${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+                var sqlEntryFill = `INSERT INTO central (id, title, year, genre, director, actor1, actor2) VALUES ('${newId}', '${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
 
                 //update logs
-                sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
-                node2Connection.query(sqlEntryFill, ['INSERT', sqlEntryLog, 1, 'start'])
-                sqlEntryFill = 'UPDATE `logs` SET `status` = ? WHERE `sql_statement` = ?;', ['write', sqlEntryFill]
-                let datalist = node2Connection.query(sqlEntryFill)
+                var sqlEntryLog = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+                let datalist = node1Connection.query(sqlEntryLog, ['INSERT', sqlEntryFill, 1, 'start'])
 
                 datalist.then(function(result) {
                     console.log(result)
