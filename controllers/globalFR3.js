@@ -102,17 +102,17 @@ const globalFR3Controller = {
                 console.log("autocommit=0")
 				await node1Connection.query("START TRANSACTION;")
                 console.log("start transaction")
+
+                 //logs
+                console.log("Start log inserted to central logs")
+                var sqlEntryLog = `UPDATE central SET title = '${title}', year = ${year}, genre = '${genre}', director = '${director}', actor1 = '${actor1}', actor2 = '${actor1}' WHERE id = '${id}'`;
+                var sqlEntryFill = 'INSERT INTO logs (id, operation, sql_statement, node_id, status) VALUES (?,?,?,?,?)';
+                await node1Connection.query(sqlEntryFill, [logId, 'UPDATE', sqlEntryLog, 2, 'start'])
+
 				await node1Connection.query("LOCK TABLES central WRITE, logs WRITE;")
                 await console.log('Locked tables central');
 
-                //logs
-                console.log("Start log inserted to central logs")
-                //var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor1}')`;
-                var sqlEntryLog = `UPDATE central SET title = '${title}', year = ${year}, genre = '${genre}', director = '${director}', actor1 = '${actor1}', actor2 = '${actor1}' WHERE id = '${id}'`;
-                //update logs
-                var sqlEntryFill = 'INSERT INTO logs (id, operation, sql_statement, node_id, status) VALUES (?, ?,?,?,?)';
-                //let datalist = node1Connection.query(sqlEntryFill, [logId, 'UPDATE', sqlEntryLog, 2, 'start'])
-                await node1Connection.query(sqlEntryFill, [logId, 'UPDATE', sqlEntryLog, 2, 'start'])
+               
 
                 console.log("after start")
                 /*
