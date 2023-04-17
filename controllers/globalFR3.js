@@ -130,6 +130,7 @@ const globalFR3Controller = {
 
 				await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId], function (result){
                     node1Connection.destroy()
+                    console.log('destroyed')
                 });
                 
                 (await node1Connection).ping(function (err) {
