@@ -545,7 +545,8 @@ const updateController = {
 			}
 
             console.log(results)
-			res.render('update', { records: results })
+			res.render('update', { id: id, title: title, year: year, genre: genre, director: director, 
+				actor1: actor1, actor2: actor2 })
 		}
     }
 }
