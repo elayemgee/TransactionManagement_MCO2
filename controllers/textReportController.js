@@ -25,7 +25,7 @@ const textReportController = {
             console.log("node 1: successfully connected")
         
             //search movie
-            const qResult = await node1Connection.query(`SELECT * FROM central LIMIT 100;`)
+            const qResult = await node1Connection.query(`SELECT * FROM central ORDER BY id DESC LIMIT 100;`)
             console.log("node 1: ran query")
 
             
