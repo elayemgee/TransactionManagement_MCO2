@@ -128,8 +128,10 @@ const globalFR3Controller = {
 					console.log(result)
 				})
 
-				await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
-                node1Connection.destroy()
+				await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId], function (result){
+                    node1Connection.destroy()
+                });
+                
                 (await node1Connection).ping(function (err) {
                     if (err) {
                         console.log('Central node failed!')
