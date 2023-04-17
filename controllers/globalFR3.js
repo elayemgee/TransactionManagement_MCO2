@@ -92,28 +92,27 @@ const globalFR3Controller = {
         if (flag) {
             try{
                 node1Connection = await mysql.createConnection(config.node1conn)
-                console.log('connected to node1')
+                await console.log('connected to node1')
 
                 await node1Connection.query(setIsolationLevel)
-                console.log("Isolation level is set to: " + isolationLevelDefault)
+                await console.log("Isolation level is set to: " + isolationLevelDefault)
 
                 await node1Connection.query("set autocommit = 0;")
-                console.log("autocommit=0")
+                await console.log("autocommit=0")
 				await node1Connection.query("START TRANSACTION;")
-                console.log("start transaction")
+                await console.log("start transaction")
 
                  //logs
                 console.log("Start log inserted to central logs")
                 var sqlEntryLog = `UPDATE central SET title = '${title}', year = ${year}, genre = '${genre}', director = '${director}', actor1 = '${actor1}', actor2 = '${actor1}' WHERE id = '${id}'`;
                 var sqlEntryFill = 'INSERT INTO logs (id, operation, sql_statement, node_id, status) VALUES (?,?,?,?,?)';
                 await node1Connection.query(sqlEntryFill, [logId, 'UPDATE', sqlEntryLog, 2, 'start'])
+                await console.log('inserted log')
 
 				await node1Connection.query("LOCK TABLES central WRITE, logs WRITE;")
                 await console.log('Locked tables central');
 
-               
-
-                console.log("after start")
+                await console.log("after start")
                 /*
 				datalist.then(function(result) {
                     console.log(result)
@@ -126,13 +125,15 @@ const globalFR3Controller = {
                 sqlEntryFill = 'UPDATE central SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
                 //datalist = 
                 await node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
-                
+                await console.log('did update')
                 /*
 				datalist.then(function(result) {
 					console.log(result)
 				})*/
 
 				await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
+                console.log('updating log')
+
                 
                 await node1Connection.destroy()
                 console.log('destroyed')
