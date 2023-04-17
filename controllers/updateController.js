@@ -51,8 +51,8 @@ const updateController = {
 
                 //logs
                 console.log("Start log inserted to central logs")
-                var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
-
+                //var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor1}')`;
+                var sqlEntryLog = `UPDATE central SET title = '${title}', year = ${year}, genre = '${genre}', director = '${director}', actor1 = '${actor1}', actor2 = '${actor1}' WHERE id = '${id}'`;
                 //update logs
                 var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
                 let datalist = node1Connection.query(sqlEntryFill, ['UPDATE', sqlEntryLog, 1, 'start'])
@@ -109,8 +109,8 @@ const updateController = {
                 	await console.log('Locked tables central');
 
                 	//logs
-                	console.log("Start log inserted to central logs")
-                	var sqlEntryLog = `INSERT INTO node2 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+                	console.log("Start log inserted to node 2 logs")
+                    var sqlEntryLog = `UPDATE central SET title = '${title}', year = ${year}, genre = '${genre}', director = '${director}', actor1 = '${actor1}', actor2 = '${actor1}' WHERE id = '${id}'`;
 
                 	//update logs
                 	var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
@@ -167,7 +167,7 @@ const updateController = {
 
                 		//logs
                 		console.log("Start log inserted to central logs")
-                		var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+                        var sqlEntryLog = `UPDATE central SET title = '${title}', year = ${year}, genre = '${genre}', director = '${director}', actor1 = '${actor1}', actor2 = '${actor1}' WHERE id = '${id}'`;
 
                 		//update logs
                 		var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
@@ -226,7 +226,7 @@ const updateController = {
 
                 	//logs
                 	console.log("Start log inserted to node2 logs")
-                	var sqlEntryLog = `INSERT INTO node2 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+                    var sqlEntryLog = `UPDATE central SET title = '${title}', year = ${year}, genre = '${genre}', director = '${director}', actor1 = '${actor1}', actor2 = '${actor1}' WHERE id = '${id}'`;
 
                 	//update logs
                 	var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
@@ -261,58 +261,7 @@ const updateController = {
 		
 					// end connections
 					node2Connection.end()		
-					//update node2
-                    /*console.log("---------------")
-                    console.log("node 2")
-					node2Connection = await mysql.createConnection(config.node2conn)
-
-                    await node2Connection.query(setIsolationLevel)
-                    console.log("Isolation level is set to: " + isolationLevelDefault)
-		
-					await node2Connection.query("set autocommit = 0;")
-                    console.log("node2: autocommit=0")
-					await node2Connection.query("START TRANSACTION;")
-                    console.log("node 2: start transaction")
-					await node2Connection.query("LOCK TABLES node2 write, logs WRITE;")
-                	await console.log('Locked tables central');
-
-                	//logs
-                	console.log("Start log inserted to node2 logs")
-                	var sqlEntryLog = `INSERT INTO node2 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
-
-                	//update logs
-                	var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
-                	datalist = node2Connection.query(sqlEntryFill, ['UPDATE', sqlEntryLog, 1, 'start'])
-                	console.log("after start")
-                
-					datalist.then(function(result) {
-                    	console.log(result)
-                    	logId = result[0].insertId
-                    	console.log("logid:")
-                    	console.log(logId)
-                	})
-					
-					// update movie
-                    sqlEntryFill = 'UPDATE node2 SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
-                    datalist = node2Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
-                    console.log(datalist)
-
-                    datalist.then(function(result) {
-                        console.log(result)
-                        results = result[0]
-                    })   
-                    console.log('performed update')
-
-					// update logs 
-					await node2Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
-					await node2Connection.query("COMMIT;")
-                    console.log("node2: commit")
-					await node2Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committed', logId]);
-					await node2Connection.query("UNLOCK TABLES;")
-                    console.log("node2: update tables")
-		
-					// end connections
-					node2Connection.end()*/
+				
 				} catch (err) {
 					flag2=true
 					if (node2Connection != null) {
@@ -342,7 +291,7 @@ const updateController = {
 
 				//logs
 				console.log("Start log inserted to central logs")
-				var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+                var sqlEntryLog = `UPDATE central SET title = '${title}', year = ${year}, genre = '${genre}', director = '${director}', actor1 = '${actor1}', actor2 = '${actor1}' WHERE id = '${id}'`;
 
 				//update logs
 				var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
@@ -407,7 +356,7 @@ const updateController = {
 
 					//logs
 					console.log("Start log inserted to node3 logs")
-					var sqlEntryLog = `INSERT INTO node3 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+                    var sqlEntryLog = `UPDATE central SET title = '${title}', year = ${year}, genre = '${genre}', director = '${director}', actor1 = '${actor1}', actor2 = '${actor1}' WHERE id = '${id}'`;
 
 					//update logs
 					var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
@@ -468,7 +417,7 @@ const updateController = {
 
 						//logs
 						console.log("Start log inserted to central logs")
-						var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+                        var sqlEntryLog = `UPDATE central SET title = '${title}', year = ${year}, genre = '${genre}', director = '${director}', actor1 = '${actor1}', actor2 = '${actor1}' WHERE id = '${id}'`;
 
 						//update logs
 						var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
@@ -532,7 +481,7 @@ const updateController = {
 
 					//logs
 					console.log("Start log inserted to node3 logs")
-					var sqlEntryLog = `INSERT INTO node3 (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+                    var sqlEntryLog = `UPDATE central SET title = '${title}', year = ${year}, genre = '${genre}', director = '${director}', actor1 = '${actor1}', actor2 = '${actor1}' WHERE id = '${id}'`;
 
                     console.log("preeesent")
 					//update logs
