@@ -88,13 +88,12 @@ const globalFR3Controller = {
                 }
         }
 
-        //makes sure that update in node 2 was made first before replicating to node 1
+        //flag makes sure that update in node 2 was made first before replicating to node 1
         if (flag) {
             try{
                 node1Connection = await mysql.createConnection(config.node1conn)
                 console.log('connected to node1')
 
-				node1Connection = await mysql.createConnection(config.node1conn)
                 await node1Connection.query(setIsolationLevel)
                 console.log("Isolation level is set to: " + isolationLevelDefault)
 
