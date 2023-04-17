@@ -534,7 +534,7 @@ const updateController = {
 			res.send(false)
 		} else {
 			//res.send(true)
-            results = [id, title, year, genre, director, actor1, actor2]
+            results = ['${id}', '${title}', '${year}', '${genre}', '${director}', '${actor1}', '${actor2}']
             console.log(results)
 			res.render('update', { records: results })
 		}
