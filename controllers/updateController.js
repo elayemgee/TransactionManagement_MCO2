@@ -536,8 +536,8 @@ const updateController = {
 
                     console.log("preeesent")
 					//update logs
-					sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
-					datalist = node3Connection.query(sqlEntryFill, ['UPDATE', sqlEntryLog, 1, 'start'])
+					var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+					let datalist = node3Connection.query(sqlEntryFill, ['UPDATE', sqlEntryLog, 1, 'start'])
 					console.log("after start")
 			
 				    datalist.then(function(result) {
@@ -549,7 +549,7 @@ const updateController = {
 		
 					// update movie
                     sqlEntryFill = 'UPDATE node3 SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
-                    let datalist = node3Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
+                    datalist = node3Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
                     console.log(datalist)
 
                     datalist.then(function(result) {
