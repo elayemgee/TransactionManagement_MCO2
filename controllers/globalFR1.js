@@ -173,7 +173,6 @@ const globalFR1Controller = {
                 //look at the ids from node 2 and node 3 to get the bigger one and increment from there
                 var sqlEntryFill = 'SELECT id FROM node2 ORDER BY id DESC LIMIT 1';
                 let selectlist = node2Connection.query(sqlEntryFill)
-
                 
                 selectlist.then(function(result) {
                     console.log('-------')
@@ -310,15 +309,30 @@ const globalFR1Controller = {
         console.log('connected to central node');
 
         rows2.forEach(e => {
-            console.log("made it in wee")
             console.log(e)
             var query = e.sql_statement
             console.log(query)
             console.log("This is the id : " + e.id)
-            //e.sql_statement
+            node1Connection.query("set autocommit = 0;")
+            node1Connection.query("START TRANSACTION;")
+            node1Connection.query("LOCK TABLES central WRITE, logs WRITE;")
+
+            var sqlEntryLog = `INSERT central SET title = '${title}', year = ${year}, genre = '${genre}', director = '${director}', actor1 = '${actor1}', actor2 = '${actor1}' WHERE id = '${query}'`;
+            var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+            let datalist = node1Connection.query(sqlEntryFill, ['UPDATE', sqlEntryLog, 3, 'start'])
+
+            datalist.then(function(result) {
+                console.log(result)
+                logId = result[0].insertId
+                console.log("logid:" + logId)
+            })
+
             node1Connection.query(query)
+            node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
+		    node1Connection.query("COMMIT;")
+            node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committed', logId]);
+
             console.log("inserted into node 1")
-            //datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
             node3Connection.query("UPDATE `logs` SET `status` = ? WHERE `id` = ?;", ['committed', e.id])
             })
         } catch (err){
