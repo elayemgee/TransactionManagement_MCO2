@@ -153,19 +153,19 @@ const globalFR3Controller = {
                 var [rows1, fields1] = await node1Connection.query("SELECT * FROM `logs` WHERE `status` = ?;", ['committing'])
                 console.log('connected to node 1');
         
-                rows1.forEach(e => {
+                rows1.forEach(async e => {
                     console.log(e)
                     var query = e.sql_statement
                     console.log(query)
                     console.log("This is the id : " + e.id)
 
-                    node1Connection.query(query)
-                    node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
-		            node1Connection.query("COMMIT;")
-                    node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committed', logId]);
+                    await node1Connection.query(query)
+                    await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
+		            await node1Connection.query("COMMIT;")
+                    await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committed', logId]);
                     console.log("committed and inserted into node 1")
 
-                    node1Connection.query("UPDATE `logs` SET `status` = ? WHERE `id` = ?;", ['committed', e.id])
+                    //await node1Connection.query("UPDATE `logs` SET `status` = ? WHERE `id` = ?;", ['committed', e.id])
                     })
                 } catch(err){
                     if(node1Connection != null) { node1Connection.end() }
