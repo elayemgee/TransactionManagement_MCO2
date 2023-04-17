@@ -289,7 +289,7 @@ const globalFR1Controller = {
 
             //datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
             node2Connection.query("UPDATE `logs` SET `status` = ? WHERE `id` = ?;", ['committed', e.id])
-            node1Connection.query("INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)")
+            node1Connection.query(`INSERT INTO logs (operation, sql_statement, node_id, status) VALUES ('INSERT', '${sqlEntryLog}', 1, 'write')`)
             })
         } catch (err){
             if(node1Connection != null) {
