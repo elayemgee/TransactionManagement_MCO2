@@ -123,7 +123,7 @@ const globalFR3Controller = {
 
                 //execute update
                 sqlEntryFill = 'UPDATE central SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
-                datalist = await node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
+                datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
                 
 				datalist.then(function(result) {
 					console.log(result)
