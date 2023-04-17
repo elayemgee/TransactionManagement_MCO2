@@ -134,12 +134,14 @@ const globalFR3Controller = {
                 await node1Connection.destroy()
                 console.log('destroyed')
                 
+                /*
                 (await node1Connection).ping(function (err) {
                     if (err) {
                         //console.log('Central node failed!')
                         node1Connection.end()
                     } 
                 })
+                */
             
             }catch(err){
                 console.log(err)
