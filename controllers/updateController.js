@@ -534,16 +534,7 @@ const updateController = {
 			res.send(false)
 		} else {
 			//res.send(true)
-            results = {
-				id: id, 
-				title: title,
-				year: year, 
-				genre: genre, 
-				director: director, 
-				actor1: actor1, 
-				actor2: actor2
-			}
-
+    
             console.log(results)
 			res.render('update', { id: id, title: title, year: year, genre: genre, director: director, 
 				actor1: actor1, actor2: actor2 })

@@ -7,7 +7,6 @@ const mysql = require('mysql2/promise');
 const config = require('../models/conn');
 var node1Connection
 var node2Connection
-var node3Connection
 
 
 const isolationLevelDefault = `READ UNCOMMITTED`;
