@@ -563,7 +563,7 @@ const updateController = {
 					await node3Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
 					await node3Connection.query("COMMIT;")
                     console.log('node 3: committed')
-					await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committed', logId]);
+					await node3Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committed', logId]);
 					await node3Connection.query("UNLOCK TABLES;")
                     console.log('node 3: unlocked tables')
 		
