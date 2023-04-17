@@ -574,7 +574,7 @@ const inController = {
 		} else {
             console.log('insert was completed')
 			//res.send(true)
-            res.render('insert', { id: id, title: title, year: year, genre: genre, director: director, 
+            res.render('insert', {title: title, year: year, genre: genre, director: director, 
 				actor1: actor1, actor2: actor2 })
 		}
     }

@@ -111,8 +111,6 @@ const globalFR3Controller = {
 
 				await node1Connection.query("LOCK TABLES central WRITE, logs WRITE;")
                 await console.log('Locked tables central');
-
-                await console.log("after start")
                 /*
 				datalist.then(function(result) {
                     console.log(result)
@@ -130,7 +128,6 @@ const globalFR3Controller = {
 				datalist.then(function(result) {
 					console.log(result)
 				})*/
-
 				await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
                 console.log('log set as committing')
 
