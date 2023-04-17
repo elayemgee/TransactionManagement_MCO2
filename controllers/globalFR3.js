@@ -111,15 +111,17 @@ const globalFR3Controller = {
                 var sqlEntryLog = `UPDATE central SET title = '${title}', year = ${year}, genre = '${genre}', director = '${director}', actor1 = '${actor1}', actor2 = '${actor1}' WHERE id = '${id}'`;
                 //update logs
                 var sqlEntryFill = 'INSERT INTO logs (id, operation, sql_statement, node_id, status) VALUES (?, ?,?,?,?)';
-                let datalist = node1Connection.query(sqlEntryFill, [logId, 'UPDATE', sqlEntryLog, 2, 'start'])
+                //let datalist = node1Connection.query(sqlEntryFill, [logId, 'UPDATE', sqlEntryLog, 2, 'start'])
+                await node1Connection.query(sqlEntryFill, [logId, 'UPDATE', sqlEntryLog, 2, 'start'])
+
                 console.log("after start")
-                
+                /*
 				datalist.then(function(result) {
                     console.log(result)
                     logId = result[0].insertId
                     console.log("logid:")
                     console.log(logId)
-                })
+                })*/
 
                 //execute update
                 sqlEntryFill = 'UPDATE central SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
@@ -148,6 +150,8 @@ const globalFR3Controller = {
                 if (node1Connection != null) {
                     node1Connection.end()
                 }
+
+                
 
                 try {
                 console.log('gonna recover node 1 logs')
