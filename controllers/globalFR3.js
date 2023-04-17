@@ -135,7 +135,8 @@ const globalFR3Controller = {
                 
                 (await node1Connection).ping(function (err) {
                     if (err) {
-                        console.log('Central node failed!')
+                        //console.log('Central node failed!')
+                        node1Connection.end()
                     } 
                 })
             
