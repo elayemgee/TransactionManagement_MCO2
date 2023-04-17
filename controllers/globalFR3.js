@@ -104,8 +104,8 @@ const globalFR3Controller = {
 
                  //logs
                 console.log("Start log inserted to central logs")
-                var sqlEntryLog = `UPDATE central SET title = '${title}', year = ${year}, genre = '${genre}', director = '${director}', actor1 = '${actor1}', actor2 = '${actor1}' WHERE id = '${id}'`;
-                var sqlEntryFill = 'INSERT INTO logs (id, operation, sql_statement, node_id, status) VALUES (?,?,?,?,?)';
+                var sqlEntryLog = await `UPDATE central SET title = '${title}', year = ${year}, genre = '${genre}', director = '${director}', actor1 = '${actor1}', actor2 = '${actor1}' WHERE id = '${id}'`;
+                var sqlEntryFill = await 'INSERT INTO logs (id, operation, sql_statement, node_id, status) VALUES (?,?,?,?,?)';
                 await node1Connection.query(sqlEntryFill, [logId, 'UPDATE', sqlEntryLog, 2, 'start'])
                 await console.log('inserted log')
 
@@ -122,7 +122,7 @@ const globalFR3Controller = {
                 })*/
 
                 //execute update
-                sqlEntryFill = 'UPDATE central SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
+                sqlEntryFill = await 'UPDATE central SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
                 //datalist = 
                 await node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
                 await console.log('did update')
@@ -132,7 +132,7 @@ const globalFR3Controller = {
 				})*/
 
 				await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
-                console.log('updating log')
+                console.log('log set as committing')
 
                 
                 await node1Connection.destroy()
