@@ -159,7 +159,7 @@ const globalFR2Controller = {
                         node2Connection.end()
                     }
             }
-            res.render('in', {id: id, title: title, year: year, genre: genre, director: director, 
+            res.render('in', {id: newId, title: title, year: year, genre: genre, director: director, 
 				actor1: actor1, actor2: actor2 })
         }
                 
