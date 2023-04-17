@@ -34,7 +34,7 @@ const globalFR3Controller = {
         var flag = false;
 
         try {
-            node2Connection = await mysql.createConnection(config.node1conn)
+            node2Connection = await mysql.createConnection(config.node2conn)
             console.log('connected to node2')
 
             await node2Connection.query(setIsolationLevel)
