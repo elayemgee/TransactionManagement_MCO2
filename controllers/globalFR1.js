@@ -345,7 +345,8 @@ const globalFR1Controller = {
             res.send('node 1 and node 3 are both down')
         }
 
-        res.send('Successfully inserted')
+        res.render('in', {id: id, title: title, year: year, genre: genre, director: director, 
+            actor1: actor1, actor2: actor2 })
 
     }
 }

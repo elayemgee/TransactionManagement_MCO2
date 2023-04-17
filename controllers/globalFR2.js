@@ -159,7 +159,8 @@ const globalFR2Controller = {
                         node2Connection.end()
                     }
             }
-            res.send("Succesful Global Failure Case 2")
+            res.render('in', {id: id, title: title, year: year, genre: genre, director: director, 
+				actor1: actor1, actor2: actor2 })
         }
                 
 }
