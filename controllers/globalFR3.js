@@ -110,8 +110,8 @@ const globalFR3Controller = {
                 //var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${title}',${year},'${genre}','${director}','${actor1}','${actor1}')`;
                 var sqlEntryLog = `UPDATE central SET title = '${title}', year = ${year}, genre = '${genre}', director = '${director}', actor1 = '${actor1}', actor2 = '${actor1}' WHERE id = '${id}'`;
                 //update logs
-                var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
-                let datalist = await node1Connection.query(sqlEntryFill, ['UPDATE', sqlEntryLog, 2, 'start'])
+                var sqlEntryFill = 'INSERT INTO logs (id, operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+                let datalist = await node1Connection.query(sqlEntryFill, [logId, 'UPDATE', sqlEntryLog, 2, 'start'])
                 console.log("after start")
                 
 				datalist.then(function(result) {
@@ -121,8 +121,9 @@ const globalFR3Controller = {
                     console.log(logId)
                 })
 
+                //execute update
                 sqlEntryFill = 'UPDATE central SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
-                datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
+                datalist = await node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
                 
 				datalist.then(function(result) {
 					console.log(result)
