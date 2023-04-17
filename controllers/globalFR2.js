@@ -123,15 +123,32 @@ const globalFR2Controller = {
                 console.log('connected to node 2');
         
                 rows1.forEach(e => {
-                    console.log("made it in wee")
                     console.log(e)
                     var query = e.sql_statement
                     console.log(query)
                     console.log("This is the id : " + e.id)
-                    //e.sql_statement
+                    
+                    node2Connection.query("set autocommit = 0;")
+                    node2Connection.query("START TRANSACTION;")
+                    node2Connection.query("LOCK TABLES node2 WRITE, logs WRITE;")
+
+                    var sqlEntryLog = `INSERT central SET title = '${title}', year = ${year}, genre = '${genre}', director = '${director}', actor1 = '${actor1}', actor2 = '${actor1}' WHERE id = '${query}'`;
+                    var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
+                    let datalist = node1Connection.query(sqlEntryFill, ['UPDATE', sqlEntryLog, 1, 'start'])
+    
+                    datalist.then(function(result) {
+                        console.log(result)
+                        logId = result[0].insertId
+                        console.log("logid:" + logId)
+                    })
+
                     node2Connection.query(query)
-                    console.log("isnertered into node 2")
-                    //datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
+
+                    node2Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
+		            node2Connection.query("COMMIT;")
+                    node2Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committed', logId]);
+                    console.log("committed and inserted into node 2")
+
                     node1Connection.query("UPDATE `logs` SET `status` = ? WHERE `id` = ?;", ['committed', e.id])
                     })
                 } catch (err){
@@ -142,6 +159,7 @@ const globalFR2Controller = {
                         node2Connection.end()
                     }
             }
+            res.send("Succesful Global Failure Case 2")
         }
                 
 }

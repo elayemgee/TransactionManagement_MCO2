@@ -284,7 +284,7 @@ const globalFR1Controller = {
             node1Connection.query(query)
             node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
 		    node1Connection.query("COMMIT;")
-            node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committed', logId]);
+            //node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committed', logId]);
             console.log("committed and inserted into node 1")
 
             //datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2])
