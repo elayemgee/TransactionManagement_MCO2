@@ -65,7 +65,6 @@ const updateController = {
                     console.log(logId)
                 })
 
-				console.log("before hi")
                 sqlEntryFill = 'UPDATE central SET title = ?, year = ?, genre = ?, director = ?, actor1 = ?, actor2 = ? WHERE id = ?';
                 datalist = node1Connection.query(sqlEntryFill, [title, year, genre, director, actor1,actor2, id])
                 console.log(datalist)

@@ -3,7 +3,8 @@ const node1conn = {
     port: '3306',
     user: 'group16',
     password: '12341234',
-    database: 'movies'
+    database: 'movies',
+    connectionLimit: 10
 }
 
 const node2conn = {
@@ -11,7 +12,8 @@ const node2conn = {
     port: '3306',
     user: 'group16',
     password: '12341234',
-    database: 'movies'
+    database: 'movies',
+    connectionLimit: 10
 }
 
 const node3conn = {
@@ -19,7 +21,8 @@ const node3conn = {
     port: '3306',
     user: 'group16',
     password: '12341234',
-    database: 'movies'
+    database: 'movies',
+    connectionLimit: 10
 }
 
 module.exports = { node1conn, node2conn, node3conn }

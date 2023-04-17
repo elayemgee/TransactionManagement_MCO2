@@ -76,11 +76,11 @@
 			<div class="actions" style="margin-top: -14px;">
 				<input type='button' id='clear' onclick = "clearUpdateInputs()" value='Clear'/>
 				<input type='submit' id='update-entry-btn' class='btn btn-primary' formaction = "/updateRecord" value='Update' />
+				<input type='submit' id='update-entry-btn' class='btn btn-primary' formaction = "/Case3Update" value='Case 3' />
 			</div>
 		</form>
 
 		<table class = "recordMessage">
-			<p>Update has been made:</p>
 			{{#each records}}
 				<tr class = "recordMessage">
 					<td class = "recordMessage" id = "rec"> {{this.id}} </td>
