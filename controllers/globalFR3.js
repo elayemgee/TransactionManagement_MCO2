@@ -74,7 +74,7 @@ const globalFR3Controller = {
             // update logs 
             await node2Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committing', logId]);
             await node2Connection.query("COMMIT;")
-            await node2Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committed', logId]);
+            //await node2Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committed', logId]);
             await node2Connection.query("UNLOCK TABLES;")
     
             // end connections
@@ -150,12 +150,12 @@ const globalFR3Controller = {
                     node1Connection.end()
                 }
 
-                
-
                 try {
                 console.log('gonna recover node 1 logs')
                 node1Connection = await mysql.createConnection(config.node1conn)
-                var [rows1, fields1] = await node1Connection.query("SELECT * FROM `logs` WHERE `status` = ?;", ['committing'])
+                node2Connection = await mysql.createConnection(config.node2conn)
+
+                var [rows1, fields1] = await node2Connection.query("SELECT * FROM `logs` WHERE `status` = ?;", ['committing'])
                 console.log('connected to node 1');
         
                 rows1.forEach(async e => {
@@ -170,10 +170,11 @@ const globalFR3Controller = {
                     await node1Connection.query('UPDATE `logs` SET `status` = ? WHERE `id` = ?;', ['committed', logId]);
                     console.log("committed and inserted into node 1")
 
-                    //await node1Connection.query("UPDATE `logs` SET `status` = ? WHERE `id` = ?;", ['committed', e.id])
+                    await node2Connection.query("UPDATE `logs` SET `status` = ? WHERE `id` = ?;", ['committed', e.id])
                     })
                 } catch(err){
                     if(node1Connection != null) { node1Connection.end() }
+                    if(node2Connection != null) { node2Connection.end() }
                 }
             }
 
