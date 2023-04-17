@@ -333,7 +333,7 @@ const inController = {
 
             //logs
             console.log("Start log inserted to central logs")
-            var sqlEntryLog = `INSERT INTO central (title, year, genre, director, actor1, actor2) VALUES ('${id}','${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
+            var sqlEntryLog = `INSERT INTO central (id, title, year, genre, director, actor1, actor2) VALUES ('${id}','${title}',${year},'${genre}','${director}','${actor1}','${actor2}')`;
 
             //update logs
             var sqlEntryFill = 'INSERT INTO logs (operation, sql_statement, node_id, status) VALUES (?,?,?,?)';
@@ -574,7 +574,8 @@ const inController = {
 		} else {
             console.log('insert was completed')
 			//res.send(true)
-            res.render('insert', { records: results })
+            res.render('insert', { id: id, title: title, year: year, genre: genre, director: director, 
+				actor1: actor1, actor2: actor2 })
 		}
     }
 }
